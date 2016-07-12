@@ -1,6 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import Meal from './Meal.jsx';
-
 
 class Day extends Component {
 
@@ -19,17 +18,17 @@ class Day extends Component {
 
     return (
       <div>
-      Day {this.props.appState.dayList.indexOf(this.props.day)+1}
-      <button label="Remove day"/>
+      Day {this.props.appState.dayList.indexOf(this.props.day) + 1}
+        <button label="Remove day" />
 
       {this.props.appState.days[this.props.day].meals.map((meal) =>
-        <Meal key={meal} meal={meal} appState={this.props.appState} actions={this.props.actions}/>
+        <Meal key={meal} meal={meal} appState={this.props.appState} />
       )}
 
-      <ul>
-      <li>{totalCals} calories</li>
-      <li>{totalProtein} g protein</li>
-      </ul>
+        <ul>
+          <li>{totalCals} calories</li>
+          <li>{totalProtein} g protein</li>
+        </ul>
       </div>
     );
   }

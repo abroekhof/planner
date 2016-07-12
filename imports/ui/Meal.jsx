@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import MealFood from './MealFood.jsx';
 
 class Meal extends Component {
- render() {
+  render() {
     const appState = this.props.appState;
     const meal = appState.meals[this.props.meal];
     const newTotalCals = meal.foods.reduce((food1, food2) =>
@@ -10,7 +10,7 @@ class Meal extends Component {
     appState.mealFoods[food2].qty,
     0);
 
-		return (
+    return (
       <div>
         {meal.type}
         {meal.foods.map((mealFood) =>
@@ -19,13 +19,14 @@ class Meal extends Component {
             mealFood={mealFood}
             foods={appState.foods}
             mealFoods={appState.mealFoods}
-            meal={this.props.meal}/>
+            meal={this.props.meal}
+          />
         )}
 
           {newTotalCals} calories
       </div>
 		);
-	}
+  }
 }
 
 Meal.propTypes = {
