@@ -4,21 +4,21 @@
   "scripts": {
     "start": "meteor run",
     "lint": "eslint .",
-  "pretest": "npm run lint --silent"
-},
-"eslintConfig": {
-  "plugins": [
-    "meteor"
-  ],
-  "extends": [
-    "airbnb",
-    "plugin:meteor/recommended"
-  ],
-  "settings": {
-    "import/resolver": "meteor"
+    "pretest": "npm run lint --silent"
   },
-  "rules": {}
-},
+  "eslintConfig": {
+    "plugins": [
+      "meteor"
+    ],
+    "extends": [
+      "airbnb",
+      "plugin:meteor/recommended"
+    ],
+    "settings": {
+      "import/resolver": "meteor"
+    },
+    "rules": {}
+  },
   "dependencies": {
     "meteor-node-stubs": "~0.2.0",
     "react": "^15.2.1",
