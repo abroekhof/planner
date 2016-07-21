@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
+
+import { Foods } from '../api/foods.js';
 
 import Day from './Day.jsx';
+import Food from './Food.jsx';
 
-export default class App extends Component {
+class App extends Component {
   getAppState() {
     return {
       caloriesPerDay: 3000,
       foods: {
-        1: { food: 'Clif Bar', calories: 255, weight: 2.4, protein: 10 },
-        2: { food: 'ProBar', calories: 290, weight: 3, protein: 9 },
-        3: { food: 'Oil', calories: 190, weight: 1, protein: 0 },
+        1: { name: 'Clif Bar', calories: 255, weight: 2.4, protein: 10 },
+        2: { name: 'ProBar', calories: 290, weight: 3, protein: 9 },
+        3: { name: 'Oil', calories: 190, weight: 1, protein: 0 },
       },
       dayList: [1],
       days: {
@@ -35,13 +39,21 @@ export default class App extends Component {
     ));
   }
 
+  renderFoods() {
+    return this.props.foods.map((food) => (
+      <Food key={food._id} food={food} />
+    ));
+  }
+
   render() {
     return (
       <div className="container">
         <header>
           <h1>Meal Planner</h1>
         </header>
-
+        <div>
+          {this.renderFoods()}
+        </div>
         <ul>
           {this.renderDays()}
         </ul>
@@ -49,3 +61,13 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  foods: PropTypes.array.isRequired,
+};
+
+export default createContainer(() => {
+  return {
+    foods: Foods.find({}).fetch(),
+  };
+}, App);
