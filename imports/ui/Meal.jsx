@@ -12,7 +12,7 @@ class Meal extends Component {
 
     return (
       <div>
-        {meal.type}
+        <span>{meal.type}</span>
         {meal.foods.map((mealFood) =>
           <MealFood
             key={mealFood}
@@ -23,7 +23,7 @@ class Meal extends Component {
           />
         )}
 
-          {newTotalCals} calories
+        <span>{newTotalCals} calories</span>
       </div>
 		);
   }

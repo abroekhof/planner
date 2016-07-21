@@ -10,7 +10,7 @@ class MealFood extends Component {
     const food = foods[mealFoods[mealFoodId].id];
     return (
       <div>
-        {qty} {food.food} {food.calories * qty} {food.protein * qty}
+        <span>{qty} {food.food} {food.calories * qty} {food.protein * qty}</span>
       </div>
     );
   }

@@ -19,7 +19,7 @@ class Day extends Component {
     return (
       <div>
       Day {this.props.appState.dayList.indexOf(this.props.day) + 1}
-        <button label="Remove day" />
+        <button>Remove day</button>
 
       {this.props.appState.days[this.props.day].meals.map((meal) =>
         <Meal key={meal} meal={meal} appState={this.props.appState} />
