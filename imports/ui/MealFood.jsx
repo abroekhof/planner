@@ -1,20 +1,17 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-class MealFood extends Component {
-
-  render() {
-    const mealFoods = this.props.mealFoods;
-    const foods = this.props.foods;
-    const mealFoodId = this.props.mealFood;
-    const qty = mealFoods[mealFoodId].qty;
-    const food = foods[mealFoods[mealFoodId].id];
-    return (
-      <div>
-        <span>{qty} {food.food} {food.calories * qty} {food.protein * qty}</span>
-      </div>
-    );
-  }
-}
+const MealFood = (props) => {
+  const mealFoods = props.mealFoods;
+  const foods = props.foods;
+  const mealFoodId = props.mealFood;
+  const qty = mealFoods[mealFoodId].qty;
+  const food = foods[mealFoods[mealFoodId].id];
+  return (
+    <div>
+      <span>{qty} {food.food} {food.calories * qty} {food.protein * qty}</span>
+    </div>
+  );
+};
 
 MealFood.propTypes = {
   mealFoods: PropTypes.object.isRequired,
