@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Foods } from '../api/foods.js';
@@ -7,6 +8,11 @@ import Day from './Day.jsx';
 import Food from './Food.jsx';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   getAppState() {
     return {
       caloriesPerDay: 3000,
@@ -32,6 +38,30 @@ class App extends Component {
     };
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+
+    // Find the text field via the React ref
+    const name = ReactDOM.findDOMNode(this.refs.foodName).value.trim();
+    const calories = ReactDOM.findDOMNode(this.refs.calories).value.trim();
+    const protein = ReactDOM.findDOMNode(this.refs.protein).value.trim();
+    const weight = ReactDOM.findDOMNode(this.refs.weight).value.trim();
+
+    Foods.insert({
+      name,
+      calories,
+      protein,
+      weight,
+      createdAt: new Date(), // current time
+    });
+
+    // Clear form
+    ReactDOM.findDOMNode(this.refs.foodName).value = '';
+    ReactDOM.findDOMNode(this.refs.calories).value = '';
+    ReactDOM.findDOMNode(this.refs.protein).value = '';
+    ReactDOM.findDOMNode(this.refs.weight).value = '';
+  }
+
   renderDays() {
     const appState = this.getAppState();
     return appState.dayList.map((day) => (
@@ -50,6 +80,35 @@ class App extends Component {
       <div className="container">
         <header>
           <h1>Meal Planner</h1>
+          <form className="new-food" onSubmit={this.handleSubmit} >
+            <input
+              type="text"
+              ref="foodName"
+              autoComplete="off"
+              placeholder="Food name"
+            />
+            <input
+              type="text"
+              ref="calories"
+              autoComplete="off"
+              placeholder="Number of calories"
+            />
+            <input
+              type="text"
+              ref="protein"
+              autoComplete="off"
+              placeholder="Protein in grams"
+            />
+            <input
+              type="text"
+              ref="weight"
+              autoComplete="off"
+              placeholder="Weight in ounces"
+            />
+            <input
+              type="submit"
+            />
+          </form>
         </header>
         <div>
           {this.renderFoods()}
