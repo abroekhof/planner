@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-
-import { Foods } from '../api/foods.js';
+import { Meteor } from 'meteor/meteor';
 
 class Food extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Food extends Component {
   }
 
   deleteThisFood() {
-    Foods.remove(this.props.food._id);
+    Meteor.call('foods.remove', this.props.food._id);
   }
 
   render() {

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
@@ -47,13 +48,11 @@ class App extends Component {
     const protein = ReactDOM.findDOMNode(this.refs.protein).value.trim();
     const weight = ReactDOM.findDOMNode(this.refs.weight).value.trim();
 
-    Foods.insert({
+    Meteor.call('foods.insert',
       name,
-      calories,
-      protein,
-      weight,
-      createdAt: new Date(), // current time
-    });
+      Number(calories),
+      Number(protein),
+      Number(weight));
 
     // Clear form
     ReactDOM.findDOMNode(this.refs.foodName).value = '';
