@@ -132,7 +132,11 @@ App.propTypes = {
   days: PropTypes.array.isRequired,
 };
 
-export default createContainer(() => ({
-  foods: Foods.find({}).fetch(),
-  days: Days.find({}).fetch(),
-}), App);
+export default createContainer(() => {
+  Meteor.subscribe('days');
+  Meteor.subscribe('foods');
+  return {
+    foods: Foods.find({}).fetch(),
+    days: Days.find({}).fetch(),
+  };
+}, App);

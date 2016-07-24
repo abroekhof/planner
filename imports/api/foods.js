@@ -4,6 +4,12 @@ import { check } from 'meteor/check';
 
 export const Foods = new Mongo.Collection('foods');
 
+if (Meteor.isServer) {
+  Meteor.publish('foods', () => (
+    Foods.find()
+  ));
+}
+
 Meteor.methods({
   'foods.insert'(name, calories, protein, weight) {
     check(name, String);
