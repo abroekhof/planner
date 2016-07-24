@@ -70,7 +70,7 @@ class App extends Component {
   renderDays() {
     const appState = this.getAppState();
     return this.props.days.map((day, idx) => (
-      <Day key={day._id} day={day} idx={idx+1} appState={appState} />
+      <Day key={day._id} day={day} idx={idx + 1} appState={appState} />
     ));
   }
 
