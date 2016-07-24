@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Meals } from './meals.js';
+import { MealFoods } from './mealFoods.js';
 
 class DaysCollection extends Mongo.Collection {
   remove(selector, callback) {
@@ -17,9 +18,12 @@ if (Meteor.isServer) {
     find() { return Days.find(); },
     children: [
       {
-        find(day) {
-          return Meals.find({ dayId: day._id });
-        },
+        find(day) { return Meals.find({ dayId: day._id }); },
+        children: [
+          {
+            find(meal) { return MealFoods.find({ mealId: meal._id }); },
+          },
+        ],
       },
     ],
   });
