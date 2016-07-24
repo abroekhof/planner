@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Foods } from '../api/foods.js';
+import { Days } from '../api/days.js';
 
 import Day from './Day.jsx';
 import Food from './Food.jsx';
@@ -12,6 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddDay = this.handleAddDay.bind(this);
   }
 
   getAppState() {
@@ -61,10 +63,14 @@ class App extends Component {
     ReactDOM.findDOMNode(this.refs.weight).value = '';
   }
 
+  handleAddDay() {
+    Meteor.call('days.insert');
+  }
+
   renderDays() {
     const appState = this.getAppState();
-    return appState.dayList.map((day) => (
-      <Day key={day} day={day} appState={appState} />
+    return this.props.days.map((day, idx) => (
+      <Day key={day._id} day={day} idx={idx+1} appState={appState} />
     ));
   }
 
@@ -112,9 +118,10 @@ class App extends Component {
         <div>
           {this.renderFoods()}
         </div>
-        <ul>
+        <div>
+          <button onClick={this.handleAddDay}>Add day</button>
           {this.renderDays()}
-        </ul>
+        </div>
       </div>
     );
   }
@@ -122,10 +129,10 @@ class App extends Component {
 
 App.propTypes = {
   foods: PropTypes.array.isRequired,
+  days: PropTypes.array.isRequired,
 };
 
-export default createContainer(() => {
-  return {
-    foods: Foods.find({}).fetch(),
-  };
-}, App);
+export default createContainer(() => ({
+  foods: Foods.find({}).fetch(),
+  days: Days.find({}).fetch(),
+}), App);
