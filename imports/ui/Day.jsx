@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-// import Meal from './Meal.jsx';
+import Meal from './Meal.jsx';
 import { Meals } from '../api/meals.js';
 import { Meteor } from 'meteor/meteor';
 
@@ -32,7 +32,7 @@ class Day extends Component {
         <button onClick={this.handleRemoveDay}>Remove day</button>
         <ul>
         {meals.map((meal) =>
-          <li>{meal.name}</li>
+          <Meal key={meal._id} meal={meal} />
         )}
         </ul>
 

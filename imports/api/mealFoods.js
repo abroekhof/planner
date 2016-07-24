@@ -5,8 +5,15 @@ import { Meteor } from 'meteor/meteor';
 export const MealFoods = new Mongo.Collection('mealFoods');
 
 Meteor.methods({
-  'mealFoods.insert'() {
-    MealFoods.insert({ createdAt: new Date() });
+  'mealFoods.insert'(foodId, mealId, qty) {
+    check(foodId, String);
+    check(mealId, String);
+    check(qty, Number);
+    MealFoods.insert({
+      foodId,
+      mealId,
+      qty,
+      createdAt: new Date() });
   },
   'mealFoods.remove'(mealFoodId) {
     check(mealFoodId, String);

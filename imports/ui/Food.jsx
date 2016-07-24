@@ -1,5 +1,25 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { DragSource } from 'react-dnd';
+
+/**
+ * Implements the drag source contract.
+ */
+const foodSource = {
+  beginDrag(props) {
+    return { food: props.food };
+  },
+};
+
+/**
+ * Specifies the props to inject into your component.
+ */
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging(),
+  };
+}
 
 class Food extends Component {
   constructor(props) {
@@ -13,8 +33,9 @@ class Food extends Component {
 
   render() {
     const food = this.props.food;
-    return (
-      <div>
+    const { isDragging, connectDragSource } = this.props;
+    return connectDragSource(
+      <div style={{ opacity: isDragging ? 0.5 : 1 }}>
         <button className="delete" onClick={this.deleteThisFood}>
             &times;
         </button>
@@ -28,6 +49,9 @@ class Food extends Component {
 
 Food.propTypes = {
   food: PropTypes.object.isRequired,
+  // Injected by React DnD:
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
 };
 
-export default Food;
+export default DragSource('food', foodSource, collect)(Food);

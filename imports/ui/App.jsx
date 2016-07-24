@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+import { createContainer } from 'meteor/react-meteor-data';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
+
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 
 import { Foods } from '../api/foods.js';
 import { Days } from '../api/days.js';
@@ -139,4 +142,6 @@ export default createContainer(() => {
     foods: Foods.find({}).fetch(),
     days: Days.find({}).fetch(),
   };
-}, App);
+}, DragDropContext(
+      HTML5Backend
+    )(App));
