@@ -13,19 +13,25 @@ class DaysCollection extends Mongo.Collection {
 export const Days = new DaysCollection('days');
 
 if (Meteor.isServer) {
-  // This code only runs on the server
-  Meteor.publish('days', () => (
-    Days.find()
-  ));
+  Meteor.publishComposite('days', {
+    find() { return Days.find(); },
+    children: [
+      {
+        find(day) {
+          return Meals.find({ dayId: day._id });
+        },
+      },
+    ],
+  });
 }
 
 Meteor.methods({
   'days.insert'() {
     Days.insert({ createdAt: new Date() }, (err, dayId) => {
-      ['Breakfast', 'Lunch', 'Dinner', 'Snacks'].forEach((meal) => {
+      ['Breakfast', 'Lunch', 'Dinner', 'Snacks'].forEach((name) => {
         Meals.insert({
           dayId,
-          name: meal,
+          name,
           createdAt: 2,
         });
       });

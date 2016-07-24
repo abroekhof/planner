@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Meal from './Meal.jsx';
+// import Meal from './Meal.jsx';
+import { Meals } from '../api/meals.js';
 import { Meteor } from 'meteor/meteor';
 
 class Day extends Component {
@@ -9,7 +10,7 @@ class Day extends Component {
   }
 
   handleRemoveDay() {
-    Meteor.call('days.remove', this.props.day._id)
+    Meteor.call('days.remove', this.props.day._id);
   }
   // const appState = props.appState;
   // const totalCals = appState.days[props.day].meals.reduce((meal1, meal2) =>
@@ -24,19 +25,21 @@ class Day extends Component {
   // 0);
 
   render() {
+    const meals = Meals.find({ dayId: this.props.day._id });
     return (
       <div>
         <h2>Day {this.props.idx}</h2>
         <button onClick={this.handleRemoveDay}>Remove day</button>
+        <ul>
+        {meals.map((meal) =>
+          <li>{meal.name}</li>
+        )}
+        </ul>
 
-    {/*{props.appState.days[props.day].meals.map((meal) =>
-      <Meal key={meal} meal={meal} appState={props.appState} />
-    )}
-
-      <ul>
+      {/* <ul>
         <li>{totalCals} calories</li>
         <li>{totalProtein} g protein</li>
-      </ul>*/}
+      </ul> */}
       </div>
   );
   }
