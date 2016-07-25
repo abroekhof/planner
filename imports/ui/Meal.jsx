@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
 import { DropTarget } from 'react-dnd';
 
-// import MealFood from './MealFood.jsx';
+import MealFood from './MealFood.jsx';
 
 const mealTarget = {
   drop(props, monitor, component) {
@@ -27,7 +27,8 @@ const Meal = (props) => {
       {props.mealFoods.map((mealFood) => {
         const f = props.foods.filter((food) => (food._id === mealFood.foodId))[0];
         return (
-          <li key={mealFood._id}>{f.name}</li>
+          <MealFood key={mealFood._id} mealFood={mealFood} food={f} />
+
         );
       })}
       </ul>

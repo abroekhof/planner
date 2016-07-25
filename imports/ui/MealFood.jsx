@@ -1,23 +1,32 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 
-const MealFood = (props) => {
-  const mealFoods = props.mealFoods;
-  const foods = props.foods;
-  const mealFoodId = props.mealFood;
-  const qty = mealFoods[mealFoodId].qty;
-  const food = foods[mealFoods[mealFoodId].id];
-  return (
-    <div>
-      <span>{qty} {food.food} {food.calories * qty} {food.protein * qty}</span>
-    </div>
-  );
-};
+import { Meteor } from 'meteor/meteor';
+
+class MealFood extends Component {
+  constructor(props) {
+    super(props);
+    this.deleteThisMealFood = this.deleteThisMealFood.bind(this);
+  }
+
+  deleteThisMealFood() {
+    Meteor.call('mealFoods.remove', this.props.mealFood._id);
+  }
+
+  render() {
+    return (
+      <li>
+        <button className="delete" onClick={this.deleteThisMealFood}>
+          &times;
+        </button>
+        <span>{this.props.mealFood.qty} {this.props.food.name}</span>
+      </li>
+    );
+  }
+}
 
 MealFood.propTypes = {
-  mealFoods: PropTypes.object.isRequired,
-  meal: PropTypes.number.isRequired,
-  foods: PropTypes.object.isRequired,
-  mealFood: PropTypes.number.isRequired,
+  mealFood: PropTypes.object.isRequired,
+  food: PropTypes.object.isRequired,
 };
 
 export default MealFood;

@@ -10,12 +10,17 @@ Meteor.methods({
     check(mealId, String);
     check(dayId, String);
     check(qty, Number);
-    MealFoods.insert({
-      foodId,
-      mealId,
-      dayId,
-      qty,
-      createdAt: new Date() });
+    MealFoods.update(
+      {
+        foodId,
+        mealId,
+        dayId,
+      }, {
+        $inc: { qty },
+      }, {
+        upsert: true,
+      }
+    );
   },
   'mealFoods.remove'(mealFoodId) {
     check(mealFoodId, String);
