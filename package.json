@@ -17,7 +17,9 @@
     "settings": {
       "import/resolver": "meteor"
     },
-    "rules": {}
+    "rules": {
+      "no-underscore-dangle": "off"
+    }
   },
   "dependencies": {
     "meteor-node-stubs": "~0.2.0",

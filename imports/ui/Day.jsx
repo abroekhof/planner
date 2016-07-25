@@ -25,20 +25,23 @@ class Day extends Component {
   // 0);
 
   render() {
-    const meals = this.props.meals;
     return (
       <div>
         <h2>Day {this.props.idx}</h2>
         <button onClick={this.handleRemoveDay}>Remove day</button>
         <ul>
-        {meals.map((meal) => {
-          const mealFoods = this.props.mealFoods.filter((mealFood) =>
-          (mealFood.mealId === meal._id));
+        {this.props.meals.map((meal) => {
+          const mealFoods = this.props.mealFoods.filter(
+            (mealFood) => (mealFood.mealId === meal._id));
+          const foods = mealFoods.map(
+            (mealFood) => (this.props.foods.filter(
+              (food) => (food._id === mealFood.foodId))[0]));
           return (
             <Meal
               key={meal._id}
               meal={meal}
               mealFoods={mealFoods}
+              foods={foods}
               dayId={this.props.day._id}
             />
           );
@@ -59,6 +62,7 @@ Day.propTypes = {
   idx: PropTypes.number.isRequired,
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
+  foods: PropTypes.array.isRequired,
 };
 
 export default Day;

@@ -74,14 +74,20 @@ class App extends Component {
 
   renderDays() {
     return this.props.days.map((day, idx) => {
-      const meals = this.props.meals.filter((meal) => (meal.dayId === day._id));
-      const mealFoods = this.props.mealFoods.filter((mealFood) => (mealFood.dayId === day._id));
+      const meals = this.props.meals.filter(
+        (meal) => (meal.dayId === day._id));
+      const mealFoods = this.props.mealFoods.filter(
+        (mealFood) => (mealFood.dayId === day._id));
+      const foods = mealFoods.map(
+        (mealFood) => (this.props.foods.filter(
+          (food) => (food._id === mealFood.foodId))[0]));
       return (
         <Day
           key={day._id}
           day={day}
           meals={meals}
           mealFoods={mealFoods}
+          foods={foods}
           idx={idx + 1}
         />
     );
