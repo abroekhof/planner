@@ -8,6 +8,8 @@ import { DragDropContext } from 'react-dnd';
 
 import { Foods } from '../api/foods.js';
 import { Days } from '../api/days.js';
+import { Meals } from '../api/meals.js';
+import { MealFoods } from '../api/mealFoods.js';
 
 import Day from './Day.jsx';
 import Food from './Food.jsx';
@@ -71,10 +73,19 @@ class App extends Component {
   }
 
   renderDays() {
-    const appState = this.getAppState();
-    return this.props.days.map((day, idx) => (
-      <Day key={day._id} day={day} idx={idx + 1} appState={appState} />
-    ));
+    return this.props.days.map((day, idx) => {
+      const meals = this.props.meals.filter((meal) => (meal.dayId === day._id));
+      const mealFoods = this.props.mealFoods.filter((mealFood) => (mealFood.dayId === day._id));
+      return (
+        <Day
+          key={day._id}
+          day={day}
+          meals={meals}
+          mealFoods={mealFoods}
+          idx={idx + 1}
+        />
+    );
+    });
   }
 
   renderFoods() {
@@ -133,6 +144,8 @@ class App extends Component {
 App.propTypes = {
   foods: PropTypes.array.isRequired,
   days: PropTypes.array.isRequired,
+  meals: PropTypes.array.isRequired,
+  mealFoods: PropTypes.array.isRequired,
 };
 
 export default createContainer(() => {
@@ -141,6 +154,8 @@ export default createContainer(() => {
   return {
     foods: Foods.find({}).fetch(),
     days: Days.find({}).fetch(),
+    meals: Meals.find({}).fetch(),
+    mealFoods: MealFoods.find({}).fetch(),
   };
 }, DragDropContext(
       HTML5Backend

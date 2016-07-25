@@ -3,14 +3,12 @@ import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
 import { DropTarget } from 'react-dnd';
 
-import MealFood from './MealFood.jsx';
-import { MealFoods } from '../api/mealFoods.js';
+// import MealFood from './MealFood.jsx';
 
 const mealTarget = {
   drop(props, monitor, component) {
     const item = monitor.getItem();
-    console.log(item);
-    Meteor.call('mealFoods.insert', item.food._id, props.meal._id, 1);
+    Meteor.call('mealFoods.insert', item.food._id, props.meal._id, props.dayId, 1);
   },
 };
 
@@ -27,15 +25,14 @@ const Meal = (props) => {
   // food1 + appState.foods[appState.mealFoods[food2].id].calories *
   // appState.mealFoods[food2].qty,
   // 0);
-  const mealFoods = MealFoods.find({ mealId: props.meal._id }).fetch();
   const { connectDropTarget } = props;
   return connectDropTarget(
     <div>
       <span>{props.meal.name}</span>
       <ul>
-      {mealFoods.map((mealFood) =>
+      {props.mealFoods.map((mealFood) => (
         <li key={mealFood._id}>{mealFood._id}</li>
-      )}
+      ))}
       </ul>
 
       {/* <span>{newTotalCals} calories</span> */}
@@ -45,6 +42,8 @@ const Meal = (props) => {
 
 Meal.propTypes = {
   meal: PropTypes.object.isRequired,
+  dayId: PropTypes.string.isRequired,
+  mealFoods: PropTypes.array.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
 };
 
