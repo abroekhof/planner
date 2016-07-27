@@ -3,6 +3,8 @@ import Meal from './Meal.jsx';
 
 import { Meteor } from 'meteor/meteor';
 
+import { totalCals } from './helpers.js';
+
 class Day extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +31,7 @@ class Day extends Component {
       <div>
         <h2>Day {this.props.idx}</h2>
         <button onClick={this.handleRemoveDay}>Remove day</button>
+        <span>{totalCals(this.props.mealFoods)}</span>
         <ul>
         {this.props.meals.map((meal) => {
           const mealFoods = this.props.mealFoods.filter(

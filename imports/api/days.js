@@ -27,10 +27,10 @@ if (Meteor.isServer) {
     find() { return Days.find(); },
     children: [
       {
-        find(day) { return Meals.find({ dayId: day._id }); },
+        find(day) { return day.meals(); },
         children: [
           {
-            find(meal) { return MealFoods.find({ mealId: meal._id }); },
+            find(meal) { return meal.mealFoods(); },
           },
         ],
       },

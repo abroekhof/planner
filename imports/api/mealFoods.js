@@ -13,6 +13,7 @@ Meteor.methods({
     check(mealId, String);
     check(dayId, String);
     check(qty, Number);
+    const food = Foods.findOne(foodId);
     MealFoods.update(
       {
         foodId,
@@ -20,6 +21,7 @@ Meteor.methods({
         dayId,
       }, {
         $inc: { qty },
+        $set: { food },
       }, {
         upsert: true,
       }
