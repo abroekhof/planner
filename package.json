@@ -18,7 +18,8 @@
       "import/resolver": "meteor"
     },
     "rules": {
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "new-cap": "off"
     }
   },
   "dependencies": {

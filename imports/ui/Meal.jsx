@@ -6,13 +6,13 @@ import { DropTarget } from 'react-dnd';
 import MealFood from './MealFood.jsx';
 
 const mealTarget = {
-  drop(props, monitor, component) {
+  drop(props, monitor) {
     const item = monitor.getItem();
     Meteor.call('mealFoods.insert', item.food._id, props.meal._id, props.dayId, 1);
   },
 };
 
-function collect(connect, monitor) {
+function collect(connect) {
   return {
     connectDropTarget: connect.dropTarget(),
   };

@@ -44,5 +44,7 @@ Meteor.methods({
   'days.remove'(dayId) {
     check(dayId, String);
     Days.remove(dayId);
+    Meals.remove({ dayId });
+    MealFoods.remove({ dayId });
   },
 });
