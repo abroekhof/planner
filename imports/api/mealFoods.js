@@ -2,6 +2,9 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
+import { Foods } from './foods.js';
+import { Meals } from './meals.js';
+
 export const MealFoods = new Mongo.Collection('mealFoods');
 
 Meteor.methods({
@@ -25,5 +28,14 @@ Meteor.methods({
   'mealFoods.remove'(mealFoodId) {
     check(mealFoodId, String);
     MealFoods.remove(mealFoodId);
+  },
+});
+
+MealFoods.helpers({
+  food() {
+    return Foods.findOne(this.foodId);
+  },
+  meal() {
+    return Meals.findOne(this.mealId);
   },
 });

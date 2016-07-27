@@ -13,6 +13,15 @@ class DaysCollection extends Mongo.Collection {
 
 export const Days = new DaysCollection('days');
 
+Days.helpers({
+  meals() {
+    return Meals.find({ dayId: this._id });
+  },
+  mealFoods() {
+    return MealFoods.find({ dayId: this._id });
+  },
+});
+
 if (Meteor.isServer) {
   Meteor.publishComposite('days', {
     find() { return Days.find(); },
