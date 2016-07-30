@@ -14,7 +14,7 @@ import { MealFoods } from '../api/mealFoods.js';
 import Day from './Day.jsx';
 import Food from './Food.jsx';
 
-import { totalCals } from './helpers.js';
+import { totals } from './helpers.js';
 
 class App extends Component {
   constructor(props) {
@@ -107,6 +107,7 @@ class App extends Component {
 
 
   render() {
+    const tripTotals = totals(this.props.mealFoods);
     return (
       <div className="container">
         <header>
@@ -145,7 +146,7 @@ class App extends Component {
           {this.renderFoods()}
         </div>
         <div>
-          <span>{totalCals(this.props.mealFoods)} calories</span>
+          <span>{tripTotals.calories} calories</span>
           <button onClick={this.handleAddDay}>Add day</button>
           {this.renderDays()}
         </div>

@@ -5,7 +5,7 @@ import { DropTarget } from 'react-dnd';
 
 import MealFood from './MealFood.jsx';
 
-import { totalCals } from './helpers.js';
+import { totals } from './helpers.js';
 
 const mealTarget = {
   drop(props, monitor) {
@@ -22,9 +22,10 @@ function collect(connect) {
 
 const Meal = (props) => {
   const { connectDropTarget } = props;
+  const mealTotals = totals(props.mealFoods);
   return connectDropTarget(
     <div>
-      <span>{props.meal.name} ({totalCals(props.mealFoods)} calories)</span>
+      <span>{props.meal.name} ({mealTotals.calories} calories)</span>
       <ul>
       {props.mealFoods.map((mealFood) => {
         const f = props.foods.filter((food) => (food._id === mealFood.foodId))[0];
