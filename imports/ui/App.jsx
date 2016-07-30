@@ -11,8 +11,10 @@ import { Days } from '../api/days.js';
 import { Meals } from '../api/meals.js';
 import { MealFoods } from '../api/mealFoods.js';
 
+
 import Day from './Day.jsx';
 import Food from './Food.jsx';
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 import { totals } from './helpers.js';
 
@@ -74,8 +76,6 @@ class App extends Component {
     Meteor.call('days.insert');
   }
 
-
-
   renderDays() {
     return this.props.days.map((day, idx) => {
       const meals = this.props.meals.filter(
@@ -103,8 +103,6 @@ class App extends Component {
       <Food key={food._id} food={food} />
     ));
   }
-
-
 
   render() {
     const tripTotals = totals(this.props.mealFoods);
@@ -145,6 +143,7 @@ class App extends Component {
         <div>
           {this.renderFoods()}
         </div>
+        <AccountsUIWrapper />
         <div>
           <span>{tripTotals.calories} calories</span>
           <button onClick={this.handleAddDay}>Add day</button>
