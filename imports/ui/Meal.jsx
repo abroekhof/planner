@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { DropTarget } from 'react-dnd';
 
 import MealFood from './MealFood.jsx';
@@ -20,24 +20,30 @@ function collect(connect) {
   };
 }
 
-const Meal = (props) => {
-  const { connectDropTarget } = props;
-  const mealTotals = totals(props.mealFoods);
-  return connectDropTarget(
-    <div>
-      <span>{props.meal.name} ({mealTotals.calories} calories)</span>
-      <ul>
-      {props.mealFoods.map((mealFood) => {
-        const f = props.foods.filter((food) => (food._id === mealFood.foodId))[0];
-        return (
-          <MealFood key={mealFood._id} mealFood={mealFood} food={f} />
+class Meal extends Component {
 
-        );
-      })}
-      </ul>
-    </div>
-	);
-};
+  renderMealFoods() {
+    return this.props.mealFoods.map((mealFood) => {
+      const f = this.props.foods.filter((food) => (food._id === mealFood.foodId))[0];
+      return (
+        <MealFood key={mealFood._id} mealFood={mealFood} food={f} />
+      );
+    });
+  }
+
+  render() {
+    const { connectDropTarget } = this.props;
+    const mealTotals = totals(this.props.mealFoods);
+    return connectDropTarget(
+      <div>
+        <span>{this.props.meal.name} ({mealTotals.calories} calories)</span>
+        <ul>
+        {this.renderMealFoods()}
+        </ul>
+      </div>
+    );
+  }
+}
 
 Meal.propTypes = {
   meal: PropTypes.object.isRequired,
