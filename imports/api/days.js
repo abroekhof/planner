@@ -6,6 +6,7 @@ import { MealFoods } from './mealFoods.js';
 
 class DaysCollection extends Mongo.Collection {
   remove(selector, callback) {
+    // also remove all child meals
     Meals.remove({ dayId: selector });
     return super.remove(selector, callback);
   }
@@ -65,7 +66,5 @@ Meteor.methods({
   'days.remove'(dayId) {
     check(dayId, String);
     Days.remove(dayId);
-    Meals.remove({ dayId });
-    MealFoods.remove({ dayId });
   },
 });

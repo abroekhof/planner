@@ -11,14 +11,15 @@ export default class TripList extends React.Component {
 
   createNewTrip() {
     const { router } = this.context;
-    const tripId = Meteor.call('trips.insert', (err) => {
+    Meteor.call('trips.insert', (err, result) => {
       if (err) {
         router.push('/');
         /* eslint-disable no-alert */
         alert(err);
+      } else {
+        router.push(`/trips/${result}`);
       }
     });
-    router.push(`/trips/${tripId}`);
   }
 
   render() {
