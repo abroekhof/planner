@@ -1,5 +1,4 @@
 export const totals = (mealFoods) => (
-
    mealFoods.reduce(
     (prevTotal, mealFood) => (
       {

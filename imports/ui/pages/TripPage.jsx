@@ -1,24 +1,14 @@
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'meteor/react-meteor-data';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
+import Day from '../Day.jsx';
+import Food from '../Food.jsx';
+import AccountsUIWrapper from '../AccountsUIWrapper.jsx';
 
-import { Foods } from '../api/foods.js';
-import { Days } from '../api/days.js';
-import { Meals } from '../api/meals.js';
-import { MealFoods } from '../api/mealFoods.js';
+import { totals } from '../helpers.js';
 
-
-import Day from './Day.jsx';
-import Food from './Food.jsx';
-import AccountsUIWrapper from './AccountsUIWrapper.jsx';
-
-import { totals } from './helpers.js';
-
-class App extends Component {
+export default class TripPage extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -73,7 +63,7 @@ class App extends Component {
   }
 
   handleAddDay() {
-    Meteor.call('days.insert');
+    Meteor.call('days.insert', this.props.trip._id);
   }
 
   renderDays() {
@@ -159,24 +149,11 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
+TripPage.propTypes = {
+  trip: PropTypes.object.isRequired,
   foods: PropTypes.array.isRequired,
   days: PropTypes.array.isRequired,
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
 };
-
-export default createContainer(() => {
-  Meteor.subscribe('days');
-  Meteor.subscribe('foods');
-  return {
-    foods: Foods.find({}).fetch(),
-    days: Days.find({}).fetch(),
-    meals: Meals.find({}).fetch(),
-    mealFoods: MealFoods.find({}).fetch(),
-    currentUser: Meteor.user(),
-  };
-}, DragDropContext(
-      HTML5Backend
-    )(App));

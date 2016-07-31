@@ -36,11 +36,23 @@ if (Meteor.isServer) {
       },
     ],
   });
+
+  Meteor.publishComposite('days.inTrip', (tripId) => (
+    { find() { return Days.find({ tripId }); },
+      children: [
+        {
+          find(day) { return day.meals(); },
+          children: [{ find(meal) { return meal.mealFoods(); } }],
+        },
+      ],
+    })
+  );
 }
 
 Meteor.methods({
-  'days.insert'() {
-    Days.insert({ createdAt: new Date() }, (err, dayId) => {
+  'days.insert'(tripId) {
+    check(tripId, String);
+    Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
       ['Breakfast', 'Lunch', 'Dinner', 'Snacks'].forEach((name) => {
         Meals.insert({
           dayId,
