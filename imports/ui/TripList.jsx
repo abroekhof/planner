@@ -38,7 +38,7 @@ export default class TripList extends React.Component {
             className="list-todo"
             activeClassName="active"
           >
-            {trip._id}
+            {trip.name}
           </Link>
         ))}
       </div>

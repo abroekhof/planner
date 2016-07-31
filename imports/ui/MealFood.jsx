@@ -1,24 +1,50 @@
 import React, { PropTypes, Component } from 'react';
+import { RIENumber} from 'riek';
 
 import { Meteor } from 'meteor/meteor';
 
 class MealFood extends Component {
   constructor(props) {
     super(props);
-    this.deleteThisMealFood = this.deleteThisMealFood.bind(this);
+    this.delete = this.delete.bind(this);
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+    this.updateQty = this.updateQty.bind(this);
   }
 
-  deleteThisMealFood() {
+  delete() {
     Meteor.call('mealFoods.remove', this.props.mealFood._id);
+  }
+
+  increment() {
+    const mealFood = this.props.mealFood;
+    Meteor.call('mealFoods.updateQty', mealFood._id, mealFood.qty + 1);
+  }
+
+  decrement() {
+    const mealFood = this.props.mealFood;
+    Meteor.call('mealFoods.updateQty', mealFood._id, mealFood.qty - 1);
+  }
+
+  updateQty(obj) {
+    console.log(obj);
+    Meteor.call('mealFoods.updateQty', this.props.mealFood._id, Number(obj.qty));
   }
 
   render() {
     return (
       <li>
-        <button className="delete" onClick={this.deleteThisMealFood}>
+        <button className="delete" onClick={this.delete}>
           &times;
         </button>
-        <span>{this.props.mealFood.qty} {this.props.food.name}</span>
+        <button onClick={this.increment}>+</button>
+        <button onClick={this.decrement}>-</button>
+        <span>
+          <RIENumber
+            value={this.props.mealFood.qty}
+            propName="qty"
+            change={this.updateQty}
+          /> {this.props.food.name}</span>
       </li>
     );
   }

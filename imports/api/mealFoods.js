@@ -31,6 +31,14 @@ Meteor.methods({
     check(mealFoodId, String);
     MealFoods.remove(mealFoodId);
   },
+  'mealFoods.updateQty'(mealFoodId, qty) {
+    check(mealFoodId, String);
+    check(qty, Number);
+    MealFoods.update(
+      mealFoodId,
+      { $set: { qty } }
+    );
+  },
 });
 
 MealFoods.helpers({
