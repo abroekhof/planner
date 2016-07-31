@@ -104,41 +104,46 @@ class App extends Component {
     ));
   }
 
+  renderForm() {
+    return (
+      <form className="new-food" onSubmit={this.handleSubmit} >
+        <input
+          type="text"
+          ref="foodName"
+          autoComplete="off"
+          placeholder="Food name"
+        />
+        <input
+          type="text"
+          ref="calories"
+          autoComplete="off"
+          placeholder="Number of calories"
+        />
+        <input
+          type="text"
+          ref="protein"
+          autoComplete="off"
+          placeholder="Protein in grams"
+        />
+        <input
+          type="text"
+          ref="weight"
+          autoComplete="off"
+          placeholder="Weight in ounces"
+        />
+        <input
+          type="submit"
+        />
+      </form>);
+  }
+
   render() {
     const tripTotals = totals(this.props.mealFoods);
     return (
       <div className="container">
         <header>
           <h1>Meal Planner</h1>
-          <form className="new-food" onSubmit={this.handleSubmit} >
-            <input
-              type="text"
-              ref="foodName"
-              autoComplete="off"
-              placeholder="Food name"
-            />
-            <input
-              type="text"
-              ref="calories"
-              autoComplete="off"
-              placeholder="Number of calories"
-            />
-            <input
-              type="text"
-              ref="protein"
-              autoComplete="off"
-              placeholder="Protein in grams"
-            />
-            <input
-              type="text"
-              ref="weight"
-              autoComplete="off"
-              placeholder="Weight in ounces"
-            />
-            <input
-              type="submit"
-            />
-          </form>
+          {this.renderForm()}
         </header>
         <div>
           {this.renderFoods()}
@@ -159,6 +164,7 @@ App.propTypes = {
   days: PropTypes.array.isRequired,
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export default createContainer(() => {
@@ -169,6 +175,7 @@ export default createContainer(() => {
     days: Days.find({}).fetch(),
     meals: Meals.find({}).fetch(),
     mealFoods: MealFoods.find({}).fetch(),
+    currentUser: Meteor.user(),
   };
 }, DragDropContext(
       HTML5Backend
