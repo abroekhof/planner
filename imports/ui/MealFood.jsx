@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { RIENumber} from 'riek';
+import { RIENumber } from 'riek';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -27,7 +27,6 @@ class MealFood extends Component {
   }
 
   updateQty(obj) {
-    console.log(obj);
     Meteor.call('mealFoods.updateQty', this.props.mealFood._id, Number(obj.qty));
   }
 
