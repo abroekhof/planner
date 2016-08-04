@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { RIENumber } from 'riek';
+import { RIENumber, RIEInput } from 'riek';
 
 import Day from '../components/Day.jsx';
 import Food from '../components/Food.jsx';
@@ -15,6 +15,7 @@ export default class TripPage extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddDay = this.handleAddDay.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
+    this.updateTripName = this.updateTripName.bind(this);
   }
 
   handleSubmit(event) {
@@ -64,6 +65,12 @@ export default class TripPage extends Component {
       Number(value));
   }
 
+  updateTripName(obj) {
+    Meteor.call('trips.updateName',
+    this.props.trip._id,
+    obj.value);
+  }
+
   renderDays() {
     return this.props.days.map((day, idx) => {
       const meals = this.props.meals.filter(
@@ -94,12 +101,12 @@ export default class TripPage extends Component {
 
   renderForm() {
     return (
-      <form className="new-food" onSubmit={this.handleSubmit} >
+      <form id="search" className="new-food" onSubmit={this.handleSubmit} >
         <input
           type="text"
           ref="foodName"
           autoComplete="off"
-          placeholder="Food name"
+          placeholder="Food"
         />
         <input
           type="text"
@@ -132,7 +139,12 @@ export default class TripPage extends Component {
     return (
       <div className="container">
         <header>
-          <h1>{this.props.trip.name}</h1>
+          <h1><RIEInput
+            value={this.props.trip.name}
+            propName="value"
+            change={this.updateTripName}
+            validate={(name) => (name.length > 0)}
+          /> </h1>
           {this.renderForm()}
         </header>
         <div>
@@ -142,16 +154,19 @@ export default class TripPage extends Component {
         <div>
           <span>{tripTotals.calories} calories</span>
           <span>Number of days: {numDays}</span>
+
           <span>Target <RIENumber
             value={trip.calsPerDay || 0}
             propName="calsPerDay"
             change={this.updateTrip}
           /> calories per day</span>
+
           <span>Target <RIENumber
             value={trip.proteinPerDay || 0}
             propName="proteinPerDay"
             change={this.updateTrip}
           /> g protein per day</span>
+
           <button onClick={this.handleAddDay}>Add day</button>
           {this.renderDays()}
         </div>
