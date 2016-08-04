@@ -36,4 +36,13 @@ Meteor.methods({
     Meals.remove({ tripId });
     MealFoods.remove({ tripId });
   },
+  'trips.updateTarget'(tripId, target, value) {
+    check(tripId, String);
+    check(target, String);
+    check(value, Number);
+    Trips.update(
+      tripId,
+      { $set: { [target]: value } }
+    );
+  },
 });
