@@ -23,12 +23,16 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'trips.insert'() {
-    return Trips.insert({
+    const tripId = Trips.insert({
       name: 'New Trip',
       calsPerDay: 0,
       proteinPerDay: 0,
       createdAt: new Date(),
     });
+    // insert a day to get things started
+    Meteor.call('days.insert', tripId);
+    // return trip id to be used for routing
+    return tripId;
   },
   'trips.remove'(tripId) {
     check(tripId, String);
