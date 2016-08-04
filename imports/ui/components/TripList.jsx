@@ -25,17 +25,17 @@ export default class TripList extends React.Component {
   render() {
     const { trips } = this.props;
     return (
-      <div className="list-todos">
-        <a className="link-list-new" onClick={this.createNewTrip}>
+      <div className="list-trips">
+        <a className="link-trip-new" onClick={this.createNewTrip}>
           <span className="icon-plus"></span>
-          New List
+          New Trip
         </a>
         {trips.map(trip => (
           <Link
             to={`/trips/${trip._id}`}
             key={trip._id}
             title={trip.name}
-            className="list-todo"
+            className="list-trip"
             activeClassName="active"
           >
             {trip.name}

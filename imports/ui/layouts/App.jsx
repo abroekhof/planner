@@ -35,7 +35,7 @@ export default class App extends React.Component {
     });
 
     return (
-      <div id="container" className={menuOpen ? 'menu-open' : ''}>
+      <div id="container">
         <section id="menu">
           <TripList trips={trips} />
         </section>
