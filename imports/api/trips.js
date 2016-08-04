@@ -23,7 +23,12 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'trips.insert'() {
-    return Trips.insert({ name: 'New Trip', createdAt: new Date() });
+    return Trips.insert({
+      name: 'New Trip',
+      calsPerDay: 0,
+      proteinPerDay: 0,
+      createdAt: new Date(),
+    });
   },
   'trips.remove'(tripId) {
     check(tripId, String);

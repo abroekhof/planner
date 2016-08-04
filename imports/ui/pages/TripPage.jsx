@@ -15,31 +15,6 @@ export default class TripPage extends Component {
     this.handleAddDay = this.handleAddDay.bind(this);
   }
 
-  getAppState() {
-    return {
-      caloriesPerDay: 3000,
-      foods: {
-        1: { name: 'Clif Bar', calories: 255, weight: 2.4, protein: 10 },
-        2: { name: 'ProBar', calories: 290, weight: 3, protein: 9 },
-        3: { name: 'Oil', calories: 190, weight: 1, protein: 0 },
-      },
-      dayList: [1],
-      days: {
-        1: { meals: [1, 2, 3, 4] },
-      },
-      meals: {
-        1: { type: 'Snacks', foods: [1, 2] },
-        2: { type: 'Lunch', foods: [] },
-        3: { type: 'Breakfast', foods: [] },
-        4: { type: 'Dinner', foods: [] },
-      },
-      mealFoods: {
-        1: { id: 1, qty: 1 },
-        2: { id: 2, qty: 2 },
-      },
-    };
-  }
-
   handleSubmit(event) {
     event.preventDefault();
 
@@ -129,10 +104,11 @@ export default class TripPage extends Component {
 
   render() {
     const tripTotals = totals(this.props.mealFoods);
+    const { trip, days } = this.props;
     return (
       <div className="container">
         <header>
-          <h1>Meal Planner</h1>
+          <h1>{this.props.trip.name}</h1>
           {this.renderForm()}
         </header>
         <div>
@@ -141,6 +117,9 @@ export default class TripPage extends Component {
         <AccountsUIWrapper />
         <div>
           <span>{tripTotals.calories} calories</span>
+          <span>Number of days: {days.length}</span>
+          <span>Target {trip.calsPerDay || 0} calories per day</span>
+          <span>Target {trip.proteinPerDay || 0} g protein per day</span>
           <button onClick={this.handleAddDay}>Add day</button>
           {this.renderDays()}
         </div>
