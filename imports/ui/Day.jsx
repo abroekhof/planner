@@ -39,7 +39,7 @@ class Day extends Component {
     return (
       <div>
         <h2>Day {this.props.idx}</h2>
-        <button onClick={this.handleRemoveDay}>Remove day</button>
+        <button className="btn-primary" onClick={this.handleRemoveDay}>Remove day</button>
         <span>{dayTotals.calories}</span>
         <ul>
         {this.renderMeals()}
