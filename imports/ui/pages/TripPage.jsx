@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { RIENumber, RIEInput } from 'riek';
 
 import Day from '../components/Day.jsx';
-import Food from '../components/Food.jsx';
+
 import AccountsUIWrapper from '../components/AccountsUIWrapper.jsx';
 
 import { totals } from '../helpers.js';
@@ -12,32 +11,9 @@ import { totals } from '../helpers.js';
 export default class TripPage extends Component {
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddDay = this.handleAddDay.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.updateTripName = this.updateTripName.bind(this);
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    // Find the text field via the React ref
-    const name = ReactDOM.findDOMNode(this.refs.foodName).value.trim();
-    const calories = ReactDOM.findDOMNode(this.refs.calories).value.trim();
-    const protein = ReactDOM.findDOMNode(this.refs.protein).value.trim();
-    const weight = ReactDOM.findDOMNode(this.refs.weight).value.trim();
-
-    Meteor.call('foods.insert',
-      name,
-      Number(calories),
-      Number(protein),
-      Number(weight));
-
-    // Clear form
-    ReactDOM.findDOMNode(this.refs.foodName).value = '';
-    ReactDOM.findDOMNode(this.refs.calories).value = '';
-    ReactDOM.findDOMNode(this.refs.protein).value = '';
-    ReactDOM.findDOMNode(this.refs.weight).value = '';
   }
 
   handleAddDay() {
@@ -93,45 +69,6 @@ export default class TripPage extends Component {
     });
   }
 
-  renderFoods() {
-    return this.props.foods.map((food) => (
-      <Food key={food._id} food={food} />
-    ));
-  }
-
-  renderForm() {
-    return (
-      <form id="search" className="new-food" onSubmit={this.handleSubmit} >
-        <input
-          type="text"
-          ref="foodName"
-          autoComplete="off"
-          placeholder="Food"
-        />
-        <input
-          type="text"
-          ref="calories"
-          autoComplete="off"
-          placeholder="Number of calories"
-        />
-        <input
-          type="text"
-          ref="protein"
-          autoComplete="off"
-          placeholder="Protein in grams"
-        />
-        <input
-          type="text"
-          ref="weight"
-          autoComplete="off"
-          placeholder="Weight in ounces"
-        />
-        <input
-          type="submit"
-        />
-      </form>);
-  }
-
   render() {
     const { trip, days, mealFoods } = this.props;
     const tripTotals = totals(mealFoods);
@@ -145,11 +82,8 @@ export default class TripPage extends Component {
             change={this.updateTripName}
             validate={(name) => (name.length > 0)}
           /> </h1>
-          {this.renderForm()}
         </header>
-        <div>
-          {this.renderFoods()}
-        </div>
+
         <AccountsUIWrapper />
         <div>
           <span>{tripTotals.calories} calories</span>

@@ -5,8 +5,6 @@ import { Days } from '../../api/days.js';
 import { Meals } from '../../api/meals.js';
 import { MealFoods } from '../../api/mealFoods.js';
 import { createContainer } from 'meteor/react-meteor-data';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
 import TripPage from '../pages/TripPage.jsx';
 
 /* global TripPageContainer:true */
@@ -21,6 +19,4 @@ export default TripPageContainer = createContainer(({ params: { tripId } }) => {
     mealFoods: MealFoods.find().fetch(),
     currentUser: Meteor.user(),
   };
-}, DragDropContext(
-      HTML5Backend
-    )(TripPage));
+}, TripPage);

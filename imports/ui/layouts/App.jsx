@@ -2,6 +2,7 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Trips } from '../../api/trips.js';
 import TripList from '../components/TripList.jsx';
+import FoodList from '../components/FoodList.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,9 +24,9 @@ export default class App extends React.Component {
     const {
       loading,
       trips,
-      menuOpen,
       children,
       location,
+      foods,
     } = this.props;
 
     // clone route components with keys so that they can
@@ -36,7 +37,7 @@ export default class App extends React.Component {
 
     return (
       <div id="container">
-        <section id="menu">
+        <section id="left-menu">
           <TripList trips={trips} />
         </section>
         <div id="content-container">
@@ -50,6 +51,9 @@ export default class App extends React.Component {
               : clonedChildren}
           </ReactCSSTransitionGroup>
         </div>
+        <section id="right-menu">
+          <FoodList foods={foods} />
+        </section>
       </div>
     );
   }
@@ -64,6 +68,7 @@ App.propTypes = {
   children: React.PropTypes.element, // matched child route component
   location: React.PropTypes.object,  // current router location
   params: React.PropTypes.object,    // parameters of the current route
+  foods: React.PropTypes.array,
 };
 
 App.contextTypes = {

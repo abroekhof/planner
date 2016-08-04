@@ -1,7 +1,8 @@
 @import '{}/imports/ui/stylesheets/utils.less';
 
-@menu-width: 270px;
-@column: 5.55555%;
+@left-menu-width: 200px;
+@right-menu-width: 270px;
+@column: 1%;
 
 body {
   .position(absolute, 0, 0, 0, 0);
@@ -28,8 +29,17 @@ body {
   overflow: hidden;
 }
 
-#menu {
-  .position(absolute, 0, 0, 0, 0, @menu-width);
+#left-menu {
+  .position(absolute, 0, 0, 0, 0, @left-menu-width);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#right-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: @right-menu-width;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -42,7 +52,8 @@ body {
   opacity: 1;
 
   @media screen and (min-width: 40em) {
-    left: @menu-width;
+    left: @left-menu-width;
+    right: @right-menu-width;
   }
 
   .content-scrollable {
@@ -54,7 +65,7 @@ body {
 
   // Toggle menu on mobile
   .menu-open & {
-    transform: translate3d(@menu-width, 0, 0);
+    transform: translate3d(@left-menu-width, 0, 0);
     opacity: .85;
     left: 0;
 
@@ -62,7 +73,7 @@ body {
       // Show menu on desktop, negate .menu-open
       transform: translate3d(0, 0, 0); //reset transform and use position properties instead
       opacity: 1;
-      left: @menu-width;
+      left: @left-menu-width;
     }
   }
 }
@@ -73,7 +84,7 @@ body {
   cursor: pointer;
 
   .menu-open & {
-    transform: translate3d(@menu-width, 0, 0);
+    transform: translate3d(@left-menu-width, 0, 0);
     z-index: 1;
   }
 
