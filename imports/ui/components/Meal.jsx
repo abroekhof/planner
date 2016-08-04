@@ -5,7 +5,7 @@ import { DropTarget } from 'react-dnd';
 
 import MealFood from './MealFood.jsx';
 
-import { totals } from './helpers.js';
+import { totals } from '../helpers.js';
 
 const mealTarget = {
   drop(props, monitor) {

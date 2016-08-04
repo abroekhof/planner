@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import Day from '../Day.jsx';
-import Food from '../Food.jsx';
-import AccountsUIWrapper from '../AccountsUIWrapper.jsx';
+import Day from '../components/Day.jsx';
+import Food from '../components/Food.jsx';
+import AccountsUIWrapper from '../components/AccountsUIWrapper.jsx';
 
 import { totals } from '../helpers.js';
 

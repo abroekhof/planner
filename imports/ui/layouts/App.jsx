@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Trips } from '../../api/trips.js';
-import TripList from '../TripList.jsx';
+import TripList from '../components/TripList.jsx';
 
 export default class App extends React.Component {
   constructor(props) {

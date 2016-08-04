@@ -3,7 +3,7 @@ import Meal from './Meal.jsx';
 
 import { Meteor } from 'meteor/meteor';
 
-import { totals } from './helpers.js';
+import { totals } from '../helpers.js';
 
 class Day extends Component {
   constructor(props) {
