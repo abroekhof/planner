@@ -3,8 +3,6 @@ import Meal from './Meal.jsx';
 
 import { Meteor } from 'meteor/meteor';
 
-import { totals } from '../helpers.js';
-
 class Day extends Component {
   constructor(props) {
     super(props);
@@ -16,33 +14,35 @@ class Day extends Component {
   }
 
   renderMeals() {
-    return this.props.meals.map((meal) => {
-      const mealFoods = this.props.mealFoods.filter(
+    const { meals, mealFoods, foods, day } = this.props;
+    return meals.map((meal) => {
+      const mf = mealFoods.filter(
         (mealFood) => (mealFood.mealId === meal._id));
-      const foods = mealFoods.map(
-        (mealFood) => (this.props.foods.filter(
+      const f = mealFoods.map(
+        (mealFood) => (foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
       return (
         <Meal
           key={meal._id}
           meal={meal}
-          mealFoods={mealFoods}
-          foods={foods}
-          dayId={this.props.day._id}
+          mealFoods={mf}
+          foods={f}
+          dayId={day._id}
         />
       );
     });
   }
 
   render() {
-    const dayTotals = totals(this.props.mealFoods);
+    const { dayTotals, weightLeft, idx } = this.props;
     return (
       <div>
-        <h2>Day {this.props.idx}</h2>
+        <h2>Day {idx}</h2>
         <button className="btn-primary" onClick={this.handleRemoveDay}>Remove day</button>
-        <span>{dayTotals.calories}</span>
+        <span>{dayTotals.calories} calories</span>
+        <span>{weightLeft} oz. to carry</span>
         <ul>
-        {this.renderMeals()}
+          {this.renderMeals()}
         </ul>
       </div>
   );
@@ -55,6 +55,8 @@ Day.propTypes = {
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
   foods: PropTypes.array.isRequired,
+  weightLeft: PropTypes.number.isRequired,
+  dayTotals: PropTypes.object.isRequired,
 };
 
 export default Day;

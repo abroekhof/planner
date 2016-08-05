@@ -14,6 +14,11 @@ export default class TripPage extends Component {
     this.handleAddDay = this.handleAddDay.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.updateTripName = this.updateTripName.bind(this);
+    this.tripTotals = totals(this.props.mealFoods);
+  }
+
+  componentWillUpdate(nextProps) {
+    this.tripTotals = totals(nextProps.mealFoods);
   }
 
   handleAddDay() {
@@ -48,6 +53,7 @@ export default class TripPage extends Component {
   }
 
   renderDays() {
+    let weightLeft = this.tripTotals.weight;
     return this.props.days.map((day, idx) => {
       const meals = this.props.meals.filter(
         (meal) => (meal.dayId === day._id));
@@ -56,22 +62,26 @@ export default class TripPage extends Component {
       const foods = mealFoods.map(
         (mealFood) => (this.props.foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
-      return (
+      const dayTotals = totals(mealFoods);
+      const newDay = (
         <Day
           key={day._id}
           day={day}
           meals={meals}
           mealFoods={mealFoods}
           foods={foods}
+          dayTotals={dayTotals}
+          weightLeft={weightLeft}
           idx={idx + 1}
         />
-    );
+      );
+      weightLeft -= dayTotals.weight;
+      return newDay;
     });
   }
 
   render() {
-    const { trip, days, mealFoods } = this.props;
-    const tripTotals = totals(mealFoods);
+    const { trip, days } = this.props;
     const numDays = days.length;
     return (
       <div className="container">
@@ -86,7 +96,7 @@ export default class TripPage extends Component {
 
         <AccountsUIWrapper />
         <div>
-          <span>{tripTotals.calories} calories</span>
+          <span>{this.tripTotals.calories} calories</span>
           <span>Number of days: {numDays}</span>
 
           <span>Target <RIENumber
