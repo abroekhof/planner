@@ -35,13 +35,9 @@ class Food extends Component {
     const food = this.props.food;
     const { isDragging, connectDragSource } = this.props;
     return connectDragSource(
-      <div style={{ opacity: isDragging ? 0.5 : 1 }}>
-        <button className="delete" onClick={this.deleteThisFood}>
-            &times;
-        </button>
-        <span>
+      <div className="food" style={{ opacity: isDragging ? 0.5 : 1 }}>
+        <span className="icon-trash" onClick={this.deleteThisFood}></span>
           {food.name} {food.calories} calories, {food.protein} g protein, {food.weight} oz.
-        </span>
       </div>
       );
   }

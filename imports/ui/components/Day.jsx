@@ -15,22 +15,30 @@ class Day extends Component {
 
   renderMeals() {
     const { meals, mealFoods, foods, day } = this.props;
-    return meals.map((meal) => {
+    let idx = 0;
+    const out = meals.map((meal) => {
       const mf = mealFoods.filter(
         (mealFood) => (mealFood.mealId === meal._id));
       const f = mealFoods.map(
         (mealFood) => (foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
-      return (
-        <Meal
-          key={meal._id}
-          meal={meal}
-          mealFoods={mf}
-          foods={f}
-          dayId={day._id}
-        />
+      const div = (
+        <div>
+          <button>Add resupply {idx}</button>
+          <Meal
+            key={meal._id}
+            meal={meal}
+            mealFoods={mf}
+            foods={f}
+            dayId={day._id}
+          />
+        </div>
       );
+      idx++;
+      return div;
     });
+    out.push(<div><button>Add resupply {idx}</button></div>);
+    return out;
   }
 
   render() {

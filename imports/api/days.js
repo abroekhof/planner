@@ -54,7 +54,7 @@ Meteor.methods({
   'days.insert'(tripId) {
     check(tripId, String);
     Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
-      ['Breakfast', 'Lunch', 'Dinner', 'Snacks'].forEach((name) => {
+      ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
         Meals.insert({
           dayId,
           name,

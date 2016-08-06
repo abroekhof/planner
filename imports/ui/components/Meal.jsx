@@ -36,7 +36,8 @@ class Meal extends Component {
     const mealTotals = totals(mealFoods);
     return connectDropTarget(
       <div>
-        <span>{this.props.meal.name} ({mealTotals.calories} calories)</span>
+        <h3>{this.props.meal.name}</h3>
+         ({mealTotals.calories} calories)
         <ul>
         {(mealFoods.length === 0) ? <li>Drag a food here!</li> : this.renderMealFoods()}
         </ul>
