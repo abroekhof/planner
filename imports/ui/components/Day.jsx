@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Meal from './Meal.jsx';
+import Resupply from './Resupply.jsx';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -24,7 +25,7 @@ class Day extends Component {
           (food) => (food._id === mealFood.foodId))[0]));
       const div = (
         <div>
-          <button>Add resupply {idx}</button>
+          <Resupply key={idx} day={day} idx={idx} />
           <Meal
             key={meal._id}
             meal={meal}
@@ -37,7 +38,7 @@ class Day extends Component {
       idx++;
       return div;
     });
-    out.push(<div><button>Add resupply {idx}</button></div>);
+    out.push(<Resupply key={idx} day={day} idx={idx} />);
     return out;
   }
 

@@ -53,18 +53,27 @@ if (Meteor.isServer) {
 Meteor.methods({
   'days.insert'(tripId) {
     check(tripId, String);
-    Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
+    const id = Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
       ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
         Meals.insert({
           dayId,
           name,
-          createdAt: 2,
+          createdAt: new Date(),
         });
       });
     });
+    return id;
   },
   'days.remove'(dayId) {
     check(dayId, String);
     Days.remove(dayId);
+  },
+  'days.updateResupply'(dayId, resupply) {
+    check(dayId, String);
+    check(resupply, Number);
+    Days.update(
+      dayId,
+      { $set: { resupply } }
+    );
   },
 });

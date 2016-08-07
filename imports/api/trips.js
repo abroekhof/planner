@@ -30,7 +30,8 @@ Meteor.methods({
       createdAt: new Date(),
     });
     // insert a day to get things started
-    Meteor.call('days.insert', tripId);
+    const dayId = Meteor.call('days.insert', tripId);
+    Meteor.call('days.updateResupply', dayId, 0);
     // return trip id to be used for routing
     return tripId;
   },

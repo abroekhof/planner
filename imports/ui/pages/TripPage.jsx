@@ -52,6 +52,30 @@ export default class TripPage extends Component {
     obj.value);
   }
 
+  reduceSegments() {
+    const { days, meals, mealFoods } = this.props;
+    let currWeight = 0;
+    const resupplies = [];
+    days.forEach((day) => {
+      // meals in the day
+      const dayMeals = meals.filter((meal) => (meal.dayId === day._id));
+      dayMeals.forEach((meal, idx) => {
+        if (('resupply' in day) && idx >= day.resupply) {
+          resupplies.push(currWeight);
+          currWeight = 0;
+        }
+        // foods in the meal
+        const dayMealFoods = mealFoods.filter(
+          (mealFood) => (mealFood.mealId === meal._id));
+        dayMealFoods.forEach((dayMealFood) => {
+          currWeight += dayMealFood.qty * dayMealFood.food.weight;
+        });
+      });
+    });
+    resupplies.push(currWeight);
+    console.log(resupplies);
+  }
+
   renderDays() {
     let weightLeft = this.tripTotals.weight;
     return this.props.days.map((day, idx) => {
@@ -81,6 +105,7 @@ export default class TripPage extends Component {
   }
 
   render() {
+    this.reduceSegments();
     const { trip, days } = this.props;
     const numDays = days.length;
     return (
