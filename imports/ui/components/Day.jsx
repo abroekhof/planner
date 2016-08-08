@@ -15,7 +15,7 @@ class Day extends Component {
   }
 
   renderMeals() {
-    const { meals, mealFoods, foods, day } = this.props;
+    const { meals, mealFoods, foods, day, resupplyWeight } = this.props;
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
@@ -24,10 +24,9 @@ class Day extends Component {
         (mealFood) => (foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
       const div = (
-        <div>
-          <Resupply key={idx} day={day} idx={idx} />
+        <div key={meal._id}>
+          <Resupply day={day} idx={idx} weight={resupplyWeight} />
           <Meal
-            key={meal._id}
             meal={meal}
             mealFoods={mf}
             foods={f}
@@ -65,6 +64,7 @@ Day.propTypes = {
   mealFoods: PropTypes.array.isRequired,
   foods: PropTypes.array.isRequired,
   weightLeft: PropTypes.number.isRequired,
+  resupplyWeight: PropTypes.number,
   dayTotals: PropTypes.object.isRequired,
 };
 

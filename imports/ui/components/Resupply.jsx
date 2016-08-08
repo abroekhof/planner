@@ -13,10 +13,10 @@ class Resupply extends Component {
   }
 
   render() {
-    const { day, idx } = this.props;
+    const { day, idx, weight } = this.props;
 
     if (day.resupply === idx) {
-      return <span>Resupply here!</span>;
+      return <span>Resupply! Weighing {weight} oz.</span>;
     }
     return <button onClick={this.insert}>Add resupply {idx}</button>;
   }
@@ -25,6 +25,7 @@ class Resupply extends Component {
 Resupply.propTypes = {
   day: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
+  weight: PropTypes.number,
 };
 
 export default Resupply;

@@ -52,60 +52,57 @@ export default class TripPage extends Component {
     obj.value);
   }
 
-  reduceSegments() {
-    const { days, meals, mealFoods } = this.props;
-    let currWeight = 0;
-    const resupplies = [];
-    days.forEach((day) => {
-      // meals in the day
-      const dayMeals = meals.filter((meal) => (meal.dayId === day._id));
-      dayMeals.forEach((meal, idx) => {
-        if (('resupply' in day) && idx >= day.resupply) {
-          resupplies.push(currWeight);
-          currWeight = 0;
-        }
-        // foods in the meal
-        const dayMealFoods = mealFoods.filter(
-          (mealFood) => (mealFood.mealId === meal._id));
-        dayMealFoods.forEach((dayMealFood) => {
-          currWeight += dayMealFood.qty * dayMealFood.food.weight;
-        });
-      });
-    });
-    resupplies.push(currWeight);
-    console.log(resupplies);
-  }
-
   renderDays() {
-    let weightLeft = this.tripTotals.weight;
-    return this.props.days.map((day, idx) => {
-      const meals = this.props.meals.filter(
-        (meal) => (meal.dayId === day._id));
-      const mealFoods = this.props.mealFoods.filter(
-        (mealFood) => (mealFood.dayId === day._id));
+    let currWeight = 0;
+    let resupplyWeight = 0;
+
+    const days = [];
+
+    // go backwards through the days
+    for (let dayIdx = this.props.days.length - 1; dayIdx >= 0; dayIdx--) {
+      const day = this.props.days[dayIdx];
+      const dayMeals = this.props.meals.filter((meal) => (meal.dayId === day._id));
+      const mealFoods = this.props.mealFoods.filter((mealFood) => (mealFood.dayId === day._id));
+      const dayTotals = totals(mealFoods);
       const foods = mealFoods.map(
         (mealFood) => (this.props.foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
-      const dayTotals = totals(mealFoods);
+
+      // go backwards through the meals
+      for (let mealIdx = dayMeals.length - 1; mealIdx >= 0; mealIdx--) {
+        const meal = dayMeals[mealIdx];
+        const dayMealFoods = mealFoods.filter(
+          (mealFood) => (mealFood.mealId === meal._id));
+
+        for (let dayMealFoodIdx = dayMealFoods.length - 1; dayMealFoodIdx >= 0; dayMealFoodIdx--) {
+          const dayMealFood = dayMealFoods[dayMealFoodIdx];
+          currWeight += dayMealFood.qty * dayMealFood.food.weight;
+        }
+        if (mealIdx === day.resupply) {
+          resupplyWeight = currWeight;
+          currWeight = 0;
+        }
+      }
       const newDay = (
         <Day
           key={day._id}
           day={day}
-          meals={meals}
+          meals={dayMeals}
           mealFoods={mealFoods}
           foods={foods}
           dayTotals={dayTotals}
-          weightLeft={weightLeft}
-          idx={idx + 1}
+          weightLeft={currWeight}
+          resupplyWeight={resupplyWeight}
+          idx={dayIdx + 1}
         />
       );
-      weightLeft -= dayTotals.weight;
-      return newDay;
-    });
+      console.log(newDay);
+      days.push(newDay);
+    }
+    return days.reverse();
   }
 
   render() {
-    this.reduceSegments();
     const { trip, days } = this.props;
     const numDays = days.length;
     return (
