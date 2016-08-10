@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { List, ListItem } from 'material-ui/List';
 
 export default class UserMenu extends React.Component {
   constructor(props) {
@@ -40,10 +41,10 @@ export default class UserMenu extends React.Component {
 
   renderLoggedOut() {
     return (
-      <div className="user-menu">
-        <Link to="/signin" className="btn-secondary">Sign In</Link>
-        <Link to="/join" className="btn-secondary">Join</Link>
-      </div>
+      <List>
+        <ListItem primaryText="Sign in" containerElement={<Link to="/signin" />} />
+        <ListItem primaryText="Join" containerElement={<Link to="/join" />} />
+      </List>
     );
   }
 

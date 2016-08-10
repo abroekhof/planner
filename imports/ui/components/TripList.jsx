@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
+import { List, ListItem } from 'material-ui/List';
+
 export default class TripList extends React.Component {
   constructor(props) {
     super(props);
@@ -25,23 +27,22 @@ export default class TripList extends React.Component {
   render() {
     const { trips } = this.props;
     return (
-      <div className="list-trips">
-        <a className="link-trip-new" onClick={this.createNewTrip}>
-          <span className="icon-plus"></span>
-          New Trip
-        </a>
+      <List>
+        <ListItem primaryText="Create New Trip" onClick={this.createNewTrip} />
         {trips.map(trip => (
-          <Link
-            to={`/trips/${trip._id}`}
+          <ListItem
+            primaryText={trip.name}
             key={trip._id}
-            title={trip.name}
-            className="list-trip"
-            activeClassName="active"
-          >
-            {trip.name}
-          </Link>
+            containerElement={
+              <Link
+                to={`/trips/${trip._id}`}
+                title={trip.name}
+                activeClassName="active"
+              />
+            }
+          />
         ))}
-      </div>
+      </List>
     );
   }
 }

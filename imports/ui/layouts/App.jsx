@@ -5,7 +5,16 @@ import { Trips } from '../../api/trips.js';
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodList from '../components/FoodList.jsx';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
+
+const styles = {
+  container: {
+    marginLeft: 256,
+  },
+};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,11 +56,14 @@ export default class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div id="container">
-          <section id="left-menu">
+
+          <Drawer>
             <UserMenu user={user} logout={this.logout} />
+            <Divider />
             <TripList trips={trips} />
-          </section>
-          <div id="content-container">
+          </Drawer>
+
+          <div style={styles.container} id="content-container">
             <ReactCSSTransitionGroup
               transitionName="fade"
               transitionEnterTimeout={200}
