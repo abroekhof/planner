@@ -5,6 +5,7 @@ import { Trips } from '../../api/trips.js';
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodList from '../components/FoodList.jsx';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -44,26 +45,28 @@ export default class App extends React.Component {
     });
 
     return (
-      <div id="container">
-        <section id="left-menu">
-          <UserMenu user={user} logout={this.logout} />
-          <TripList trips={trips} />
-        </section>
-        <div id="content-container">
-          <ReactCSSTransitionGroup
-            transitionName="fade"
-            transitionEnterTimeout={200}
-            transitionLeaveTimeout={200}
-          >
-            {loading
-              ? <span>loading...</span>
-              : clonedChildren}
-          </ReactCSSTransitionGroup>
+      <MuiThemeProvider>
+        <div id="container">
+          <section id="left-menu">
+            <UserMenu user={user} logout={this.logout} />
+            <TripList trips={trips} />
+          </section>
+          <div id="content-container">
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={200}
+              transitionLeaveTimeout={200}
+            >
+              {loading
+                ? <span>loading...</span>
+                : clonedChildren}
+            </ReactCSSTransitionGroup>
+          </div>
+          <section id="right-menu">
+            <FoodList foods={foods} />
+          </section>
         </div>
-        <section id="right-menu">
-          <FoodList foods={foods} />
-        </section>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
