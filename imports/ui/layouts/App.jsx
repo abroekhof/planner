@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { Meteor } from 'meteor/meteor';
 import { Trips } from '../../api/trips.js';
+import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodList from '../components/FoodList.jsx';
 
@@ -10,6 +12,7 @@ export default class App extends React.Component {
     this.state = {
       showConnectionIssue: false,
     };
+    this.logout = this.logout.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -20,8 +23,13 @@ export default class App extends React.Component {
     }
   }
 
+  logout() {
+    Meteor.logout();
+  }
+
   render() {
     const {
+      user,
       loading,
       trips,
       children,
@@ -38,6 +46,7 @@ export default class App extends React.Component {
     return (
       <div id="container">
         <section id="left-menu">
+          <UserMenu user={user} logout={this.logout} />
           <TripList trips={trips} />
         </section>
         <div id="content-container">

@@ -4,8 +4,6 @@ import { RIENumber, RIEInput } from 'riek';
 
 import Day from '../components/Day.jsx';
 
-import AccountsUIWrapper from '../components/AccountsUIWrapper.jsx';
-
 import { totals } from '../helpers.js';
 
 export default class TripPage extends Component {
@@ -116,7 +114,6 @@ export default class TripPage extends Component {
           /> </h1>
         </header>
 
-        <AccountsUIWrapper />
         <div>
           <span>{this.tripTotals.calories} calories</span>
           <span>Number of days: {numDays}</span>
