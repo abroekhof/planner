@@ -64,6 +64,7 @@ export default class TripPage extends Component {
       const dayMeals = this.props.meals.filter((meal) => (meal.dayId === day._id));
       const mealFoods = this.props.mealFoods.filter((mealFood) => (mealFood.dayId === day._id));
       const dayTotals = totals(mealFoods);
+
       const foods = mealFoods.map(
         (mealFood) => (this.props.foods.filter(
           (food) => (food._id === mealFood.foodId))[0]));
@@ -96,7 +97,6 @@ export default class TripPage extends Component {
           idx={dayIdx + 1}
         />
       );
-      console.log(newDay);
       days.push(newDay);
     }
     return days.reverse();
