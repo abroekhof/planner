@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { DragSource } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { ListItem } from 'material-ui/List';
 import { grey400 } from 'material-ui/styles/colors';
@@ -14,7 +15,10 @@ import MenuItem from 'material-ui/MenuItem';
  */
 const foodSource = {
   beginDrag(props) {
-    return { food: props.food };
+    return {
+      food: props.food,
+      title: props.food.name,
+    };
   },
 };
 
@@ -24,6 +28,7 @@ const foodSource = {
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging(),
   };
 }
@@ -32,6 +37,16 @@ class Food extends Component {
   constructor(props) {
     super(props);
     this.deleteThisFood = this.deleteThisFood.bind(this);
+  }
+
+  componentDidMount() {
+   // Use empty image as a drag preview so browsers don't draw it
+   // and we can draw whatever we want on the custom drag layer instead.
+    this.props.connectDragPreview(getEmptyImage(), {
+     // IE fallback: specify that we'd rather screenshot the node
+     // when it already knows it's being dragged so we can hide it with CSS.
+      captureDraggingState: true,
+    });
   }
 
   deleteThisFood() {
@@ -58,8 +73,8 @@ class Food extends Component {
     return connectDragSource(
       <div style={{ opacity: isDragging ? 0.5 : 1 }}>
         <ListItem
-          primaryText={food.name + ' ' + food.calories + ' calories, '
-          + food.protein + ' g protein, ' + food.weight + ' oz.'}
+          primaryText={`${food.name}, ${food.calories} calories,
+          ${food.protein} g protein, ${food.weight} oz.`}
           rightIconButton={rightIconMenu}
         />
       </div>
@@ -72,6 +87,7 @@ Food.propTypes = {
   // Injected by React DnD:
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
+  connectDragPreview: PropTypes.func.isRequired,
 };
 
 export default DragSource('food', foodSource, collect)(Food);

@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor';
+
 import { Trips } from '../../api/trips.js';
+
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodList from '../components/FoodList.jsx';
+import FoodDragLayer from '../components/FoodDragLayer.jsx';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
@@ -78,7 +81,7 @@ export default class App extends React.Component {
           <Drawer openSecondary>
             <FoodList foods={foods} />
           </Drawer>
-
+          <FoodDragLayer />
         </div>
       </MuiThemeProvider>
     );
