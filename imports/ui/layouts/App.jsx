@@ -74,9 +74,11 @@ export default class App extends React.Component {
                 : clonedChildren}
             </ReactCSSTransitionGroup>
           </div>
-          <section id="right-menu">
+
+          <Drawer openSecondary>
             <FoodList foods={foods} />
-          </section>
+          </Drawer>
+
         </div>
       </MuiThemeProvider>
     );

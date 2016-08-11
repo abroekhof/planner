@@ -61,15 +61,15 @@ export default class JoinPage extends React.Component {
             ))}
           </div>
           <div className={`input-symbol ${errorClass('email')}`}>
-            <input type="email" name="email" ref="email" placeholder="Your Email"/>
+            <input type="email" name="email" ref="email" placeholder="Your Email" />
             <span className="icon-email" title="Your Email"></span>
           </div>
           <div className={`input-symbol ${errorClass('password')}`}>
-            <input type="password" name="password" ref="password" placeholder="Password"/>
+            <input type="password" name="password" ref="password" placeholder="Password" />
             <span className="icon-lock" title="Password"></span>
           </div>
           <div className={`input-symbol ${errorClass('confirm')}`}>
-            <input type="password" name="confirm" ref="confirm" placeholder="Confirm Password"/>
+            <input type="password" name="confirm" ref="confirm" placeholder="Confirm Password" />
             <span className="icon-lock" title="Confirm Password"></span>
           </div>
           <button type="submit" className="btn-primary">Join Now</button>
@@ -79,7 +79,7 @@ export default class JoinPage extends React.Component {
 
     const link = <Link to="/signin" className="link-auth-alt">Have an account? Sign in</Link>;
 
-    return <AuthPage content={content} link={link}/>;
+    return <AuthPage content={content} link={link} />;
   }
 }
 

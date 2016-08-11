@@ -12,9 +12,9 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
     <Route path="/" component={AppContainer}>
       <Route path="trips/:tripId" component={TripPageContainer} />
-      <Route path="signin" component={AuthPageSignIn}/>
-      <Route path="join" component={AuthPageJoin}/>
-      <Route path="*" component={NotFoundPage}/>
+      <Route path="signin" component={AuthPageSignIn} />
+      <Route path="join" component={AuthPageJoin} />
+      <Route path="*" component={NotFoundPage} />
     </Route>
   </Router>
 );

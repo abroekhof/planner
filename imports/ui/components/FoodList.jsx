@@ -2,66 +2,65 @@ import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import ReactDOM from 'react-dom';
 
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
+
 import Food from './Food.jsx';
 
 export default class FoodList extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { foodName: '', calories: '', protein: '', weight: '' };
+
     this.createNewFood = this.createNewFood.bind(this);
+    this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
   }
 
-  createNewFood(event) {
-    event.preventDefault();
+  _handleTextFieldChange(event) {
+    const copy = Object.assign({}, this.state);
+    copy[event.target.id] = event.target.value;
+    this.setState(copy);
+  }
 
-    // Find the text field via the React ref
-    const name = ReactDOM.findDOMNode(this.refs.foodName).value.trim();
-    const calories = ReactDOM.findDOMNode(this.refs.calories).value.trim();
-    const protein = ReactDOM.findDOMNode(this.refs.protein).value.trim();
-    const weight = ReactDOM.findDOMNode(this.refs.weight).value.trim();
-
+  createNewFood() {
     Meteor.call('foods.insert',
-      name,
-      Number(calories),
-      Number(protein),
-      Number(weight));
+      this.state.foodName,
+      Number(this.state.calories),
+      Number(this.state.protein),
+      Number(this.state.weight));
 
-    // Clear form
-    ReactDOM.findDOMNode(this.refs.foodName).value = '';
-    ReactDOM.findDOMNode(this.refs.calories).value = '';
-    ReactDOM.findDOMNode(this.refs.protein).value = '';
-    ReactDOM.findDOMNode(this.refs.weight).value = '';
+    this.setState({ foodName: '', calories: '', protein: '', weight: '' });
   }
+
   renderForm() {
     return (
       <form id="search" className="new-food" onSubmit={this.createNewFood} >
-        <input
-          type="text"
-          ref="foodName"
-          autoComplete="off"
-          placeholder="Food"
+        <TextField
+          id="foodName"
+          floatingLabelText="Food name"
+          value={this.state.foodName}
+          onChange={this._handleTextFieldChange}
         />
-        <input
-          type="text"
-          ref="calories"
-          autoComplete="off"
-          placeholder="Number of calories"
+        <TextField
+          id="calories"
+          floatingLabelText="Calories"
+          value={this.state.calories}
+          onChange={this._handleTextFieldChange}
         />
-        <input
-          type="text"
-          ref="protein"
-          autoComplete="off"
-          placeholder="Protein in grams"
+        <TextField
+          id="protein"
+          floatingLabelText="Protein"
+          value={this.state.protein}
+          onChange={this._handleTextFieldChange}
         />
-        <input
-          type="text"
-          ref="weight"
-          autoComplete="off"
-          placeholder="Weight in ounces"
+        <TextField
+          id="weight"
+          floatingLabelText="Weight"
+          value={this.state.weight}
+          onChange={this._handleTextFieldChange}
         />
-        <input
-          type="submit"
-        />
+        <FlatButton label="Create food" onClick={this.createNewFood} primary />
       </form>);
   }
 
