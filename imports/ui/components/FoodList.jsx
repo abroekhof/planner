@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import ReactDOM from 'react-dom';
 
+import { List } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
@@ -66,11 +66,13 @@ export default class FoodList extends Component {
 
   render() {
     return (
-      <div className="list-foods">
+      <div>
         {this.renderForm()}
+        <List>
         {this.props.foods.map((food) => (
           <Food key={food._id} food={food} />
         ))}
+        </List>
       </div>
     );
   }
