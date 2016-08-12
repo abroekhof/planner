@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 
 import { List } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 
 import Food from './Food.jsx';
 
@@ -60,7 +61,7 @@ export default class FoodList extends Component {
           value={this.state.weight}
           onChange={this._handleTextFieldChange}
         />
-        <FlatButton label="Create food" onClick={this.createNewFood} primary />
+        <RaisedButton label="Create food" onClick={this.createNewFood} primary />
       </form>);
   }
 
@@ -68,6 +69,7 @@ export default class FoodList extends Component {
     return (
       <div>
         {this.renderForm()}
+        <Divider />
         <List>
         {this.props.foods.map((food) => (
           <Food key={food._id} food={food} />

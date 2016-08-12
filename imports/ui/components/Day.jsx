@@ -2,7 +2,25 @@ import React, { PropTypes, Component } from 'react';
 import Meal from './Meal.jsx';
 import Resupply from './Resupply.jsx';
 
+import Chip from 'material-ui/Chip';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Paper from 'material-ui/Paper';
+
 import { Meteor } from 'meteor/meteor';
+
+const styles = {
+  chip: {
+    margin: 4,
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+};
 
 class Day extends Component {
   constructor(props) {
@@ -44,15 +62,31 @@ class Day extends Component {
   render() {
     const { dayTotals, weightLeft, idx } = this.props;
     return (
-      <div>
-        <h2>Day {idx}</h2>
-        <button className="btn-primary" onClick={this.handleRemoveDay}>Remove day</button>
-        <span>{dayTotals.calories} calories</span>
-        <span>{weightLeft} oz. to carry</span>
+      <Paper>
+        <AppBar
+          title={`Day ${idx}`}
+
+          iconElementLeft={
+            <IconMenu
+              iconButtonElement={
+                <IconButton><MoreVertIcon /></IconButton>
+             }
+              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+            >
+              <MenuItem onClick={this.handleRemoveDay} primaryText="Delete" />
+            </IconMenu>
+         }
+        />
+        <div style={styles.wrapper}>
+          <Chip style={styles.chip}>{dayTotals.calories} calories</Chip>
+          <Chip style={styles.chip}>{dayTotals.protein} g protein</Chip>
+          <Chip style={styles.chip}>{weightLeft} oz. to carry</Chip>
+        </div>
         <ul>
           {this.renderMeals()}
         </ul>
-      </div>
+      </Paper>
   );
   }
 }

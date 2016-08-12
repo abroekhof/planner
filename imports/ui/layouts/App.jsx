@@ -16,6 +16,7 @@ import Divider from 'material-ui/Divider';
 const styles = {
   container: {
     marginLeft: 256,
+    marginRight: 256,
   },
 };
 
