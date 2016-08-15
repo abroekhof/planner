@@ -67,9 +67,6 @@ class Day extends Component {
           <ToolbarGroup>
             <ToolbarTitle text={`Day ${idx}`} />
           </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarTitle text={`Day ${idx}`} />
-          </ToolbarGroup>
           <ToolbarGroup lastChild>
             <IconMenu
               iconButtonElement={
