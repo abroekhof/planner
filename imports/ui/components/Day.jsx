@@ -3,7 +3,7 @@ import Meal from './Meal.jsx';
 import Resupply from './Resupply.jsx';
 
 import Chip from 'material-ui/Chip';
-import AppBar from 'material-ui/AppBar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -63,21 +63,26 @@ class Day extends Component {
     const { dayTotals, weightLeft, idx } = this.props;
     return (
       <Paper>
-        <AppBar
-          title={`Day ${idx}`}
-
-          iconElementLeft={
+        <Toolbar>
+          <ToolbarGroup>
+            <ToolbarTitle text={`Day ${idx}`} />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <ToolbarTitle text={`Day ${idx}`} />
+          </ToolbarGroup>
+          <ToolbarGroup lastChild>
             <IconMenu
               iconButtonElement={
                 <IconButton><MoreVertIcon /></IconButton>
-             }
+              }
               targetOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
             >
               <MenuItem onClick={this.handleRemoveDay} primaryText="Delete" />
             </IconMenu>
-         }
-        />
+          </ToolbarGroup>
+        </Toolbar>
+
         <div style={styles.wrapper}>
           <Chip style={styles.chip}>{dayTotals.calories} calories</Chip>
           <Chip style={styles.chip}>{dayTotals.protein} g protein</Chip>
