@@ -76,4 +76,11 @@ Meteor.methods({
       { $set: { resupply } }
     );
   },
+  'days.removeResupply'(dayId) {
+    check(dayId, String);
+    Days.update(
+      dayId,
+      { $unset: { resupply: '' } }
+    );
+  },
 });

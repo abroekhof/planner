@@ -6,19 +6,28 @@ class Resupply extends Component {
   constructor(props) {
     super(props);
     this.insert = this.insert.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   insert() {
     Meteor.call('days.updateResupply', this.props.day._id, this.props.idx);
   }
 
+  remove() {
+    Meteor.call('days.removeResupply', this.props.day._id, this.props.idx);
+  }
+
   render() {
     const { day, idx, weight } = this.props;
 
     if (day.resupply === idx) {
-      return <span>Resupply! Weighing {weight} oz.</span>;
+      return (
+        <span><button onClick={this.remove}>Remove</button>
+          Resupply! Weighing {weight} oz.
+        </span>
+      );
     }
-    return <button onClick={this.insert}>Add resupply {idx}</button>;
+    return <button onClick={this.insert}>Add resupply</button>;
   }
 }
 
