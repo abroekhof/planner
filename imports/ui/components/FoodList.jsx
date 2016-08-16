@@ -36,7 +36,7 @@ export default class FoodList extends Component {
 
   renderForm() {
     return (
-      <form id="search" className="new-food" onSubmit={this.createNewFood} >
+      <form id="search" className="new-food">
         <TextField
           id="foodName"
           floatingLabelText="Food name"

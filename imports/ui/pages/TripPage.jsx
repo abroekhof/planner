@@ -2,6 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
 import { RIENumber, RIEInput } from 'riek';
 
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Paper from 'material-ui/Paper';
+
 import Day from '../components/Day.jsx';
 
 import { totals } from '../helpers.js';
@@ -95,9 +99,9 @@ export default class TripPage extends Component {
           idx={dayIdx + 1}
         />
       );
-      days.push(newDay);
+      days.unshift(newDay);
     }
-    return days.reverse();
+    return days;
   }
 
   render() {
@@ -114,8 +118,7 @@ export default class TripPage extends Component {
           /> </h1>
         </header>
 
-        <div>
-          <span>{this.tripTotals.calories} calories</span>
+        <Paper>
           <span>Number of days: {numDays}</span>
 
           <span>Target <RIENumber
@@ -129,10 +132,13 @@ export default class TripPage extends Component {
             propName="proteinPerDay"
             change={this.updateTrip}
           /> g protein per day</span>
+        </Paper>
 
-          <button onClick={this.handleAddDay}>Add day</button>
-          {this.renderDays()}
-        </div>
+        {this.renderDays()}
+
+        <FloatingActionButton onClick={this.handleAddDay} style={{ marginLeft: 20 }}>
+          <ContentAdd />
+        </FloatingActionButton>
       </div>
     );
   }
