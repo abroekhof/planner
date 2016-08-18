@@ -40,6 +40,7 @@ Meteor.methods({
     Days.remove({ tripId });
     Meals.remove({ tripId });
     MealFoods.remove({ tripId });
+    Trips.remove(tripId);
   },
   'trips.updateTarget'(tripId, target, value) {
     check(tripId, String);

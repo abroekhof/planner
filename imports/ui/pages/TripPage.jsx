@@ -23,11 +23,16 @@ export default class TripPage extends Component {
     this.updateCalories = this.updateCalories.bind(this);
     this.updateProtein = this.updateProtein.bind(this);
     this.updateTripName = this.updateTripName.bind(this);
+    this.removeTrip = this.removeTrip.bind(this);
     this.tripTotals = totals(this.props.mealFoods);
   }
 
   componentWillUpdate(nextProps) {
     this.tripTotals = totals(nextProps.mealFoods);
+  }
+
+  removeTrip() {
+    this.props.removeTrip(this.props.trip._id);
   }
 
   handleAddDay() {
@@ -123,7 +128,7 @@ export default class TripPage extends Component {
                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
               >
-                <MenuItem onClick={this.handleRemoveDay} primaryText="Delete" />
+                <MenuItem onClick={this.removeTrip} primaryText="Delete this trip" />
               </IconMenu>
             </ToolbarGroup>
           </Toolbar>
@@ -174,4 +179,5 @@ TripPage.propTypes = {
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
+  removeTrip: PropTypes.function,
 };

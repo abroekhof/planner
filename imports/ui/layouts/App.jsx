@@ -27,6 +27,7 @@ export default class App extends React.Component {
       showConnectionIssue: false,
     };
     this.logout = this.logout.bind(this);
+    this.removeTrip = this.removeTrip.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -35,6 +36,12 @@ export default class App extends React.Component {
       const trip = Trips.findOne();
       this.context.router.replace(`/trips/${trip._id}`);
     }
+  }
+
+  removeTrip(id) {
+    const trip = Trips.findOne();
+    this.context.router.replace(`/trips/${trip._id}`);
+    Meteor.call('trips.remove', id);
   }
 
   logout() {
@@ -55,6 +62,7 @@ export default class App extends React.Component {
     // have transitions
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
+      removeTrip: this.removeTrip,
     });
 
     return (
@@ -70,8 +78,8 @@ export default class App extends React.Component {
           <div style={styles.container} id="content-container">
             <ReactCSSTransitionGroup
               transitionName="fade"
-              transitionEnterTimeout={200}
-              transitionLeaveTimeout={200}
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={400}
             >
               {loading
                 ? <span>loading...</span>
