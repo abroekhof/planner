@@ -3,12 +3,8 @@ import Meal from './Meal.jsx';
 import Resupply from './Resupply.jsx';
 
 import Chip from 'material-ui/Chip';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Paper from 'material-ui/Paper';
+import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -62,34 +58,25 @@ class Day extends Component {
   render() {
     const { dayTotals, weightLeft, idx } = this.props;
     return (
-      <Paper>
-        <Toolbar>
-          <ToolbarGroup>
-            <ToolbarTitle text={`Day ${idx}`} />
-          </ToolbarGroup>
-          <ToolbarGroup lastChild>
-            <IconMenu
-              iconButtonElement={
-                <IconButton><MoreVertIcon /></IconButton>
-              }
-              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-            >
-              <MenuItem onClick={this.handleRemoveDay} primaryText="Delete" />
-            </IconMenu>
-          </ToolbarGroup>
-        </Toolbar>
+      <Card>
+        <CardTitle title={`Day ${idx}`}>
+          <div style={styles.wrapper}>
+            <Chip style={styles.chip}>{dayTotals.calories} calories</Chip>
+            <Chip style={styles.chip}>{dayTotals.protein} g protein</Chip>
+            <Chip style={styles.chip}>{weightLeft} oz. to carry</Chip>
+          </div>
+        </CardTitle>
 
-        <div style={styles.wrapper}>
-          <Chip style={styles.chip}>{dayTotals.calories} calories</Chip>
-          <Chip style={styles.chip}>{dayTotals.protein} g protein</Chip>
-          <Chip style={styles.chip}>{weightLeft} oz. to carry</Chip>
-        </div>
-        <ul>
-          {this.renderMeals()}
-        </ul>
-      </Paper>
-  );
+        <CardText>
+          <ul>
+            {this.renderMeals()}
+          </ul>
+        </CardText>
+        <CardActions>
+          <FlatButton label="Remove day" onClick={this.handleRemoveDay} />
+        </CardActions>
+      </Card>
+    );
   }
 }
 
