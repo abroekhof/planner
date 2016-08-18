@@ -25,8 +25,8 @@ Meteor.methods({
   'trips.insert'() {
     const tripId = Trips.insert({
       name: 'New Trip',
-      calsPerDay: 0,
-      proteinPerDay: 0,
+      calsPerDay: 3000,
+      proteinPerDay: 100,
       createdAt: new Date(),
     });
     // insert a day to get things started
