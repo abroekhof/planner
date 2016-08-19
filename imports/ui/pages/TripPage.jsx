@@ -11,24 +11,61 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import Day from '../components/Day.jsx';
+import TextField from 'material-ui/TextField';
 
 import { totals } from '../helpers.js';
 
 export default class TripPage extends Component {
   constructor(props) {
     super(props);
+    this.state = { open: false, tripName: props.trip.name };
     this.handleAddDay = this.handleAddDay.bind(this);
     this.updateCalories = this.updateCalories.bind(this);
     this.updateProtein = this.updateProtein.bind(this);
     this.updateTripName = this.updateTripName.bind(this);
     this.removeTrip = this.removeTrip.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.tripTotals = totals(this.props.mealFoods);
   }
 
   componentWillUpdate(nextProps) {
     this.tripTotals = totals(nextProps.mealFoods);
+  }
+
+  handleOpen() {
+    const copy = Object.assign({}, this.state);
+    copy.open = true;
+    this.setState(copy);
+  }
+
+  handleClose() {
+    const copy = Object.assign({}, this.state);
+    copy.open = false;
+    this.setState(copy);
+  }
+
+  handleTextFieldChange(e) {
+    const copy = Object.assign({}, this.state);
+    copy.tripName = e.target.value;
+    this.setState(copy);
+  }
+
+  updateTripName() {
+    if (this.state.tripName !== '') {
+      Meteor.call('trips.updateName',
+      this.props.trip._id,
+      this.state.tripName);
+    } else {
+      const copy = Object.assign({}, this.state);
+      copy.tripName = this.props.trip.name;
+      this.setState(copy);
+    }
+    this.handleClose();
   }
 
   removeTrip() {
@@ -51,12 +88,6 @@ export default class TripPage extends Component {
       this.props.trip._id,
       'proteinPerDay',
       value);
-  }
-
-  updateTripName(obj) {
-    Meteor.call('trips.updateName',
-    this.props.trip._id,
-    obj.value);
   }
 
   renderDays() {
@@ -113,6 +144,14 @@ export default class TripPage extends Component {
   render() {
     const { trip, days } = this.props;
     const numDays = days.length;
+    const actions = [
+      <FlatButton
+        label="Ok"
+        primary
+        keyboardFocused
+        onTouchTap={this.updateTripName}
+      />,
+    ];
     return (
       <div className="container">
         <Paper>
@@ -128,11 +167,23 @@ export default class TripPage extends Component {
                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
               >
+                <MenuItem onClick={this.handleOpen} primaryText="Rename trip" />
                 <MenuItem onClick={this.removeTrip} primaryText="Delete this trip" />
               </IconMenu>
             </ToolbarGroup>
           </Toolbar>
         </Paper>
+        <Dialog
+          title="Rename trip"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        ><TextField
+          hintText="New name"
+          onChange={this.handleTextFieldChange}
+        />
+        </Dialog>
         <Card>
           <CardTitle
             title="Trip details"

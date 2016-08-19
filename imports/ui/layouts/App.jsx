@@ -39,7 +39,7 @@ export default class App extends React.Component {
   }
 
   removeTrip(id) {
-    const trip = Trips.findOne();
+    const trip = Trips.findOne({ _id: { $ne: id } });
     this.context.router.replace(`/trips/${trip._id}`);
     Meteor.call('trips.remove', id);
   }
