@@ -21,10 +21,16 @@ import { totals } from '../helpers.js';
 export default class TripPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, tripName: props.trip.name };
+    this.state = {
+      open: false,
+      tripName: props.trip.name,
+      calsPerDay: props.trip.calsPerDay,
+      proteinPerDay: props.trip.proteinPerDay,
+    };
     this.handleAddDay = this.handleAddDay.bind(this);
-    this.updateCalories = this.updateCalories.bind(this);
-    this.updateProtein = this.updateProtein.bind(this);
+    this.updateCalorieState = this.updateCalorieState.bind(this);
+    this.updateProteinState = this.updateProteinState.bind(this);
+    this.updateTargets = this.updateTargets.bind(this);
     this.updateTripName = this.updateTripName.bind(this);
     this.removeTrip = this.removeTrip.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
@@ -76,18 +82,27 @@ export default class TripPage extends Component {
     Meteor.call('days.insert', this.props.trip._id);
   }
 
-  updateCalories(e, value) {
+  updateCalorieState(e, value) {
+    const copy = Object.assign({}, this.state);
+    copy.calsPerDay = value;
+    this.setState(copy);
+  }
+
+  updateProteinState(e, value) {
+    const copy = Object.assign({}, this.state);
+    copy.proteinPerDay = value;
+    this.setState(copy);
+  }
+
+  updateTargets() {
     Meteor.call('trips.updateTarget',
       this.props.trip._id,
       'calsPerDay',
-      value);
-  }
-
-  updateProtein(e, value) {
+      this.state.calsPerDay);
     Meteor.call('trips.updateTarget',
       this.props.trip._id,
       'proteinPerDay',
-      value);
+      this.state.proteinPerDay);
   }
 
   renderDays() {
@@ -133,6 +148,8 @@ export default class TripPage extends Component {
           dayTotals={dayTotals}
           weightLeft={currWeight}
           resupplyWeight={resupplyWeight}
+          calsPerDay={this.props.trip.calsPerDay}
+          proteinPerDay={this.props.trip.proteinPerDay}
           idx={dayIdx + 1}
         />
       );
@@ -191,23 +208,25 @@ export default class TripPage extends Component {
           />
           <CardText>
             <Slider
-              description={`${trip.calsPerDay} calories per day`}
+              description={`${this.state.calsPerDay} calories per day`}
               defaultValue={3000}
               min={0}
               max={5000}
               step="25"
-              value={trip.calsPerDay}
-              onChange={this.updateCalories}
+              value={this.state.calsPerDay}
+              onChange={this.updateCalorieState}
+              onDragStop={this.updateTargets}
               sliderStyle={{ marginTop: 12, marginBottom: 24 }}
             />
             <Slider
-              description={`${trip.proteinPerDay} g protein per day`}
+              description={`${this.state.proteinPerDay} g protein per day`}
               defaultValue={100}
               min={0}
               max={200}
               step="5.0"
-              value={trip.proteinPerDay}
-              onChange={this.updateProtein}
+              value={this.state.proteinPerDay}
+              onChange={this.updateProteinState}
+              onDragStop={this.updateTargets}
               sliderStyle={{ marginTop: 12, marginBottom: 24 }}
             />
           </CardText>

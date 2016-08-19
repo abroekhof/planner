@@ -5,6 +5,7 @@ import Resupply from './Resupply.jsx';
 import Chip from 'material-ui/Chip';
 import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import { green100, red100 } from 'material-ui/styles/colors';
 
 import { Meteor } from 'meteor/meteor';
 
@@ -56,13 +57,23 @@ class Day extends Component {
   }
 
   render() {
-    const { dayTotals, weightLeft, idx } = this.props;
+    const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay } = this.props;
     return (
       <Card>
         <CardTitle title={`Day ${idx}`}>
           <div style={styles.wrapper}>
-            <Chip style={styles.chip}>{dayTotals.calories} calories</Chip>
-            <Chip style={styles.chip}>{dayTotals.protein} g protein</Chip>
+            <Chip
+              style={styles.chip}
+              backgroundColor={(dayTotals.calories > calsPerDay) ? green100 : red100}
+            >
+              {dayTotals.calories} calories
+            </Chip>
+            <Chip
+              style={styles.chip}
+              backgroundColor={(dayTotals.protein >= proteinPerDay) ? green100 : red100}
+            >
+              {dayTotals.protein} g protein
+            </Chip>
             <Chip style={styles.chip}>{weightLeft} oz. to carry</Chip>
           </div>
         </CardTitle>
@@ -89,6 +100,8 @@ Day.propTypes = {
   weightLeft: PropTypes.number.isRequired,
   resupplyWeight: PropTypes.number,
   dayTotals: PropTypes.object.isRequired,
+  calsPerDay: PropTypes.number.isRequired,
+  proteinPerDay: PropTypes.number.isRequired,
 };
 
 export default Day;
