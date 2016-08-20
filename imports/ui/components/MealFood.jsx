@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { RIENumber } from 'riek';
 
+import { ListItem } from 'material-ui/List';
+
 import { Meteor } from 'meteor/meteor';
 
 class MealFood extends Component {
@@ -32,7 +34,7 @@ class MealFood extends Component {
 
   render() {
     return (
-      <li>
+      <ListItem disabled style={{ padding: 8 }}>
         <button className="delete" onClick={this.delete}>
           &times;
         </button>
@@ -44,7 +46,7 @@ class MealFood extends Component {
             propName="qty"
             change={this.updateQty}
           /> {this.props.food.name}</span>
-      </li>
+      </ListItem>
     );
   }
 }

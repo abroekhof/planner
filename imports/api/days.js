@@ -87,14 +87,14 @@ Meteor.methods({
     check(dayId, String);
     // find the relevant day
     const day = Days.findOne(dayId);
-    const newDay = Object.assign({}, day);
+    const newDay = JSON.parse(JSON.stringify(day));
     // assign the new day an ID
     newDay._id = new Meteor.Collection.ObjectID()._str;
     newDay.createdAt = new Date();
     const newDayId = Days.insert(newDay);
 
     Meals.find({ dayId }).forEach((meal) => {
-      const newMeal = Object.assign({}, meal);
+      const newMeal = JSON.parse(JSON.stringify(meal));
       newMeal._id = new Meteor.Collection.ObjectID()._str;
       newMeal.dayId = newDayId;
       const newMealId = Meals.insert(newMeal);
