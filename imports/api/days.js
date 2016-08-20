@@ -83,4 +83,29 @@ Meteor.methods({
       { $unset: { resupply: '' } }
     );
   },
+  'days.duplicate'(dayId) {
+    check(dayId, String);
+    // find the relevant day
+    const day = Days.findOne(dayId);
+    const newDay = Object.assign({}, day);
+    // assign the new day an ID
+    newDay._id = new Meteor.Collection.ObjectID()._str;
+    newDay.createdAt = new Date();
+    const newDayId = Days.insert(newDay);
+
+    Meals.find({ dayId }).forEach((meal) => {
+      const newMeal = Object.assign({}, meal);
+      newMeal._id = new Meteor.Collection.ObjectID()._str;
+      newMeal.dayId = newDayId;
+      const newMealId = Meals.insert(newMeal);
+
+      MealFoods.find({ dayId, mealId: meal._id }).forEach((mealFood) => {
+        const newMealFood = JSON.parse(JSON.stringify(mealFood));
+        newMealFood._id = new Meteor.Collection.ObjectID()._str;
+        newMealFood.dayId = newDayId;
+        newMealFood.mealId = newMealId;
+        MealFoods.insert(newMealFood);
+      });
+    });
+  },
 });

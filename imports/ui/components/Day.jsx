@@ -23,10 +23,15 @@ class Day extends Component {
   constructor(props) {
     super(props);
     this.handleRemoveDay = this.handleRemoveDay.bind(this);
+    this.handleDuplicateDay = this.handleDuplicateDay.bind(this);
   }
 
   handleRemoveDay() {
     Meteor.call('days.remove', this.props.day._id);
+  }
+
+  handleDuplicateDay() {
+    Meteor.call('days.duplicate', this.props.day._id);
   }
 
   renderMeals() {
@@ -85,6 +90,7 @@ class Day extends Component {
         </CardText>
         <CardActions>
           <FlatButton label="Remove day" onClick={this.handleRemoveDay} />
+          <FlatButton label="Duplicate day" onClick={this.handleDuplicateDay} />
         </CardActions>
       </Card>
     );
