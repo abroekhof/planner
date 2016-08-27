@@ -6,7 +6,7 @@ import { Trips } from '../../api/trips.js';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
-import FoodList from '../components/FoodList.jsx';
+import FoodDrawer from '../components/FoodDrawer.jsx';
 import FoodDragLayer from '../components/FoodDragLayer.jsx';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -89,7 +89,7 @@ export default class App extends React.Component {
           </div>
 
           <Drawer openSecondary>
-            <FoodList foods={foods} foodSort={foodSort} />
+            <FoodDrawer foods={foods} foodSort={foodSort} />
           </Drawer>
           <FoodDragLayer />
         </div>
