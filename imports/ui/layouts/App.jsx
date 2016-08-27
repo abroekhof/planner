@@ -56,6 +56,7 @@ export default class App extends React.Component {
       children,
       location,
       foods,
+      foodSort,
     } = this.props;
 
     // clone route components with keys so that they can
@@ -88,7 +89,7 @@ export default class App extends React.Component {
           </div>
 
           <Drawer openSecondary>
-            <FoodList foods={foods} />
+            <FoodList foods={foods} foodSort={foodSort} />
           </Drawer>
           <FoodDragLayer />
         </div>
@@ -107,6 +108,7 @@ App.propTypes = {
   location: React.PropTypes.object,  // current router location
   params: React.PropTypes.object,    // parameters of the current route
   foods: React.PropTypes.array,
+  foodSort: React.PropTypes.object,
 };
 
 App.contextTypes = {

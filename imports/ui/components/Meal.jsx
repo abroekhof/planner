@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { PropTypes, Component } from 'react';
 import { DropTarget } from 'react-dnd';
 
+import { List } from 'material-ui/List';
+
 import MealFood from './MealFood.jsx';
 
 import { totals } from '../helpers.js';
@@ -38,9 +40,9 @@ class Meal extends Component {
       <div>
         <h3>{this.props.meal.name}</h3>
          ({mealTotals.calories} calories)
-        <ul>
+        <List>
         {(mealFoods.length === 0) ? <li>Drag a food here!</li> : this.renderMealFoods()}
-        </ul>
+        </List>
       </div>
     );
   }

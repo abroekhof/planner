@@ -5,6 +5,8 @@ import { List } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import Food from './Food.jsx';
 
@@ -12,10 +14,11 @@ export default class FoodList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { foodName: '', calories: '', protein: '', weight: '' };
+    this.state = { foodName: '', calories: '', protein: '', weight: '', sortValue: 'name' };
 
     this.createNewFood = this.createNewFood.bind(this);
     this._handleTextFieldChange = this._handleTextFieldChange.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
   }
 
   _handleTextFieldChange(event) {
@@ -32,6 +35,13 @@ export default class FoodList extends Component {
       Number(this.state.weight));
 
     this.setState({ foodName: '', calories: '', protein: '', weight: '' });
+  }
+
+  handleSortChange(event, index, sortValue) {
+    this.props.foodSort.set(
+      sortValue
+    );
+    this.setState({ sortValue });
   }
 
   renderForm() {
@@ -70,6 +80,16 @@ export default class FoodList extends Component {
       <div>
         {this.renderForm()}
         <Divider />
+        <SelectField
+          value={this.state.sortValue}
+          onChange={this.handleSortChange}
+          floatingLabelText="Sort"
+        >
+          <MenuItem value={'name'} primaryText="Name" />
+          <MenuItem value={'calories'} primaryText="Calories" />
+          <MenuItem value={'protein'} primaryText="Protein" />
+          <MenuItem value={'weight'} primaryText="Weight" />
+        </SelectField>
         <List>
         {this.props.foods.map((food) => (
           <Food key={food._id} food={food} />
@@ -82,4 +102,5 @@ export default class FoodList extends Component {
 
 FoodList.propTypes = {
   foods: PropTypes.array.isRequired,
+  foodSort: PropTypes.object.isRequired,
 };
