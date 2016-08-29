@@ -190,17 +190,20 @@ export default class TripPage extends Component {
             </ToolbarGroup>
           </Toolbar>
         </Paper>
+
         <Dialog
           title="Rename trip"
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-        ><TextField
-          hintText="New name"
-          onChange={this.handleTextFieldChange}
-        />
+        >
+          <TextField
+            hintText="New name"
+            onChange={this.handleTextFieldChange}
+          />
         </Dialog>
+
         <Card>
           <CardTitle
             title="Trip details"

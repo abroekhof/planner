@@ -73,8 +73,10 @@ class Food extends Component {
     return connectDragSource(
       <div style={{ opacity: isDragging ? 0.5 : 1 }}>
         <ListItem
-          primaryText={`${food.name}, ${food.calories} calories,
+          primaryText={`${food.name}`}
+          secondaryText={`${food.calories} calories,
           ${food.protein} g protein, ${food.weight} oz.`}
+          secondaryTextLines={2}
           rightIconButton={rightIconMenu}
         />
       </div>
