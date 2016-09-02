@@ -1,13 +1,13 @@
 import React, { PropTypes, Component } from 'react';
-import Meal from './Meal.jsx';
-import Resupply from './Resupply.jsx';
+import { Meteor } from 'meteor/meteor';
 
 import Chip from 'material-ui/Chip';
 import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { green100, red100 } from 'material-ui/styles/colors';
 
-import { Meteor } from 'meteor/meteor';
+import Meal from './Meal.jsx';
+import Resupply from './Resupply.jsx';
 
 const styles = {
   chip: {
@@ -35,22 +35,19 @@ class Day extends Component {
   }
 
   renderMeals() {
-    const { meals, mealFoods, foods, day, resupplyWeight } = this.props;
+    const { meals, mealFoods, day, resupplyWeight, handleOpenDrawer } = this.props;
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
         (mealFood) => (mealFood.mealId === meal._id));
-      const f = mealFoods.map(
-        (mealFood) => (foods.filter(
-          (food) => (food._id === mealFood.foodId))[0]));
       const div = (
         <div key={meal._id}>
           <Resupply day={day} idx={idx} weight={resupplyWeight} />
           <Meal
             meal={meal}
             mealFoods={mf}
-            foods={f}
             dayId={day._id}
+            handleOpenDrawer={handleOpenDrawer}
           />
         </div>
       );
@@ -102,12 +99,12 @@ Day.propTypes = {
   idx: PropTypes.number.isRequired,
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
-  foods: PropTypes.array.isRequired,
   weightLeft: PropTypes.number.isRequired,
   resupplyWeight: PropTypes.number,
   dayTotals: PropTypes.object.isRequired,
   calsPerDay: PropTypes.number.isRequired,
   proteinPerDay: PropTypes.number.isRequired,
+  handleOpenDrawer: PropTypes.func.isRequired,
 };
 
 export default Day;

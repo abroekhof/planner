@@ -45,7 +45,7 @@ class MealFood extends Component {
             value={this.props.mealFood.qty}
             propName="qty"
             change={this.updateQty}
-          /> {this.props.food.name}</span>
+          /> {this.props.mealFood.name}</span>
       </ListItem>
     );
   }
@@ -53,7 +53,6 @@ class MealFood extends Component {
 
 MealFood.propTypes = {
   mealFood: PropTypes.object.isRequired,
-  food: PropTypes.object.isRequired,
 };
 
 export default MealFood;

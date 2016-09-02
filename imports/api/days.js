@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema'
+
 import { Meals } from './meals.js';
 import { MealFoods } from './mealFoods.js';
 
@@ -13,6 +15,24 @@ class DaysCollection extends Mongo.Collection {
 }
 
 export const Days = new DaysCollection('days');
+
+Days.schema = new SimpleSchema({
+  resupply: {
+    type: Number,
+    optional: true,
+  },
+  tripId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
+  createdAt: {
+    type: Date,
+    denyUpdate: true,
+  },
+});
+
+Days.attachSchema(Days.schema);
 
 Days.helpers({
   meals() {
@@ -104,7 +124,7 @@ Meteor.methods({
         newMealFood._id = new Meteor.Collection.ObjectID()._str;
         newMealFood.dayId = newDayId;
         newMealFood.mealId = newMealId;
-        MealFoods.insert(newMealFood);
+          MealFoods.insert(newMealFood);
       });
     });
   },

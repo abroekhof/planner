@@ -2,21 +2,22 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
+import CircularProgress from 'material-ui/CircularProgress';
+
 import { Trips } from '../../api/trips.js';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodDrawer from '../components/FoodDrawer.jsx';
-import FoodDragLayer from '../components/FoodDragLayer.jsx';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
 
 const styles = {
   container: {
     marginLeft: 256,
-    marginRight: 256,
+
   },
 };
 
@@ -25,9 +26,13 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       showConnectionIssue: false,
+      open: false,
     };
     this.logout = this.logout.bind(this);
     this.removeTrip = this.removeTrip.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -37,6 +42,13 @@ export default class App extends React.Component {
       this.context.router.replace(`/trips/${trip._id}`);
     }
   }
+
+  handleToggle() { this.setState({ open: !this.state.open }); }
+  handleOpenDrawer(dayId, mealId) {
+    this.setState({ dayId, mealId });
+    this.handleToggle();
+  }
+  handleClose() { this.setState({ open: false }); }
 
   removeTrip(id) {
     const trip = Trips.findOne({ _id: { $ne: id } });
@@ -64,13 +76,14 @@ export default class App extends React.Component {
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
       removeTrip: this.removeTrip,
+      handleOpenDrawer: this.handleOpenDrawer,
     });
 
     return (
       <MuiThemeProvider>
         <div id="container">
 
-          <Drawer>
+          <Drawer docked>
             <UserMenu user={user} logout={this.logout} />
             <Divider />
             <TripList trips={trips} />
@@ -83,15 +96,26 @@ export default class App extends React.Component {
               transitionLeaveTimeout={400}
             >
               {loading
-                ? <span>loading...</span>
+                ? <CircularProgress size={2} />
                 : clonedChildren}
             </ReactCSSTransitionGroup>
           </div>
 
-          <Drawer openSecondary>
-            <FoodDrawer foods={foods} foodSort={foodSort} />
+          <Drawer
+            openSecondary
+            docked={false}
+            open={this.state.open}
+            onRequestChange={(open) => this.setState({ open })}
+          >
+            <FoodDrawer
+              foods={foods}
+              foodSort={foodSort}
+              handleCloseDrawer={this.handleClose}
+              dayId={this.state.dayId}
+              mealId={this.state.mealId}
+            />
           </Drawer>
-          <FoodDragLayer />
+
         </div>
       </MuiThemeProvider>
     );

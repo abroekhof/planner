@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
 import { Days } from './days.js';
 import { Meals } from './meals.js';
 import { MealFoods } from './mealFoods.js';
@@ -20,6 +22,32 @@ if (Meteor.isServer) {
     Trips.find()
   ));
 }
+
+Trips.schema = new SimpleSchema({
+  name: {
+    type: String,
+    max: 100,
+  },
+  createdAt: {
+    type: Date,
+    denyUpdate: true,
+  },
+  calsPerDay: {
+    type: Number,
+    defaultValue: 3000,
+  },
+  proteinPerDay: {
+    type: Number,
+    defaultValue: 100,
+  },
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
+});
+
+Trips.attachSchema(Trips.schema);
 
 Meteor.methods({
   'trips.insert'() {

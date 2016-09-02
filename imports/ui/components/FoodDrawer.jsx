@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import { List } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
@@ -17,12 +18,16 @@ export default class FoodDrawer extends Component {
       sortValue: 'name',
       foodFilter: '',
       open: false,
+      selectedFoods: [],
     };
 
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.addSelectedFood = this.addSelectedFood.bind(this);
+    this.removeSelectedFood = this.removeSelectedFood.bind(this);
+    this.addFoods = this.addFoods.bind(this);
   }
 
   handleOpen() {
@@ -44,6 +49,35 @@ export default class FoodDrawer extends Component {
       sortValue
     );
     this.setState({ sortValue });
+  }
+
+  addFoods() {
+    this.state.selectedFoods.forEach((foodId) =>
+      Meteor.call('mealFoods.insert', foodId, this.props.mealId, this.props.dayId, 1)
+    );
+    this.props.handleCloseDrawer();
+  }
+
+  addSelectedFood(foodId) {
+    this.setState({ selectedFoods: this.state.selectedFoods.concat([foodId]) });
+  }
+
+  removeSelectedFood(foodId) {
+    const index = this.state.selectedFoods.indexOf(foodId);
+    this.setState({ selectedFoods: this.state.selectedFoods.filter((_, i) => i !== index) });
+  }
+
+  renderAddFoodButtom() {
+    if (this.props.dayId && this.props.mealId) {
+      return (
+        <RaisedButton
+          label="Add selected foods"
+          onTouchTap={this.addFoods}
+          primary
+          disabled={this.state.selectedFoods.length <= 0}
+        />);
+    }
+    return '';
   }
 
   render() {
@@ -77,9 +111,15 @@ export default class FoodDrawer extends Component {
           <MenuItem value={'protein'} primaryText="Protein" />
           <MenuItem value={'weight'} primaryText="Weight" />
         </SelectField>
+        {this.renderAddFoodButtom()}
         <List>
         {filteredFoods.map((food) => (
-          <Food key={food._id} food={food} />
+          <Food
+            key={food._id}
+            food={food}
+            addSelectedFood={this.addSelectedFood}
+            removeSelectedFood={this.removeSelectedFood}
+          />
         ))}
         </List>
       </div>
@@ -90,4 +130,7 @@ export default class FoodDrawer extends Component {
 FoodDrawer.propTypes = {
   foods: PropTypes.array.isRequired,
   foodSort: PropTypes.object.isRequired,
+  handleCloseDrawer: PropTypes.func.isRequired,
+  mealId: PropTypes.string,
+  dayId: PropTypes.string,
 };
