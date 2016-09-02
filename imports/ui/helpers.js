@@ -2,9 +2,9 @@ export const totals = (mealFoods) => (
    mealFoods.reduce(
     (prevTotal, mealFood) => (
       {
-        calories: prevTotal.calories + mealFood.food.calories * mealFood.qty,
-        protein: prevTotal.protein + mealFood.food.protein * mealFood.qty,
-        weight: prevTotal.weight + mealFood.food.weight * mealFood.qty,
+        calories: prevTotal.calories + mealFood.calories * mealFood.qty,
+        protein: prevTotal.protein + mealFood.protein * mealFood.qty,
+        weight: prevTotal.weight + mealFood.weight * mealFood.qty,
       }
     ),
      {

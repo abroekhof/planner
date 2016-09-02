@@ -1,18 +1,38 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
+import CircularProgress from 'material-ui/CircularProgress';
+
 import { Trips } from '../../api/trips.js';
+
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
-import FoodList from '../components/FoodList.jsx';
+import FoodDrawer from '../components/FoodDrawer.jsx';
+
+
+const styles = {
+  container: {
+    marginLeft: 256,
+
+  },
+};
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showConnectionIssue: false,
+      open: false,
     };
     this.logout = this.logout.bind(this);
+    this.removeTrip = this.removeTrip.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -21,6 +41,19 @@ export default class App extends React.Component {
       const trip = Trips.findOne();
       this.context.router.replace(`/trips/${trip._id}`);
     }
+  }
+
+  handleToggle() { this.setState({ open: !this.state.open }); }
+  handleOpenDrawer(dayId, mealId) {
+    this.setState({ dayId, mealId });
+    this.handleToggle();
+  }
+  handleClose() { this.setState({ open: false }); }
+
+  removeTrip(id) {
+    const trip = Trips.findOne({ _id: { $ne: id } });
+    this.context.router.replace(`/trips/${trip._id}`);
+    Meteor.call('trips.remove', id);
   }
 
   logout() {
@@ -35,35 +68,56 @@ export default class App extends React.Component {
       children,
       location,
       foods,
+      foodSort,
     } = this.props;
 
     // clone route components with keys so that they can
     // have transitions
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
+      removeTrip: this.removeTrip,
+      handleOpenDrawer: this.handleOpenDrawer,
     });
 
     return (
-      <div id="container">
-        <section id="left-menu">
-          <UserMenu user={user} logout={this.logout} />
-          <TripList trips={trips} />
-        </section>
-        <div id="content-container">
-          <ReactCSSTransitionGroup
-            transitionName="fade"
-            transitionEnterTimeout={200}
-            transitionLeaveTimeout={200}
+      <MuiThemeProvider>
+        <div id="container">
+
+          <Drawer docked>
+            <UserMenu user={user} logout={this.logout} />
+            <Divider />
+            <TripList trips={trips} />
+          </Drawer>
+
+          <div style={styles.container} id="content-container">
+            <ReactCSSTransitionGroup
+              transitionName="fade"
+              transitionEnterTimeout={400}
+              transitionLeaveTimeout={400}
+            >
+              {loading
+                ? <CircularProgress size={2} />
+                : clonedChildren}
+            </ReactCSSTransitionGroup>
+          </div>
+
+          <Drawer
+            openSecondary
+            docked={false}
+            open={this.state.open}
+            onRequestChange={(open) => this.setState({ open })}
           >
-            {loading
-              ? <span>loading...</span>
-              : clonedChildren}
-          </ReactCSSTransitionGroup>
+            <FoodDrawer
+              foods={foods}
+              foodSort={foodSort}
+              handleCloseDrawer={this.handleClose}
+              dayId={this.state.dayId}
+              mealId={this.state.mealId}
+            />
+          </Drawer>
+
         </div>
-        <section id="right-menu">
-          <FoodList foods={foods} />
-        </section>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
@@ -78,6 +132,7 @@ App.propTypes = {
   location: React.PropTypes.object,  // current router location
   params: React.PropTypes.object,    // parameters of the current route
   foods: React.PropTypes.array,
+  foodSort: React.PropTypes.object,
 };
 
 App.contextTypes = {

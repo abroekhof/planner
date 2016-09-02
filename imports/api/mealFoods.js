@@ -1,11 +1,49 @@
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import { Foods } from './foods.js';
 import { Meals } from './meals.js';
 
 export const MealFoods = new Mongo.Collection('mealFoods');
+
+MealFoods.schema = new SimpleSchema({
+  dayId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
+  mealId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
+  foodId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+  },
+  qty: {
+    type: Number,
+    defaultValue: 1,
+  },
+  name: {
+    type: String,
+    max: 100,
+  },
+  calories: {
+    type: Number,
+    defaultValue: 3000,
+  },
+  protein: {
+    type: Number,
+    defaultValue: 100,
+  },
+  weight: {
+    type: Number,
+    defaultValue: 100,
+  },
+});
+
+MealFoods.attachSchema(MealFoods.schema);
 
 Meteor.methods({
   'mealFoods.insert'(foodId, mealId, dayId, qty) {
@@ -14,16 +52,16 @@ Meteor.methods({
     check(dayId, String);
     check(qty, Number);
     const food = Foods.findOne(foodId);
-    MealFoods.update(
+    MealFoods.insert(
       {
         foodId,
         mealId,
         dayId,
-      }, {
-        $inc: { qty },
-        $set: { food },
-      }, {
-        upsert: true,
+        qty,
+        name: food.name,
+        calories: food.calories,
+        protein: food.protein,
+        weight: food.weight,
       }
     );
   },

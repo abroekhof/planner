@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 
 import { MealFoods } from './mealFoods.js';
 import { Days } from './days.js';
@@ -12,6 +13,20 @@ class MealsCollection extends Mongo.Collection {
 }
 
 export const Meals = new MealsCollection('meals');
+
+Meals.schema = new SimpleSchema({
+  name: {
+    type: String,
+    max: 100,
+  },
+  dayId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
+});
+
+Meals.attachSchema(Meals.schema);
 
 Meals.helpers({
   mealFoods() {

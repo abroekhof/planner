@@ -1,8 +1,30 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema'
 
 export const Foods = new Mongo.Collection('foods');
+
+Foods.schema = new SimpleSchema({
+  name: {
+    type: String,
+    max: 100,
+  },
+  calories: {
+    type: Number,
+    defaultValue: 3000,
+  },
+  protein: {
+    type: Number,
+    defaultValue: 100,
+  },
+  weight: {
+    type: Number,
+    defaultValue: 100,
+  },
+});
+
+Foods.attachSchema(Foods.schema);
 
 if (Meteor.isServer) {
   Meteor.publish('foods', () => (
