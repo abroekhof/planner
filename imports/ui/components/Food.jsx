@@ -17,16 +17,16 @@ class Food extends Component {
     this.onCheck = this.onCheck.bind(this);
   }
 
-  deleteThisFood() {
-    Meteor.call('foods.remove', this.props.food._id);
-  }
-
   onCheck(event, isInputChecked) {
     if (isInputChecked) {
       this.props.addSelectedFood(this.props.food._id);
     } else {
       this.props.removeSelectedFood(this.props.food._id);
     }
+  }
+
+  deleteThisFood() {
+    Meteor.call('foods.remove', this.props.food._id);
   }
 
   render() {
@@ -47,7 +47,7 @@ class Food extends Component {
     const food = this.props.food;
     return (
       <ListItem
-        leftCheckbox={<Checkbox onCheck={this.onCheck} />}
+        leftCheckbox={<Checkbox onCheck={this.onCheck} checked={this.props.checked} />}
         primaryText={`${food.name}`}
         secondaryText={`${food.calories} calories,
         ${food.protein} g protein, ${food.weight} oz.`}
@@ -60,6 +60,7 @@ class Food extends Component {
 
 Food.propTypes = {
   food: PropTypes.object.isRequired,
+  checked: PropTypes.bool.isRequired,
   addSelectedFood: PropTypes.func.isRequired,
   removeSelectedFood: PropTypes.func.isRequired,
 };

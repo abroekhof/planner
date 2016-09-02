@@ -27,6 +27,7 @@ export default class FoodDrawer extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.addSelectedFood = this.addSelectedFood.bind(this);
     this.removeSelectedFood = this.removeSelectedFood.bind(this);
+    this.clearSelectedFoods = this.clearSelectedFoods.bind(this);
     this.addFoods = this.addFoods.bind(this);
   }
 
@@ -56,6 +57,7 @@ export default class FoodDrawer extends Component {
       Meteor.call('mealFoods.insert', foodId, this.props.mealId, this.props.dayId, 1)
     );
     this.props.handleCloseDrawer();
+    this.clearSelectedFoods();
   }
 
   addSelectedFood(foodId) {
@@ -65,6 +67,10 @@ export default class FoodDrawer extends Component {
   removeSelectedFood(foodId) {
     const index = this.state.selectedFoods.indexOf(foodId);
     this.setState({ selectedFoods: this.state.selectedFoods.filter((_, i) => i !== index) });
+  }
+
+  clearSelectedFoods() {
+    this.setState({ selectedFoods: [] });
   }
 
   renderAddFoodButtom() {
@@ -112,11 +118,17 @@ export default class FoodDrawer extends Component {
           <MenuItem value={'weight'} primaryText="Weight" />
         </SelectField>
         {this.renderAddFoodButtom()}
+        <RaisedButton
+          label="Clear selection"
+          onTouchTap={this.clearSelectedFoods}
+          disabled={this.state.selectedFoods <= 0}
+        />
         <List>
         {filteredFoods.map((food) => (
           <Food
             key={food._id}
             food={food}
+            checked={this.state.selectedFoods.indexOf(food._id) !== -1}
             addSelectedFood={this.addSelectedFood}
             removeSelectedFood={this.removeSelectedFood}
           />
