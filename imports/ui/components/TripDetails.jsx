@@ -50,7 +50,7 @@ export default class TripDetails extends Component {
             defaultValue={3000}
             min={0}
             max={5000}
-            step="25"
+            step={Number(25)}
             value={this.state.calsPerDay}
             onChange={this.updateCalorieState}
             onDragStop={this.updateTargets}
@@ -61,7 +61,7 @@ export default class TripDetails extends Component {
             defaultValue={100}
             min={0}
             max={200}
-            step="5.0"
+            step={Number(5)}
             value={this.state.proteinPerDay}
             onChange={this.updateProteinState}
             onDragStop={this.updateTargets}

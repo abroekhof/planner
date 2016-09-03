@@ -181,6 +181,6 @@ TripPage.propTypes = {
   meals: PropTypes.array.isRequired,
   mealFoods: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
-  removeTrip: PropTypes.function,
+  removeTrip: PropTypes.func.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,
 };
