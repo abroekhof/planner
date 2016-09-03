@@ -81,10 +81,9 @@ class Day extends Component {
         </CardTitle>
 
         <CardText>
-          <ul>
-            {this.renderMeals()}
-          </ul>
+          {this.renderMeals()}
         </CardText>
+
         <CardActions>
           <FlatButton label="Remove day" onClick={this.handleRemoveDay} />
           <FlatButton label="Duplicate day" onClick={this.handleDuplicateDay} />

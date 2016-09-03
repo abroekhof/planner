@@ -1,51 +1,74 @@
 import React, { PropTypes, Component } from 'react';
-import { RIENumber } from 'riek';
 
 import { ListItem } from 'material-ui/List';
+import IconButton from 'material-ui/IconButton';
+import Delete from 'material-ui/svg-icons/action/delete';
+import TextField from 'material-ui/TextField';
 
 import { Meteor } from 'meteor/meteor';
 
 class MealFood extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      qty: this.props.mealFood.qty,
+    };
     this.delete = this.delete.bind(this);
-    this.increment = this.increment.bind(this);
-    this.decrement = this.decrement.bind(this);
-    this.updateQty = this.updateQty.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   delete() {
     Meteor.call('mealFoods.remove', this.props.mealFood._id);
   }
 
-  increment() {
-    const mealFood = this.props.mealFood;
-    Meteor.call('mealFoods.updateQty', mealFood._id, mealFood.qty + 1);
+  handleChange(e) {
+    this.setState({ qty: e.target.value });
   }
 
-  decrement() {
-    const mealFood = this.props.mealFood;
-    Meteor.call('mealFoods.updateQty', mealFood._id, mealFood.qty - 1);
+  handleBlur() {
+    const qty = this.state.qty;
+    if (!isNaN(parseFloat(qty)) && isFinite(qty) && Number(qty) > 0) {
+      Meteor.call('mealFoods.updateQty', this.props.mealFood._id, Number(qty));
+      this.setState({ qty: Number(qty) });
+    } else {
+      this.setState({ qty: this.props.mealFood.qty });
+    }
   }
 
-  updateQty(obj) {
-    Meteor.call('mealFoods.updateQty', this.props.mealFood._id, Number(obj.qty));
+  handleKeyDown(e) {
+    if (e.keyCode === 13) {
+      e.target.blur();
+    }
   }
 
   render() {
     return (
-      <ListItem disabled style={{ padding: 8 }}>
-        <button className="delete" onClick={this.delete}>
-          &times;
-        </button>
-        <button onClick={this.increment}>+</button>
-        <button onClick={this.decrement}>-</button>
+      <ListItem
+        disabled
+        style={{ padding: 8 }}
+        rightIconButton={
+          <IconButton
+            tooltip={`Delete ${this.props.mealFood.name}`}
+            onClick={this.delete}
+          >
+            <Delete />
+          </IconButton>
+        }
+      >
         <span>
-          <RIENumber
-            value={this.props.mealFood.qty}
-            propName="qty"
-            change={this.updateQty}
-          /> {this.props.mealFood.name}</span>
+          <TextField
+            id={this.props.mealFood._id}
+            value={this.state.qty}
+            onBlur={this.handleBlur}
+            onKeyDown={this.handleKeyDown}
+            onChange={this.handleChange}
+            style={{ width: '36px', height: '36px' }}
+          />
+          {this.state.qty > 1 ? 'servings' : 'serving'} {this.props.mealFood.name}
+        </span>
+
       </ListItem>
     );
   }

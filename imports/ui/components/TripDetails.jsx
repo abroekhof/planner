@@ -37,11 +37,12 @@ export default class TripDetails extends Component {
   }
 
   render() {
+    const dayNoun = this.props.numDays > 1 ? ' days' : ' day';
     return (
       <Card style={{ margin: '8px' }}>
         <CardTitle
           title={this.props.tripName}
-          subtitle={`${this.props.numDays} days`}
+          subtitle={`${this.props.numDays} ${dayNoun}`}
         />
         <CardText>
           <Slider

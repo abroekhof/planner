@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
-import { List } from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
+import { List, ListItem } from 'material-ui/List';
+import AddCircle from 'material-ui/svg-icons/content/add-circle';
+import Subheader from 'material-ui/Subheader';
 
 import MealFood from './MealFood.jsx';
 
@@ -29,17 +30,18 @@ class Meal extends Component {
     const { mealFoods } = this.props;
     const mealTotals = totals(mealFoods);
     return (
-      <div>
-        <h3>{this.props.meal.name}</h3>
-         ({mealTotals.calories} calories)
-        <RaisedButton
-          label={`Add food to ${this.props.meal.name}`}
+      <List>
+        <Subheader>
+          {this.props.meal.name} (
+          {mealTotals.calories} calories, {mealTotals.protein} g protein, {mealTotals.weight} oz.)
+        </Subheader>
+        {this.renderMealFoods()}
+        <ListItem
+          primaryText={`Add food to ${this.props.meal.name}`}
+          leftIcon={<AddCircle />}
           onTouchTap={this.handleOpenFoodDrawer}
         />
-        <List>
-        {(mealFoods.length === 0) ? <li>Drag a food here!</li> : this.renderMealFoods()}
-        </List>
-      </div>
+      </List>
     );
   }
 }
