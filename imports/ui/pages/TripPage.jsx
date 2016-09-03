@@ -3,12 +3,6 @@ import React, { Component, PropTypes } from 'react';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Paper from 'material-ui/Paper';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -39,21 +33,15 @@ export default class TripPage extends Component {
   }
 
   handleOpen() {
-    const copy = Object.assign({}, this.state);
-    copy.open = true;
-    this.setState(copy);
+    this.setState({ open: true });
   }
 
   handleClose() {
-    const copy = Object.assign({}, this.state);
-    copy.open = false;
-    this.setState(copy);
+    this.setState({ open: false });
   }
 
   handleTextFieldChange(e) {
-    const copy = Object.assign({}, this.state);
-    copy.tripName = e.target.value;
-    this.setState(copy);
+    this.setState({ tripName: e.target.value });
   }
 
   updateTripName() {
@@ -62,9 +50,7 @@ export default class TripPage extends Component {
       this.props.trip._id,
       this.state.tripName);
     } else {
-      const copy = Object.assign({}, this.state);
-      copy.tripName = this.props.trip.name;
-      this.setState(copy);
+      this.setState({ tripName: this.props.trip.name });
     }
     this.handleClose();
   }
@@ -118,7 +104,7 @@ export default class TripPage extends Component {
           calsPerDay={this.props.trip.calsPerDay}
           proteinPerDay={this.props.trip.proteinPerDay}
           idx={dayIdx + 1}
-          handleOpenDrawer={this.props.handleOpenDrawer}
+          handleOpenFoodDrawer={this.props.handleOpenFoodDrawer}
         />
       );
       days.unshift(newDay);
@@ -133,31 +119,16 @@ export default class TripPage extends Component {
       <FlatButton
         label="Ok"
         primary
-        keyboardFocused
         onTouchTap={this.updateTripName}
+      />,
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.handleClose}
       />,
     ];
     return (
       <div className="container">
-        <Paper>
-          <Toolbar>
-            <ToolbarGroup>
-              <ToolbarTitle text={trip.name} />
-            </ToolbarGroup>
-            <ToolbarGroup lastChild>
-              <IconMenu
-                iconButtonElement={
-                  <IconButton><MoreVertIcon /></IconButton>
-                }
-                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-              >
-                <MenuItem onClick={this.handleOpen} primaryText="Rename trip" />
-                <MenuItem onClick={this.removeTrip} primaryText="Delete this trip" />
-              </IconMenu>
-            </ToolbarGroup>
-          </Toolbar>
-        </Paper>
 
         <Dialog
           title="Rename trip"
@@ -168,6 +139,7 @@ export default class TripPage extends Component {
         >
           <TextField
             hintText="New name"
+            keyboardFocused
             onChange={this.handleTextFieldChange}
           />
         </Dialog>
@@ -177,11 +149,19 @@ export default class TripPage extends Component {
           proteinPerDay={trip.proteinPerDay}
           tripId={trip._id}
           numDays={numDays}
+          tripName={trip.name}
+          openNameDialog={this.handleOpen}
+          removeTrip={this.removeTrip}
         />
 
         {this.renderDays()}
 
-        <FloatingActionButton onClick={this.handleAddDay} style={{ marginLeft: 20 }}>
+        <FloatingActionButton onClick={this.handleAddDay} style={{ margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed', }}>
           <ContentAdd />
         </FloatingActionButton>
       </div>
@@ -197,5 +177,5 @@ TripPage.propTypes = {
   mealFoods: PropTypes.array.isRequired,
   currentUser: PropTypes.object,
   removeTrip: PropTypes.function,
-  handleOpenDrawer: PropTypes.func.isRequired,
+  handleOpenFoodDrawer: PropTypes.func.isRequired,
 };

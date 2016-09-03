@@ -12,11 +12,11 @@ class Meal extends Component {
 
   constructor(props) {
     super(props);
-    this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
+    this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
   }
 
-  handleOpenDrawer() {
-    this.props.handleOpenDrawer(this.props.dayId, this.props.meal._id);
+  handleOpenFoodDrawer() {
+    this.props.handleOpenFoodDrawer(this.props.dayId, this.props.meal._id);
   }
 
   renderMealFoods() {
@@ -34,7 +34,7 @@ class Meal extends Component {
          ({mealTotals.calories} calories)
         <RaisedButton
           label={`Add food to ${this.props.meal.name}`}
-          onTouchTap={this.handleOpenDrawer}
+          onTouchTap={this.handleOpenFoodDrawer}
         />
         <List>
         {(mealFoods.length === 0) ? <li>Drag a food here!</li> : this.renderMealFoods()}
@@ -48,7 +48,7 @@ Meal.propTypes = {
   meal: PropTypes.object.isRequired,
   dayId: PropTypes.string.isRequired,
   mealFoods: PropTypes.array.isRequired,
-  handleOpenDrawer: PropTypes.func.isRequired,
+  handleOpenFoodDrawer: PropTypes.func.isRequired,
 };
 
 export default Meal;

@@ -35,7 +35,7 @@ class Day extends Component {
   }
 
   renderMeals() {
-    const { meals, mealFoods, day, resupplyWeight, handleOpenDrawer } = this.props;
+    const { meals, mealFoods, day, resupplyWeight, handleOpenFoodDrawer } = this.props;
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
@@ -47,7 +47,7 @@ class Day extends Component {
             meal={meal}
             mealFoods={mf}
             dayId={day._id}
-            handleOpenDrawer={handleOpenDrawer}
+            handleOpenFoodDrawer={handleOpenFoodDrawer}
           />
         </div>
       );
@@ -61,7 +61,7 @@ class Day extends Component {
   render() {
     const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay } = this.props;
     return (
-      <Card>
+      <Card style={{ margin: '8px' }}>
         <CardTitle title={`Day ${idx}`}>
           <div style={styles.wrapper}>
             <Chip
@@ -104,7 +104,7 @@ Day.propTypes = {
   dayTotals: PropTypes.object.isRequired,
   calsPerDay: PropTypes.number.isRequired,
   proteinPerDay: PropTypes.number.isRequired,
-  handleOpenDrawer: PropTypes.func.isRequired,
+  handleOpenFoodDrawer: PropTypes.func.isRequired,
 };
 
 export default Day;

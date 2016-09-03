@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import { Card, CardText, CardTitle } from 'material-ui/Card';
+import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
 
 export default class TripDetails extends Component {
@@ -37,9 +38,9 @@ export default class TripDetails extends Component {
 
   render() {
     return (
-      <Card>
+      <Card style={{ margin: '8px' }}>
         <CardTitle
-          title="Trip details"
+          title={this.props.tripName}
           subtitle={`${this.props.numDays} days`}
         />
         <CardText>
@@ -66,6 +67,10 @@ export default class TripDetails extends Component {
             sliderStyle={{ marginTop: 12, marginBottom: 24 }}
           />
         </CardText>
+        <CardActions>
+          <FlatButton onTouchTap={this.props.openNameDialog} label="Rename Trip" />
+          <FlatButton onTouchTap={this.props.removeTrip} label="Delete Trip" />
+        </CardActions>
       </Card>
     );
   }
@@ -76,4 +81,7 @@ TripDetails.propTypes = {
   proteinPerDay: PropTypes.number.isRequired,
   tripId: PropTypes.string.isRequired,
   numDays: PropTypes.number.isRequired,
+  tripName: PropTypes.string.isRequired,
+  openNameDialog: PropTypes.func.isRequired,
+  removeTrip: PropTypes.func.isRequired,
 };

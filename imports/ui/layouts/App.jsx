@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
+import AppBar from 'material-ui/AppBar';
 
 import { Trips } from '../../api/trips.js';
 
@@ -13,10 +14,11 @@ import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodDrawer from '../components/FoodDrawer.jsx';
 
-
 const styles = {
   container: {
-    marginLeft: 256,
+    width: '100%',
+    maxWidth: '700px',
+    margin: '0px auto',
 
   },
 };
@@ -26,13 +28,15 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       showConnectionIssue: false,
-      open: false,
+      rightOpen: false,
+      leftOpen: false,
     };
     this.logout = this.logout.bind(this);
     this.removeTrip = this.removeTrip.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleToggleLeft = this.handleToggleLeft.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleOpenDrawer = this.handleOpenDrawer.bind(this);
+    this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -43,12 +47,13 @@ export default class App extends React.Component {
     }
   }
 
-  handleToggle() { this.setState({ open: !this.state.open }); }
-  handleOpenDrawer(dayId, mealId) {
+  handleToggle() { this.setState({ rightOpen: !this.state.rightOpen }); }
+  handleToggleLeft() { this.setState({ leftOpen: !this.state.leftOpen }); }
+  handleOpenFoodDrawer(dayId, mealId) {
     this.setState({ dayId, mealId });
     this.handleToggle();
   }
-  handleClose() { this.setState({ open: false }); }
+  handleClose() { this.setState({ rightOpen: false }); }
 
   removeTrip(id) {
     const trip = Trips.findOne({ _id: { $ne: id } });
@@ -76,46 +81,56 @@ export default class App extends React.Component {
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
       removeTrip: this.removeTrip,
-      handleOpenDrawer: this.handleOpenDrawer,
+      handleOpenFoodDrawer: this.handleOpenFoodDrawer,
     });
 
     return (
       <MuiThemeProvider>
-        <div id="container">
-
-          <Drawer docked>
-            <UserMenu user={user} logout={this.logout} />
-            <Divider />
-            <TripList trips={trips} />
-          </Drawer>
-
-          <div style={styles.container} id="content-container">
-            <ReactCSSTransitionGroup
-              transitionName="fade"
-              transitionEnterTimeout={400}
-              transitionLeaveTimeout={400}
+        <div>
+          <AppBar
+            title="Bear Can"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+            onLeftIconButtonTouchTap={this.handleToggleLeft}
+          />
+          <div id="container" style={styles.container}>
+            <Drawer
+              docked={false}
+              open={this.state.leftOpen}
+              onRequestChange={(leftOpen) => this.setState({ leftOpen })}
             >
-              {loading
-                ? <CircularProgress size={2} />
-                : clonedChildren}
-            </ReactCSSTransitionGroup>
+              <UserMenu user={user} logout={this.logout} />
+              <Divider />
+              <TripList trips={trips} />
+            </Drawer>
+
+            <div id="content-container">
+              <ReactCSSTransitionGroup
+                transitionName="fade"
+                transitionEnterTimeout={400}
+                transitionLeaveTimeout={400}
+              >
+                {loading
+                  ? <CircularProgress size={2} />
+                  : clonedChildren}
+              </ReactCSSTransitionGroup>
+            </div>
+
+            <Drawer
+              openSecondary
+              docked={false}
+              open={this.state.rightOpen}
+              onRequestChange={(rightOpen) => this.setState({ rightOpen })}
+            >
+              <FoodDrawer
+                foods={foods}
+                foodSort={foodSort}
+                handleCloseDrawer={this.handleClose}
+                dayId={this.state.dayId}
+                mealId={this.state.mealId}
+              />
+            </Drawer>
+
           </div>
-
-          <Drawer
-            openSecondary
-            docked={false}
-            open={this.state.open}
-            onRequestChange={(open) => this.setState({ open })}
-          >
-            <FoodDrawer
-              foods={foods}
-              foodSort={foodSort}
-              handleCloseDrawer={this.handleClose}
-              dayId={this.state.dayId}
-              mealId={this.state.mealId}
-            />
-          </Drawer>
-
         </div>
       </MuiThemeProvider>
     );
