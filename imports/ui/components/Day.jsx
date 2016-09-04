@@ -42,7 +42,8 @@ class Day extends Component {
         (mealFood) => (mealFood.mealId === meal._id));
       const div = (
         <div key={meal._id}>
-          <Resupply day={day} idx={idx} weight={resupplyWeight} />
+          {!(idx === 0 && this.props.idx === 1) ?
+            <Resupply day={day} idx={idx} weight={resupplyWeight} /> : ''}
           <Meal
             meal={meal}
             mealFoods={mf}

@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 
+import { ListItem } from 'material-ui/List';
+
 import { Meteor } from 'meteor/meteor';
 
 class Resupply extends Component {
@@ -22,12 +24,17 @@ class Resupply extends Component {
 
     if (day.resupply === idx) {
       return (
-        <span><button onClick={this.remove}>Remove</button>
-          Resupply! Weighing {weight} oz.
-        </span>
+        <ListItem
+          onClick={this.remove}
+          primaryText={`Resupply here, weighing ${weight} oz.`}
+          secondaryText="click to remove"
+        />
       );
     }
-    return <button onClick={this.insert}>Add resupply</button>;
+    return (<ListItem
+      onClick={this.insert}
+      secondaryText="click to add resupply"
+    />);
   }
 }
 

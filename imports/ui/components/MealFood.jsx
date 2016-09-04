@@ -65,6 +65,7 @@ class MealFood extends Component {
             onKeyDown={this.handleKeyDown}
             onChange={this.handleChange}
             style={{ width: '36px', height: '36px' }}
+            inputStyle={{ textAlign: 'center' }}
           />
           {this.state.qty > 1 ? 'servings' : 'serving'} {this.props.mealFood.name}
         </span>

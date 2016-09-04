@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import AddCircle from 'material-ui/svg-icons/content/add-circle';
 import Subheader from 'material-ui/Subheader';
+import Paper from 'material-ui/Paper';
 
 import MealFood from './MealFood.jsx';
 
@@ -30,18 +31,20 @@ class Meal extends Component {
     const { mealFoods } = this.props;
     const mealTotals = totals(mealFoods);
     return (
-      <List>
-        <Subheader>
-          {this.props.meal.name} (
-          {mealTotals.calories} calories, {mealTotals.protein} g protein, {mealTotals.weight} oz.)
-        </Subheader>
-        {this.renderMealFoods()}
-        <ListItem
-          primaryText={`Add food to ${this.props.meal.name}`}
-          leftIcon={<AddCircle />}
-          onTouchTap={this.handleOpenFoodDrawer}
-        />
-      </List>
+      <Paper>
+        <List>
+          <Subheader>
+            {this.props.meal.name} (
+            {mealTotals.calories} calories, {mealTotals.protein} g protein, {mealTotals.weight} oz.)
+          </Subheader>
+          {this.renderMealFoods()}
+          <ListItem
+            primaryText={`Add food to ${this.props.meal.name}`}
+            leftIcon={<AddCircle />}
+            onTouchTap={this.handleOpenFoodDrawer}
+          />
+        </List>
+      </Paper>
     );
   }
 }
