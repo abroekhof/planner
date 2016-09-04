@@ -88,7 +88,7 @@ export default class App extends React.Component {
       <MuiThemeProvider>
         <div>
           <AppBar
-            title="Bear Can"
+            title="bearcan"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             onLeftIconButtonTouchTap={this.handleToggleLeft}
           />

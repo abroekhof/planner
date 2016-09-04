@@ -76,6 +76,11 @@ export default class TripPage extends Component {
       const mealFoods = this.props.mealFoods.filter((mealFood) => (mealFood.dayId === day._id));
       const dayTotals = totals(mealFoods);
 
+      // catch the resupply at the end of the day
+      if (dayMeals.length === day.resupply) {
+        resupplyWeight = currWeight;
+        currWeight = 0;
+      }
       // go backwards through the meals
       for (let mealIdx = dayMeals.length - 1; mealIdx >= 0; mealIdx--) {
         const meal = dayMeals[mealIdx];
@@ -103,7 +108,7 @@ export default class TripPage extends Component {
           resupplyWeight={resupplyWeight}
           calsPerDay={this.props.trip.calsPerDay}
           proteinPerDay={this.props.trip.proteinPerDay}
-          idx={dayIdx + 1}
+          idx={dayIdx}
           handleOpenFoodDrawer={this.props.handleOpenFoodDrawer}
         />
       );

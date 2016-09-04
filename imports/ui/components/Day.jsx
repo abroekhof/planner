@@ -42,7 +42,7 @@ class Day extends Component {
         (mealFood) => (mealFood.mealId === meal._id));
       const div = (
         <div key={meal._id}>
-          {!(idx === 0 && this.props.idx === 1) ?
+          {!(idx === 0 && this.props.idx === 0) ?
             <Resupply day={day} idx={idx} weight={resupplyWeight} /> : ''}
           <Meal
             meal={meal}
@@ -55,7 +55,7 @@ class Day extends Component {
       idx++;
       return div;
     });
-    out.push(<Resupply key={idx} day={day} idx={idx} />);
+    out.push(<Resupply key={idx} day={day} idx={idx} weight={resupplyWeight} />);
     return out;
   }
 
@@ -63,7 +63,7 @@ class Day extends Component {
     const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay } = this.props;
     return (
       <Card style={{ margin: '8px' }}>
-        <CardTitle title={`Day ${idx}`}>
+        <CardTitle title={`Day ${idx + 1}`}>
           <div style={styles.wrapper}>
             <Chip
               style={styles.chip}
