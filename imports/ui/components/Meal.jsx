@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 
 import MealFood from './MealFood.jsx';
 
-import { totals } from '../helpers.js';
+import totals from '../helpers.js';
 
 
 class Meal extends Component {

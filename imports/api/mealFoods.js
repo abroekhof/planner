@@ -3,10 +3,10 @@ import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { Foods } from './foods.js';
-import { Meals } from './meals.js';
+import Foods from './foods.js';
+import Meals from './meals.js';
 
-export const MealFoods = new Mongo.Collection('mealFoods');
+const MealFoods = new Mongo.Collection('mealFoods');
 
 MealFoods.schema = new SimpleSchema({
   dayId: {
@@ -45,8 +45,10 @@ MealFoods.schema = new SimpleSchema({
 
 MealFoods.attachSchema(MealFoods.schema);
 
+export default MealFoods;
+
 Meteor.methods({
-  'mealFoods.insert'(foodId, mealId, dayId, qty) {
+  'mealFoods.insert': function mealFoodsInsert(foodId, mealId, dayId, qty) {
     check(foodId, String);
     check(mealId, String);
     check(dayId, String);
@@ -65,11 +67,11 @@ Meteor.methods({
       }
     );
   },
-  'mealFoods.remove'(mealFoodId) {
+  'mealFoods.remove': function mealFoodsRemove(mealFoodId) {
     check(mealFoodId, String);
     MealFoods.remove(mealFoodId);
   },
-  'mealFoods.updateQty'(mealFoodId, qty) {
+  'mealFoods.updateQty': function mealFoodsUpdateQty(mealFoodId, qty) {
     check(mealFoodId, String);
     check(qty, Number);
     MealFoods.update(

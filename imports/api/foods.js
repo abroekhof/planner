@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-export const Foods = new Mongo.Collection('foods');
+const Foods = new Mongo.Collection('foods');
 
 Foods.schema = new SimpleSchema({
   name: {
@@ -26,6 +26,8 @@ Foods.schema = new SimpleSchema({
 
 Foods.attachSchema(Foods.schema);
 
+export default Foods;
+
 if (Meteor.isServer) {
   Meteor.publish('foods', () => (
     Foods.find()
@@ -33,7 +35,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'foods.insert'(name, calories, protein, weight) {
+  'foods.insert': function foodsInsert(name, calories, protein, weight) {
     check(name, String);
     check(calories, Number);
     check(protein, Number);
@@ -47,7 +49,7 @@ Meteor.methods({
       createdAt: new Date(),
     });
   },
-  'foods.remove'(foodId) {
+  'foods.remove': function foodsRemove(foodId) {
     check(foodId, String);
 
     Foods.remove(foodId);

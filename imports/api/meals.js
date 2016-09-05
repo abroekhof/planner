@@ -1,8 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { MealFoods } from './mealFoods.js';
-import { Days } from './days.js';
+import MealFoods from './mealFoods.js';
+import Days from './days.js';
 
 class MealsCollection extends Mongo.Collection {
   remove(selector, callback) {
@@ -12,7 +12,7 @@ class MealsCollection extends Mongo.Collection {
   }
 }
 
-export const Meals = new MealsCollection('meals');
+const Meals = new MealsCollection('meals');
 
 Meals.schema = new SimpleSchema({
   name: {
@@ -27,6 +27,8 @@ Meals.schema = new SimpleSchema({
 });
 
 Meals.attachSchema(Meals.schema);
+
+export default Meals;
 
 Meals.helpers({
   mealFoods() {

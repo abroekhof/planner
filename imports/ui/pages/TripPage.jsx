@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import Day from '../components/Day.jsx';
 import TripDetails from '../components/TripDetails.jsx';
 
-import { totals } from '../helpers.js';
+import totals from '../helpers.js';
 
 export default class TripPage extends Component {
   constructor(props) {

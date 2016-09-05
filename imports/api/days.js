@@ -4,8 +4,8 @@ import { check } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { Meals } from './meals.js';
-import { MealFoods } from './mealFoods.js';
+import Meals from './meals.js';
+import MealFoods from './mealFoods.js';
 
 class DaysCollection extends Mongo.Collection {
   remove(selector, callback) {
@@ -15,7 +15,7 @@ class DaysCollection extends Mongo.Collection {
   }
 }
 
-export const Days = new DaysCollection('days');
+const Days = new DaysCollection('days');
 
 Days.schema = new SimpleSchema({
   resupply: {
@@ -43,6 +43,8 @@ Days.helpers({
     return MealFoods.find({ dayId: this._id });
   },
 });
+
+export default Days;
 
 if (Meteor.isServer) {
   Meteor.publishComposite('days', {
@@ -72,7 +74,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'days.insert'(tripId) {
+  'days.insert': function daysInsert(tripId) {
     check(tripId, String);
     const id = Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
       ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
@@ -85,11 +87,11 @@ Meteor.methods({
     });
     return id;
   },
-  'days.remove'(dayId) {
+  'days.remove': function daysRemove(dayId) {
     check(dayId, String);
     Days.remove(dayId);
   },
-  'days.updateResupply'(dayId, resupply) {
+  'days.updateResupply': function daysUpdateResupply(dayId, resupply) {
     check(dayId, String);
     check(resupply, Number);
     Days.update(
@@ -97,14 +99,14 @@ Meteor.methods({
       { $set: { resupply } }
     );
   },
-  'days.removeResupply'(dayId) {
+  'days.removeResupply': function daysRemoveResupply(dayId) {
     check(dayId, String);
     Days.update(
       dayId,
       { $unset: { resupply: '' } }
     );
   },
-  'days.duplicate'(dayId) {
+  'days.duplicate': function daysDuplicate(dayId) {
     check(dayId, String);
     // find the relevant day
     const day = Days.findOne(dayId);

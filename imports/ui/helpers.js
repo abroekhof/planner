@@ -1,4 +1,4 @@
-export const totals = (mealFoods) => (
+const totals = (mealFoods) => (
    mealFoods.reduce(
     (prevTotal, mealFood) => (
       {
@@ -14,3 +14,5 @@ export const totals = (mealFoods) => (
      }
    )
  );
+
+export default totals;

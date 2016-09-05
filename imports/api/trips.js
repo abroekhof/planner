@@ -3,13 +3,13 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { Days } from './days.js';
-import { Meals } from './meals.js';
-import { MealFoods } from './mealFoods.js';
+import Days from './days.js';
+import Meals from './meals.js';
+import MealFoods from './mealFoods.js';
 
 class TripsCollection extends Mongo.Collection {}
 
-export const Trips = new TripsCollection('trips');
+const Trips = new TripsCollection('trips');
 
 Trips.helpers({
   days() {
@@ -49,8 +49,10 @@ Trips.schema = new SimpleSchema({
 
 Trips.attachSchema(Trips.schema);
 
+export default Trips;
+
 Meteor.methods({
-  'trips.insert'() {
+  'trips.insert': function tripsInsert() {
     const tripId = Trips.insert({
       name: 'New Trip',
       calsPerDay: 3000,
@@ -63,14 +65,14 @@ Meteor.methods({
     // return trip id to be used for routing
     return tripId;
   },
-  'trips.remove'(tripId) {
+  'trips.remove': function tripsRemove(tripId) {
     check(tripId, String);
     Days.remove({ tripId });
     Meals.remove({ tripId });
     MealFoods.remove({ tripId });
     Trips.remove(tripId);
   },
-  'trips.updateTarget'(tripId, target, value) {
+  'trips.updateTarget': function tripsUpdateTarget(tripId, target, value) {
     check(tripId, String);
     check(target, String);
     check(value, Number);
@@ -79,7 +81,7 @@ Meteor.methods({
       { $set: { [target]: value } }
     );
   },
-  'trips.updateName'(tripId, name) {
+  'trips.updateName': function tripsUpdateName(tripId, name) {
     check(tripId, String);
     check(name, String);
     Trips.update(
