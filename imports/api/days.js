@@ -1,7 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema'
+import { Random } from 'meteor/random';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import { Meals } from './meals.js';
 import { MealFoods } from './mealFoods.js';
@@ -109,22 +110,22 @@ Meteor.methods({
     const day = Days.findOne(dayId);
     const newDay = JSON.parse(JSON.stringify(day));
     // assign the new day an ID
-    newDay._id = new Meteor.Collection.ObjectID()._str;
+    newDay._id = Random.id();
     newDay.createdAt = new Date();
     const newDayId = Days.insert(newDay);
 
     Meals.find({ dayId }).forEach((meal) => {
       const newMeal = JSON.parse(JSON.stringify(meal));
-      newMeal._id = new Meteor.Collection.ObjectID()._str;
+      newMeal._id = Random.id();
       newMeal.dayId = newDayId;
       const newMealId = Meals.insert(newMeal);
 
       MealFoods.find({ dayId, mealId: meal._id }).forEach((mealFood) => {
         const newMealFood = JSON.parse(JSON.stringify(mealFood));
-        newMealFood._id = new Meteor.Collection.ObjectID()._str;
+        newMealFood._id = Random.id();
         newMealFood.dayId = newDayId;
         newMealFood.mealId = newMealId;
-          MealFoods.insert(newMealFood);
+        MealFoods.insert(newMealFood);
       });
     });
   },

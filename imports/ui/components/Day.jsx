@@ -63,11 +63,11 @@ class Day extends Component {
     const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay } = this.props;
     return (
       <Card style={{ margin: '8px' }}>
-        <CardTitle title={`Day ${idx + 1}`}>
+        <CardTitle style={{ padding: '16px 16px 0 16px' }} title={`Day ${idx + 1}`}>
           <div style={styles.wrapper}>
             <Chip
               style={styles.chip}
-              backgroundColor={(dayTotals.calories > calsPerDay) ? green100 : red100}
+              backgroundColor={(dayTotals.calories >= calsPerDay) ? green100 : red100}
             >
               {dayTotals.calories} calories
             </Chip>

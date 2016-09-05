@@ -16,8 +16,6 @@ export default class TripList extends React.Component {
     Meteor.call('trips.insert', (err, result) => {
       if (err) {
         router.push('/');
-        /* eslint-disable no-alert */
-        alert(err);
       } else {
         router.push(`/trips/${result}`);
       }

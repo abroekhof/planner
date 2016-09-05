@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema'
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 export const Foods = new Mongo.Collection('foods');
 

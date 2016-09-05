@@ -17,7 +17,7 @@ import FoodDrawer from '../components/FoodDrawer.jsx';
 const styles = {
   container: {
     width: '100%',
-    maxWidth: '700px',
+    maxWidth: '500px',
     margin: '0px auto',
 
   },
@@ -88,7 +88,7 @@ export default class App extends React.Component {
       <MuiThemeProvider>
         <div>
           <AppBar
-            title="bearcan"
+            title="bear can"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             onLeftIconButtonTouchTap={this.handleToggleLeft}
           />
