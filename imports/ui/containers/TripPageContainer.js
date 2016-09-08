@@ -10,8 +10,9 @@ import TripPage from '../pages/TripPage.jsx';
 
 /* global TripPageContainer:true */
 export default TripPageContainer = createContainer(({ params: { tripId } }) => {
-  Meteor.subscribe('days.inTrip', tripId);
-  Meteor.subscribe('foods');
+  const daysHandle = Meteor.subscribe('days.inTrip', tripId);
+  const foodsHandle = Meteor.subscribe('foods');
+  const loading = !daysHandle.ready() || !foodsHandle.ready();
   return {
     trip: Trips.findOne(tripId),
     foods: Foods.find().fetch(),
@@ -19,5 +20,6 @@ export default TripPageContainer = createContainer(({ params: { tripId } }) => {
     meals: Meals.find().fetch(),
     mealFoods: MealFoods.find().fetch(),
     currentUser: Meteor.user(),
+    loading,
   };
 }, TripPage);

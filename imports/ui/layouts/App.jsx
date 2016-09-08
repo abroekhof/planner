@@ -120,6 +120,7 @@ export default class App extends React.Component {
               docked={false}
               open={this.state.rightOpen}
               onRequestChange={(rightOpen) => this.setState({ rightOpen })}
+              width={400}
             >
               <FoodDrawer
                 foods={foods}

@@ -159,7 +159,7 @@ export default class TripPage extends Component {
           removeTrip={this.removeTrip}
         />
 
-        {this.renderDays()}
+        {this.props.loading ? 'loading' : this.renderDays()}
 
         <FloatingActionButton
           onClick={this.handleAddDay}
@@ -188,4 +188,5 @@ TripPage.propTypes = {
   currentUser: PropTypes.object,
   removeTrip: PropTypes.func.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
