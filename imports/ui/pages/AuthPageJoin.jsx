@@ -27,7 +27,6 @@ export default class JoinPage extends React.Component {
       errors.email = 'Email required';
     }
     if (!this.state.password) {
-      console.log(this.state.password);
       errors.password = 'Password required';
     }
     if (this.state.confirm !== this.state.password) {
@@ -44,6 +43,7 @@ export default class JoinPage extends React.Component {
       password: this.state.password,
     }, err => {
       if (err) {
+        console.log(err);
         this.setState({
           errors: { none: err.reason },
         });
