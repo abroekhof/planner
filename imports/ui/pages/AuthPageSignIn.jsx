@@ -28,11 +28,9 @@ export default class SignInPage extends React.Component {
     if (!this.state.password) {
       errors.password = 'Password required';
     }
-    if (this.state.confirm !== this.state.password) {
-      errors.confirm = 'Please confirm your password';
-    }
 
     this.setState({ errors });
+
     if (Object.keys(errors).length) {
       return;
     }
@@ -42,6 +40,7 @@ export default class SignInPage extends React.Component {
         this.setState({
           errors: { none: err.reason },
         });
+        return;
       }
       this.context.router.push('/');
     });

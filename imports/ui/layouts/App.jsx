@@ -7,8 +7,9 @@ import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import AppBar from 'material-ui/AppBar';
+import Snackbar from 'material-ui/Snackbar';
 
-import { Trips } from '../../api/trips.js';
+import Trips from '../../api/trips.js';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
@@ -132,7 +133,12 @@ export default class App extends React.Component {
             </Drawer>
 
           </div>
+          <Snackbar
+            open={this.props.user === null}
+            message={"You must be logged in to save trips "}
+          />
         </div>
+
       </MuiThemeProvider>
     );
   }
