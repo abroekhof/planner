@@ -39,7 +39,6 @@ export default class SignInPage extends React.Component {
 
     Meteor.loginWithPassword(this.state.email, this.state.password, err => {
       if (err) {
-        console.log(err);
         this.setState({
           errors: { none: err.reason },
         });

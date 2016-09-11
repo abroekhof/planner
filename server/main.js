@@ -9,6 +9,7 @@ import '../imports/api/days.js';
 import '../imports/api/meals.js';
 import '../imports/api/mealFoods.js';
 import '../imports/api/trips.js';
+import '../imports/api/accounts.js';
 
 Meteor.startup(() => {
   // code to run on server at startup

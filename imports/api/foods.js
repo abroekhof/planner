@@ -12,15 +12,15 @@ Foods.schema = new SimpleSchema({
   },
   calories: {
     type: Number,
-    defaultValue: 3000,
+    decimal: true,
   },
   protein: {
     type: Number,
-    defaultValue: 100,
+    decimal: true,
   },
   weight: {
     type: Number,
-    defaultValue: 100,
+    decimal: true,
   },
 });
 
