@@ -41,10 +41,21 @@ export default class App extends React.Component {
   }
 
   componentWillReceiveProps({ loading, children }) {
+    const { router } = this.context;
     // redirect / to a list once lists are ready
     if (!loading && !children) {
       const trip = Trips.findOne();
-      this.context.router.replace(`/trips/${trip._id}`);
+      if (trip) {
+        router.replace(`/trips/${trip._id}`);
+      } else {
+        Meteor.call('trips.insert', (err, result) => {
+          if (err) {
+            router.push('/');
+          } else {
+            router.push(`/trips/${result}`);
+          }
+        });
+      }
     }
   }
 
