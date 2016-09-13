@@ -81,7 +81,6 @@ Meteor.methods({
         Meals.insert({
           dayId,
           name,
-          createdAt: new Date(),
         });
       });
     });

@@ -12,9 +12,11 @@ import TripPage from '../pages/TripPage.jsx';
 export default TripPageContainer = createContainer(({ params: { tripId } }) => {
   const daysHandle = Meteor.subscribe('days.inTrip', tripId);
   const foodsHandle = Meteor.subscribe('foods');
-  const loading = !daysHandle.ready() || !foodsHandle.ready();
+  const trip = Trips.findOne(tripId);
+  const loading = !daysHandle.ready() || !foodsHandle.ready() || !trip;
+
   return {
-    trip: Trips.findOne(tripId),
+    trip,
     foods: Foods.find().fetch(),
     days: Days.find().fetch(),
     meals: Meals.find().fetch(),

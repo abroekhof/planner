@@ -118,7 +118,7 @@ export default class TripPage extends Component {
   }
 
   render() {
-    const { trip, days } = this.props;
+    const { trip, days, loading } = this.props;
     const numDays = days.length;
     const actions = [
       <FlatButton
@@ -132,6 +132,11 @@ export default class TripPage extends Component {
         onTouchTap={this.handleClose}
       />,
     ];
+    if (loading) {
+      return (
+        <div>loading</div>
+      );
+    }
     return (
       <div className="container">
 
@@ -159,7 +164,7 @@ export default class TripPage extends Component {
           removeTrip={this.removeTrip}
         />
 
-        {this.props.loading ? 'loading' : this.renderDays()}
+        {this.renderDays()}
 
         <FloatingActionButton
           onClick={this.handleAddDay}
@@ -180,7 +185,7 @@ export default class TripPage extends Component {
 }
 
 TripPage.propTypes = {
-  trip: PropTypes.object.isRequired,
+  trip: PropTypes.object,
   foods: PropTypes.array.isRequired,
   days: PropTypes.array.isRequired,
   meals: PropTypes.array.isRequired,

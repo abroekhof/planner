@@ -32,7 +32,6 @@ export default class App extends React.Component {
       rightOpen: false,
       leftOpen: false,
     };
-    this.logout = this.logout.bind(this);
     this.removeTrip = this.removeTrip.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleToggleLeft = this.handleToggleLeft.bind(this);
@@ -40,18 +39,20 @@ export default class App extends React.Component {
     this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
   }
 
-  componentWillReceiveProps({ loading, children }) {
+  componentWillReceiveProps({ loading, children, sessionId }) {
     const { router } = this.context;
     // redirect / to a list once lists are ready
     if (!loading && !children) {
       const trip = Trips.findOne();
       if (trip) {
+        this.setState({ currTrip: trip._id });
         router.replace(`/trips/${trip._id}`);
       } else {
-        Meteor.call('trips.insert', (err, result) => {
+        Meteor.call('trips.insert', sessionId, (err, result) => {
           if (err) {
             router.push('/');
           } else {
+            this.setState({ currTrip: result });
             router.push(`/trips/${result}`);
           }
         });
@@ -73,10 +74,6 @@ export default class App extends React.Component {
     Meteor.call('trips.remove', id);
   }
 
-  logout() {
-    Meteor.logout();
-  }
-
   render() {
     const {
       user,
@@ -86,12 +83,14 @@ export default class App extends React.Component {
       location,
       foods,
       foodSort,
+      sessionId,
     } = this.props;
 
     // clone route components with keys so that they can
     // have transitions
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
+      currTrip: this.state.currTrip,
       removeTrip: this.removeTrip,
       handleOpenFoodDrawer: this.handleOpenFoodDrawer,
     });
@@ -110,9 +109,9 @@ export default class App extends React.Component {
               open={this.state.leftOpen}
               onRequestChange={(leftOpen) => this.setState({ leftOpen })}
             >
-              <UserMenu user={user} logout={this.logout} />
+              <UserMenu user={user} sessionId={sessionId} />
               <Divider />
-              <TripList trips={trips} />
+              <TripList trips={trips} sessionId={sessionId} />
             </Drawer>
 
             <div id="content-container">
@@ -166,6 +165,7 @@ App.propTypes = {
   params: React.PropTypes.object,    // parameters of the current route
   foods: React.PropTypes.array,
   foodSort: React.PropTypes.object,
+  sessionId: React.PropTypes.string,
 };
 
 App.contextTypes = {

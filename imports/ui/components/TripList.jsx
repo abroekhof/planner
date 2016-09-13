@@ -13,7 +13,7 @@ export default class TripList extends React.Component {
 
   createNewTrip() {
     const { router } = this.context;
-    Meteor.call('trips.insert', (err, result) => {
+    Meteor.call('trips.insert', this.props.sessionId, (err, result) => {
       if (err) {
         router.push('/');
       } else {
@@ -47,6 +47,7 @@ export default class TripList extends React.Component {
 
 TripList.propTypes = {
   trips: React.PropTypes.array,
+  sessionId: React.PropTypes.string,
 };
 
 TripList.contextTypes = {

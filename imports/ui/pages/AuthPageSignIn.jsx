@@ -35,14 +35,19 @@ export default class SignInPage extends React.Component {
       return;
     }
 
-    Meteor.loginWithPassword(this.state.email, this.state.password, err => {
+    const { currTrip } = this.props;
+    const { router } = this.context;
+
+    Meteor.loginWithPassword(this.state.email, this.state.password, function callback(err) {
       if (err) {
         this.setState({
           errors: { none: err.reason },
         });
         return;
       }
-      this.context.router.push('/');
+      Meteor.call('trips.updateUserId', currTrip, () => {
+        router.push('/');
+      });
     });
   }
 

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router';
 import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -38,17 +39,22 @@ export default class JoinPage extends React.Component {
       return;
     }
 
+    const { currTrip } = this.props;
+    const { router } = this.context;
+
     Accounts.createUser({
       email: this.state.email,
       password: this.state.password,
-    }, err => {
+    }, function callback(err) {
       if (err) {
-        console.log(err);
         this.setState({
           errors: { none: err.reason },
         });
+        return;
       }
-      this.context.router.push('/');
+      Meteor.call('trips.updateUserId', currTrip, () => {
+        router.push('/');
+      });
     });
   }
 

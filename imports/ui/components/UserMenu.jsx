@@ -1,18 +1,31 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
 export default class UserMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    const { router } = this.context;
+    Meteor.logout(() => {
+      router.push('/');
+    });
+  }
+
   renderLoggedIn() {
-    const { user, logout } = this.props;
+    const { user } = this.props;
     const email = user.emails[0].address;
     const emailLocalPart = email.substring(0, email.indexOf('@'));
 
     return (
       <List>
         <Subheader>{emailLocalPart}</Subheader>
-        <ListItem primaryText="Log out" onClick={logout} />
+        <ListItem primaryText="Log out" onClick={this.handleLogout} />
       </List>
     );
   }
@@ -35,5 +48,8 @@ export default class UserMenu extends React.Component {
 
 UserMenu.propTypes = {
   user: React.PropTypes.object,
-  logout: React.PropTypes.func,
+};
+
+UserMenu.contextTypes = {
+  router: React.PropTypes.object,
 };

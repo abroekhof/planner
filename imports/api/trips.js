@@ -18,9 +18,13 @@ Trips.helpers({
 });
 
 if (Meteor.isServer) {
-  Meteor.publish('trips', () => (
-    Trips.find()
-  ));
+  Meteor.publish('trips', function publishTrips(sessionId) {
+    check(sessionId, String);
+    if (this.userId) {
+      return Trips.find({ userId: this.userId });
+    }
+    return Trips.find({ sessionId });
+  });
 }
 
 Trips.schema = new SimpleSchema({
@@ -45,6 +49,11 @@ Trips.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
   },
+  sessionId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
 });
 
 Trips.attachSchema(Trips.schema);
@@ -52,12 +61,15 @@ Trips.attachSchema(Trips.schema);
 export default Trips;
 
 Meteor.methods({
-  'trips.insert': function tripsInsert() {
+  'trips.insert': function tripsInsert(sessionId) {
+    check(sessionId, String);
     const tripId = Trips.insert({
       name: 'New Trip',
       calsPerDay: 3000,
       proteinPerDay: 100,
       createdAt: new Date(),
+      userId: this.userId,
+      sessionId,
     });
     // insert a day to get things started
     Meteor.call('days.insert', tripId);
@@ -86,6 +98,21 @@ Meteor.methods({
     Trips.update(
       tripId,
       { $set: { name } }
+    );
+  },
+  'trips.updateUserId': function tripsUpdateName(tripId) {
+    check(tripId, String);
+    Trips.update(
+      tripId,
+      { $set: { userId: this.userId } }
+    );
+  },
+  'trips.updateSessionId': function tripsUpdateName(tripId, sessionId) {
+    check(sessionId, String);
+    check(tripId, String);
+    Trips.update(
+      tripId,
+      { $set: { sessionId } }
     );
   },
 });
