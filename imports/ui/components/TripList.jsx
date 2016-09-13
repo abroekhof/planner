@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
 import { List, ListItem } from 'material-ui/List';
+import ContentAddBox from 'material-ui/svg-icons/content/add-box';
+import Subheader from 'material-ui/Subheader';
 
 export default class TripList extends React.Component {
   constructor(props) {
@@ -26,7 +28,12 @@ export default class TripList extends React.Component {
     const { trips } = this.props;
     return (
       <List>
-        <ListItem primaryText="Create New Trip" onClick={this.createNewTrip} />
+        <ListItem
+          primaryText="Create New Trip"
+          onClick={this.createNewTrip}
+          leftIcon={<ContentAddBox />}
+        />
+        <Subheader>My Trips</Subheader>
         {trips.map(trip => (
           <ListItem
             primaryText={trip.name}
