@@ -54,7 +54,13 @@ export default class FoodDrawer extends Component {
 
   addFoods() {
     this.state.selectedFoods.forEach((foodId) =>
-      Meteor.call('mealFoods.insert', foodId, this.props.mealId, this.props.dayId, 1)
+      Meteor.call('mealFoods.insert',
+      foodId,
+      this.props.tripId,
+      this.props.mealId,
+      this.props.dayId,
+      1
+    )
     );
     this.props.handleCloseDrawer();
     this.clearSelectedFoods();
@@ -158,4 +164,5 @@ FoodDrawer.propTypes = {
   handleCloseDrawer: PropTypes.func.isRequired,
   mealId: PropTypes.string,
   dayId: PropTypes.string,
+  tripId: PropTypes.string,
 };

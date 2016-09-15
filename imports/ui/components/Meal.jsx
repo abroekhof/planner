@@ -18,7 +18,7 @@ class Meal extends Component {
   }
 
   handleOpenFoodDrawer() {
-    this.props.handleOpenFoodDrawer(this.props.dayId, this.props.meal._id);
+    this.props.handleOpenFoodDrawer(this.props.tripId, this.props.dayId, this.props.meal._id);
   }
 
   renderMealFoods() {
@@ -51,6 +51,7 @@ class Meal extends Component {
 
 Meal.propTypes = {
   meal: PropTypes.object.isRequired,
+  tripId: PropTypes.string.isRequired,
   dayId: PropTypes.string.isRequired,
   mealFoods: PropTypes.array.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,

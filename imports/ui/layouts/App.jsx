@@ -62,8 +62,8 @@ export default class App extends React.Component {
 
   handleToggle() { this.setState({ rightOpen: !this.state.rightOpen }); }
   handleToggleLeft() { this.setState({ leftOpen: !this.state.leftOpen }); }
-  handleOpenFoodDrawer(dayId, mealId) {
-    this.setState({ dayId, mealId });
+  handleOpenFoodDrawer(tripId, dayId, mealId) {
+    this.setState({ tripId, dayId, mealId });
     this.handleToggle();
   }
   handleClose() { this.setState({ rightOpen: false }); }
@@ -135,6 +135,7 @@ export default class App extends React.Component {
                 foods={foods}
                 foodSort={foodSort}
                 handleCloseDrawer={this.handleClose}
+                tripId={this.state.tripId}
                 dayId={this.state.dayId}
                 mealId={this.state.mealId}
               />

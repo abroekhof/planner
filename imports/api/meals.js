@@ -30,6 +30,11 @@ Meals.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
   },
+  tripId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: false,
+  },
 });
 
 Meals.attachSchema(Meals.schema);

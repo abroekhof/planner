@@ -35,7 +35,7 @@ class Day extends Component {
   }
 
   renderMeals() {
-    const { meals, mealFoods, day, resupplyWeight, handleOpenFoodDrawer } = this.props;
+    const { meals, mealFoods, tripId, day, resupplyWeight, handleOpenFoodDrawer } = this.props;
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
@@ -47,6 +47,7 @@ class Day extends Component {
           <Meal
             meal={meal}
             mealFoods={mf}
+            tripId={tripId}
             dayId={day._id}
             handleOpenFoodDrawer={handleOpenFoodDrawer}
           />
@@ -95,6 +96,7 @@ class Day extends Component {
 }
 
 Day.propTypes = {
+  tripId: PropTypes.string.isRequired,
   day: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
   meals: PropTypes.array.isRequired,

@@ -19,6 +19,7 @@ class DaysCollection extends Mongo.Collection {
       Meals.insert({
         dayId,
         name,
+        tripId: doc.tripId,
         userId: doc.userId,
       });
     });

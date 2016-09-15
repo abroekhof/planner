@@ -100,6 +100,7 @@ export default class TripPage extends Component {
       const newDay = (
         <Day
           key={day._id}
+          tripId={this.props.trip._id}
           day={day}
           meals={dayMeals}
           mealFoods={mealFoods}

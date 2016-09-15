@@ -9,6 +9,11 @@ import Meals from './meals.js';
 const MealFoods = new Mongo.Collection('mealFoods');
 
 MealFoods.schema = new SimpleSchema({
+  tripId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: false,
+  },
   dayId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -57,7 +62,8 @@ MealFoods.attachSchema(MealFoods.schema);
 export default MealFoods;
 
 Meteor.methods({
-  'mealFoods.insert': function mealFoodsInsert(foodId, mealId, dayId, qty) {
+  'mealFoods.insert': function mealFoodsInsert(foodId, tripId, mealId, dayId, qty) {
+    check(tripId, String);
     check(foodId, String);
     check(mealId, String);
     check(dayId, String);
@@ -65,6 +71,7 @@ Meteor.methods({
     const food = Foods.findOne(foodId);
     MealFoods.insert(
       {
+        tripId,
         foodId,
         mealId,
         dayId,
