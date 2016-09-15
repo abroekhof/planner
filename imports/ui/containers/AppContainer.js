@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { createContainer } from 'meteor/react-meteor-data';
 
@@ -11,10 +10,9 @@ import App from '../layouts/App.jsx';
 
 // Store the sort order for the Food list
 const foodSort = new ReactiveVar('name');
-const sessionId = Random.id();
 
 export default createContainer(() => {
-  const tripsHandle = Meteor.subscribe('trips', sessionId);
+  const tripsHandle = Meteor.subscribe('trips');
   const foodsHandle = Meteor.subscribe('foods');
   const foodOpt = { sort: {} };
   foodOpt.sort[foodSort.get()] = -1;
@@ -25,6 +23,5 @@ export default createContainer(() => {
     trips: Trips.find().fetch(),
     foods: Foods.find({}, foodOpt).fetch(),
     foodSort,
-    sessionId,
   };
 }, App);

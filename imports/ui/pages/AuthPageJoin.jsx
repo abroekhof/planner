@@ -106,7 +106,7 @@ export default class JoinPage extends React.Component {
 }
 
 JoinPage.propTypes = {
-  currTrip: React.PropTypes.string.isRequired,
+  currTrip: React.PropTypes.string,
 };
 
 JoinPage.contextTypes = {

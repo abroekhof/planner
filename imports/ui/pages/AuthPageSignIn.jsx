@@ -91,7 +91,7 @@ export default class SignInPage extends React.Component {
 }
 
 SignInPage.propTypes = {
-  currTrip: React.PropTypes.string.isRequired,
+  currTrip: React.PropTypes.string,
 };
 
 SignInPage.contextTypes = {

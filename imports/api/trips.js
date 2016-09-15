@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import Days from './days.js';
@@ -18,12 +19,8 @@ Trips.helpers({
 });
 
 if (Meteor.isServer) {
-  Meteor.publish('trips', function publishTrips(sessionId) {
-    check(sessionId, String);
-    if (this.userId) {
-      return Trips.find({ userId: this.userId });
-    }
-    return Trips.find({ sessionId });
+  Meteor.publish('trips', function publishTrips() {
+    return Trips.find({ $or: [{ sessionId: this.connection.id }, { userId: this.userId }] });
   });
 }
 
@@ -61,8 +58,9 @@ Trips.attachSchema(Trips.schema);
 export default Trips;
 
 Meteor.methods({
-  'trips.insert': function tripsInsert(sessionId) {
-    check(sessionId, String);
+  'trips.insert': function tripsInsert() {
+    let sessionId = Random.id();
+    if (!this.isSimulation) { sessionId = this.connection.id; }
     const tripId = Trips.insert({
       name: 'New Trip',
       calsPerDay: 3000,
@@ -105,14 +103,6 @@ Meteor.methods({
     Trips.update(
       tripId,
       { $set: { userId: this.userId } }
-    );
-  },
-  'trips.updateSessionId': function tripsUpdateName(tripId, sessionId) {
-    check(sessionId, String);
-    check(tripId, String);
-    Trips.update(
-      tripId,
-      { $set: { sessionId } }
     );
   },
 });

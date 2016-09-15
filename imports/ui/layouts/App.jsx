@@ -39,20 +39,21 @@ export default class App extends React.Component {
     this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
   }
 
-  componentWillReceiveProps({ loading, children, sessionId }) {
+  componentWillReceiveProps({ loading, children }) {
     const { router } = this.context;
+    const self = this;
     // redirect / to a list once lists are ready
     if (!loading && !children) {
       const trip = Trips.findOne();
       if (trip) {
-        this.setState({ currTrip: trip._id });
+        self.setState({ currTrip: trip._id });
         router.replace(`/trips/${trip._id}`);
       } else {
-        Meteor.call('trips.insert', sessionId, (err, result) => {
+        Meteor.call('trips.insert', (err, result) => {
           if (err) {
             router.push('/');
           } else {
-            this.setState({ currTrip: result });
+            self.setState({ currTrip: result });
             router.push(`/trips/${result}`);
           }
         });
@@ -83,7 +84,6 @@ export default class App extends React.Component {
       location,
       foods,
       foodSort,
-      sessionId,
     } = this.props;
 
     // clone route components with keys so that they can
@@ -93,6 +93,7 @@ export default class App extends React.Component {
       currTrip: this.state.currTrip,
       removeTrip: this.removeTrip,
       handleOpenFoodDrawer: this.handleOpenFoodDrawer,
+      location,
     });
 
     return (
@@ -109,9 +110,9 @@ export default class App extends React.Component {
               open={this.state.leftOpen}
               onRequestChange={(leftOpen) => this.setState({ leftOpen })}
             >
-              <UserMenu user={user} sessionId={sessionId} />
+              <UserMenu user={user} />
               <Divider />
-              <TripList trips={trips} sessionId={sessionId} />
+              {user ? <TripList trips={trips} /> : ''}
             </Drawer>
 
             <div id="content-container">
@@ -165,7 +166,6 @@ App.propTypes = {
   params: React.PropTypes.object,    // parameters of the current route
   foods: React.PropTypes.array,
   foodSort: React.PropTypes.object,
-  sessionId: React.PropTypes.string,
 };
 
 App.contextTypes = {
