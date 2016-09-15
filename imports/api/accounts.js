@@ -53,16 +53,14 @@ Schema.UserProfile = new SimpleSchema({
 Schema.User = new SimpleSchema({
   username: {
     type: String,
-    // For accounts-password, either emails or username is required, but not both. It is OK to make this
-    // optional here because the accounts-password package does its own validation.
-    // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
+    // For accounts-password, either emails or username is required, but not both. It is OK to
+    // make this optional here because the accounts-password package does its own validation.
     optional: true,
   },
   emails: {
     type: Array,
-    // For accounts-password, either emails or username is required, but not both. It is OK to make this
-    // optional here because the accounts-password package does its own validation.
-    // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
+    // For accounts-password, either emails or username is required, but not both. It is OK to
+    // make this optional here because the accounts-password package does its own validation.
     optional: true,
   },
   'emails.$': {
@@ -75,7 +73,8 @@ Schema.User = new SimpleSchema({
   'emails.$.verified': {
     type: Boolean,
   },
-  // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
+  // Use this registered_emails field if you are using
+  // splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
   registered_emails: {
     type: Array,
     optional: true,

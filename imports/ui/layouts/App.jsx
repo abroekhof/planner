@@ -69,8 +69,7 @@ export default class App extends React.Component {
   handleClose() { this.setState({ rightOpen: false }); }
 
   removeTrip(id) {
-    const trip = Trips.findOne({ _id: { $ne: id } });
-    this.context.router.replace(`/trips/${trip._id}`);
+    this.context.router.replace('/');
     Meteor.call('trips.remove', id);
   }
 

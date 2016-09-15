@@ -21,6 +21,11 @@ MealFoods.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
   qty: {
     type: Number,
     defaultValue: 1,
@@ -63,6 +68,7 @@ Meteor.methods({
         foodId,
         mealId,
         dayId,
+        userId: this.userId,
         qty,
         name: food.name,
         calories: food.calories,

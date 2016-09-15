@@ -13,6 +13,17 @@ class DaysCollection extends Mongo.Collection {
     Meals.remove({ dayId: selector });
     return super.remove(selector, callback);
   }
+  insert(doc, callback) {
+    const dayId = super.insert(doc, callback);
+    ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
+      Meals.insert({
+        dayId,
+        name,
+        userId: doc.userId,
+      });
+    });
+    return dayId;
+  }
 }
 
 const Days = new DaysCollection('days');
@@ -25,11 +36,12 @@ Days.schema = new SimpleSchema({
   tripId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
-    optional: true,
+    optional: false,
   },
-  createdAt: {
-    type: Date,
-    denyUpdate: true,
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
   },
 });
 
@@ -76,15 +88,11 @@ if (Meteor.isServer) {
 Meteor.methods({
   'days.insert': function daysInsert(tripId) {
     check(tripId, String);
-    const id = Days.insert({ tripId, createdAt: new Date() }, (err, dayId) => {
-      ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
-        Meals.insert({
-          dayId,
-          name,
-        });
-      });
+    return Days.insert({
+      tripId,
+      userId: this.userId,
+      createdAt: new Date(),
     });
-    return id;
   },
   'days.remove': function daysRemove(dayId) {
     check(dayId, String);

@@ -5,16 +5,31 @@ import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import Days from './days.js';
-import Meals from './meals.js';
-import MealFoods from './mealFoods.js';
 
-class TripsCollection extends Mongo.Collection {}
+class TripsCollection extends Mongo.Collection {
+  remove(selector, callback) {
+    // also remove all child days
+    Days.remove({ tripId: selector });
+    return super.remove(selector, callback);
+  }
+  insert(doc, callback) {
+    const tripId = super.insert(doc, callback);
+    Days.insert({ tripId, userId: doc.userId });
+    return tripId;
+  }
+}
 
 const Trips = new TripsCollection('trips');
 
 Trips.helpers({
   days() {
     return Days.find({ tripId: this._id });
+  },
+  editableBy(userId) {
+    if (!this.userId) {
+      return true;
+    }
+    return this.userId === userId;
   },
 });
 
@@ -77,16 +92,11 @@ Meteor.methods({
       userId: this.userId,
       sessionId,
     });
-    // insert a day to get things started
-    Meteor.call('days.insert', tripId);
     // return trip id to be used for routing
     return tripId;
   },
   'trips.remove': function tripsRemove(tripId) {
     check(tripId, String);
-    Days.remove({ tripId });
-    Meals.remove({ tripId });
-    MealFoods.remove({ tripId });
     Trips.remove(tripId);
   },
   'trips.updateTarget': function tripsUpdateTarget(tripId, target, value) {
@@ -110,9 +120,12 @@ Meteor.methods({
     let sessionId = Random.id();
     if (!this.isSimulation) { sessionId = this.connection.id; }
     console.log(sessionId);
+    const trip = Trips.findOne({ sessionId });
+    if (!trip) { return; }
     Trips.update(
-      { sessionId },
+      trip._id,
       { $set: { userId: this.userId } }
     );
+    Meteor.call('days.updateUserId', trip._id);
   },
 });

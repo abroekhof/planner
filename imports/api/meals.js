@@ -3,6 +3,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import MealFoods from './mealFoods.js';
 import Days from './days.js';
+import Trips from './trips.js';
 
 class MealsCollection extends Mongo.Collection {
   remove(selector, callback) {
@@ -22,6 +23,11 @@ Meals.schema = new SimpleSchema({
   dayId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
+    optional: false,
+  },
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
     optional: true,
   },
 });
@@ -36,5 +42,9 @@ Meals.helpers({
   },
   day() {
     return Days.findOne(this.dayId);
+  },
+  trip() {
+    const day = this.day();
+    return Trips.findOne(day.tripId);
   },
 });
