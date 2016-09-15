@@ -41,14 +41,20 @@ export default class JoinPage extends React.Component {
 
     const { currTrip } = this.props;
     const { router } = this.context;
+    const self = this;
 
     Accounts.createUser({
       email: this.state.email,
       password: this.state.password,
-    }, function callback(err) {
+    }, (err) => {
       if (err) {
-        this.setState({
-          errors: { none: err.reason },
+        console.log(err);
+        let key;
+        if (err.reason === 'Email already exists.') {
+          key = 'email';
+        }
+        self.setState({
+          errors: { [key]: err.reason },
         });
         return;
       }

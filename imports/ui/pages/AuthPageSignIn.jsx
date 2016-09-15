@@ -37,11 +37,19 @@ export default class SignInPage extends React.Component {
 
     const { currTrip } = this.props;
     const { router } = this.context;
+    const self = this;
 
-    Meteor.loginWithPassword(this.state.email, this.state.password, function callback(err) {
+    Meteor.loginWithPassword(this.state.email, this.state.password, (err) => {
       if (err) {
-        this.setState({
-          errors: { none: err.reason },
+        let key;
+        if (err.reason === 'User not found') {
+          key = 'email';
+        }
+        if (err.reason === 'Incorrect password') {
+          key = 'password';
+        }
+        self.setState({
+          errors: { [key]: err.reason },
         });
         return;
       }

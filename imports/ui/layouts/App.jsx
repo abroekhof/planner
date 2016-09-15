@@ -46,9 +46,11 @@ export default class App extends React.Component {
     if (!loading && !children) {
       const trip = Trips.findOne();
       if (trip) {
+        console.log('found trip');
         self.setState({ currTrip: trip._id });
         router.replace(`/trips/${trip._id}`);
       } else {
+        console.log('creating trip');
         Meteor.call('trips.insert', (err, result) => {
           if (err) {
             router.push('/');
