@@ -78,6 +78,7 @@ export default class FoodDrawer extends Component {
       return (
         <RaisedButton
           label="Add selected foods"
+          style={{ width: '50%' }}
           onTouchTap={this.addFoods}
           primary
           disabled={this.state.selectedFoods.length <= 0}
@@ -99,30 +100,42 @@ export default class FoodDrawer extends Component {
           handleOpen={this.handleOpen}
           open={this.state.open}
         />
-        <RaisedButton label="Create food" onTouchTap={this.handleOpen} primary />
+        <div style={{ padding: '12px' }}>
+          <RaisedButton
+            fullWidth
+            label="Create food"
+            onTouchTap={this.handleOpen}
+            primary
+          />
+        </div>
         <Divider />
-        <TextField
-          id="foodFilter"
-          floatingLabelText="Filter foods"
-          value={this.state.foodFilter}
-          onChange={this.handleTextFieldChange}
-        />
-        <SelectField
-          value={this.state.sortValue}
-          onChange={this.handleSortChange}
-          floatingLabelText="Sort by"
-        >
-          <MenuItem value={'name'} primaryText="Name" />
-          <MenuItem value={'calories'} primaryText="Calories" />
-          <MenuItem value={'protein'} primaryText="Protein" />
-          <MenuItem value={'weight'} primaryText="Weight" />
-        </SelectField>
-        {this.renderAddFoodButtom()}
-        <RaisedButton
-          label="Clear selection"
-          onTouchTap={this.clearSelectedFoods}
-          disabled={this.state.selectedFoods <= 0}
-        />
+        <div style={{ padding: '0px 12px 0px 12px' }}>
+          <TextField
+            id="foodFilter"
+            floatingLabelText="Filter foods"
+            value={this.state.foodFilter}
+            onChange={this.handleTextFieldChange}
+            fullWidth
+          />
+          <SelectField
+            value={this.state.sortValue}
+            onChange={this.handleSortChange}
+            floatingLabelText="Sort by"
+            fullWidth
+          >
+            <MenuItem value={'name'} primaryText="Name" />
+            <MenuItem value={'calories'} primaryText="Calories" />
+            <MenuItem value={'protein'} primaryText="Protein" />
+            <MenuItem value={'weight'} primaryText="Weight" />
+          </SelectField>
+          {this.renderAddFoodButtom()}
+          <RaisedButton
+            label="Clear selection"
+            style={{ width: '50%' }}
+            onTouchTap={this.clearSelectedFoods}
+            disabled={this.state.selectedFoods <= 0}
+          />
+        </div>
         <List>
         {filteredFoods.map((food) => (
           <Food
