@@ -39,7 +39,6 @@ export default class JoinPage extends React.Component {
       return;
     }
 
-    const { currTrip } = this.props;
     const { router } = this.context;
     const self = this;
 
@@ -58,7 +57,7 @@ export default class JoinPage extends React.Component {
         });
         return;
       }
-      Meteor.call('trips.updateUserId', currTrip, () => {
+      Meteor.call('trips.updateUserId', () => {
         router.push('/');
       });
     });
@@ -110,10 +109,6 @@ export default class JoinPage extends React.Component {
     return <AuthPage content={content} link={link} />;
   }
 }
-
-JoinPage.propTypes = {
-  currTrip: React.PropTypes.string,
-};
 
 JoinPage.contextTypes = {
   router: React.PropTypes.object,

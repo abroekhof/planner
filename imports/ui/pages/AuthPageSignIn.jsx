@@ -35,7 +35,6 @@ export default class SignInPage extends React.Component {
       return;
     }
 
-    const { currTrip } = this.props;
     const { router } = this.context;
     const self = this;
 
@@ -53,7 +52,7 @@ export default class SignInPage extends React.Component {
         });
         return;
       }
-      Meteor.call('trips.updateUserId', currTrip, () => {
+      Meteor.call('trips.updateUserId', () => {
         router.push('/');
       });
     });
@@ -97,10 +96,6 @@ export default class SignInPage extends React.Component {
     return <AuthPage content={content} link={link} />;
   }
 }
-
-SignInPage.propTypes = {
-  currTrip: React.PropTypes.string,
-};
 
 SignInPage.contextTypes = {
   router: React.PropTypes.object,

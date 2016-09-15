@@ -20,7 +20,15 @@ Trips.helpers({
 
 if (Meteor.isServer) {
   Meteor.publish('trips', function publishTrips() {
-    return Trips.find({ $or: [{ sessionId: this.connection.id }, { userId: this.userId }] });
+    return Trips.find({
+      $or: [
+        { sessionId: this.connection.id },
+        { $and: [
+            { userId: this.userId },
+            { userId: { $ne: null } },
+        ] },
+      ],
+    });
   });
 }
 
@@ -98,10 +106,12 @@ Meteor.methods({
       { $set: { name } }
     );
   },
-  'trips.updateUserId': function tripsUpdateName(tripId) {
-    check(tripId, String);
+  'trips.updateUserId': function tripsUpdateName() {
+    let sessionId = Random.id();
+    if (!this.isSimulation) { sessionId = this.connection.id; }
+    console.log(sessionId);
     Trips.update(
-      tripId,
+      { sessionId },
       { $set: { userId: this.userId } }
     );
   },

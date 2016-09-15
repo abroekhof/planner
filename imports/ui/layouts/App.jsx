@@ -41,13 +41,11 @@ export default class App extends React.Component {
 
   componentWillReceiveProps({ loading, children }) {
     const { router } = this.context;
-    const self = this;
     // redirect / to a list once lists are ready
     if (!loading && !children) {
       const trip = Trips.findOne();
       if (trip) {
         console.log('found trip');
-        self.setState({ currTrip: trip._id });
         router.replace(`/trips/${trip._id}`);
       } else {
         console.log('creating trip');
@@ -55,7 +53,6 @@ export default class App extends React.Component {
           if (err) {
             router.push('/');
           } else {
-            self.setState({ currTrip: result });
             router.push(`/trips/${result}`);
           }
         });
@@ -92,7 +89,6 @@ export default class App extends React.Component {
     // have transitions
     const clonedChildren = children && React.cloneElement(children, {
       key: location.pathname,
-      currTrip: this.state.currTrip,
       removeTrip: this.removeTrip,
       handleOpenFoodDrawer: this.handleOpenFoodDrawer,
       location,
