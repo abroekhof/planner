@@ -149,7 +149,7 @@ export default class TripPage extends Component {
         >
           <TextField
             hintText="New name"
-            keyboardFocused
+            autoFocus
             onChange={this.handleTextFieldChange}
           />
         </Dialog>
