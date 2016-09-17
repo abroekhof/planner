@@ -158,6 +158,7 @@ export default class TripPage extends Component {
         <TripDetails
           calsPerDay={trip.calsPerDay}
           proteinPerDay={trip.proteinPerDay}
+          useOz={trip.useOz}
           tripId={trip._id}
           numDays={numDays}
           tripName={trip.name}

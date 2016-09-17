@@ -62,6 +62,10 @@ Trips.schema = new SimpleSchema({
     type: Number,
     defaultValue: 3000,
   },
+  useOz: {
+    type: Boolean,
+    defaultValue: true,
+  },
   proteinPerDay: {
     type: Number,
     defaultValue: 100,
@@ -108,6 +112,14 @@ Meteor.methods({
     Trips.update(
       tripId,
       { $set: { [target]: value } }
+    );
+  },
+  'trips.updateUseOz': function tripsUpdateUseOz(tripId, useOz) {
+    check(tripId, String);
+    check(useOz, Boolean);
+    Trips.update(
+      tripId,
+      { $set: { useOz } }
     );
   },
   'trips.updateName': function tripsUpdateName(tripId, name) {
