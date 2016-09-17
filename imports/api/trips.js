@@ -5,6 +5,8 @@ import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import Days from './days.js';
+import Meals from './meals.js';
+import MealFoods from './mealFoods.js';
 
 class TripsCollection extends Mongo.Collection {
   remove(selector, callback) {
@@ -126,6 +128,20 @@ Meteor.methods({
       trip._id,
       { $set: { userId: this.userId } }
     );
-    Meteor.call('days.updateUserId', trip._id);
+    Days.update(
+      { tripId: trip._id },
+      { $set: { userId: this.userId } },
+      { multi: true }
+    );
+    Meals.update(
+      { tripId: trip._id },
+      { $set: { userId: this.userId } },
+      { multi: true }
+    );
+    MealFoods.update(
+      { tripId: trip._id },
+      { $set: { userId: this.userId } },
+      { multi: true }
+    );
   },
 });
