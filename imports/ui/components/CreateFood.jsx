@@ -44,7 +44,7 @@ export default class FoodDrawer extends Component {
     ];
     return (
       <Dialog
-        title="Rename trip"
+        title="Create food"
         actions={actions}
         modal={false}
         open={this.props.open}
