@@ -9,6 +9,8 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 
+import { convertWeight } from '../helpers.js';
+
 
 class Food extends Component {
   constructor(props) {
@@ -50,7 +52,7 @@ class Food extends Component {
         leftCheckbox={<Checkbox onCheck={this.onCheck} checked={this.props.checked} />}
         primaryText={`${food.name}`}
         secondaryText={`${food.calories} calories,
-        ${food.protein} g protein, ${food.weight} oz.`}
+        ${food.protein} g protein, ${convertWeight(food.weight, this.props.useOz)}`}
         secondaryTextLines={2}
         rightIconButton={rightIconMenu}
       />
@@ -63,6 +65,7 @@ Food.propTypes = {
   checked: PropTypes.bool.isRequired,
   addSelectedFood: PropTypes.func.isRequired,
   removeSelectedFood: PropTypes.func.isRequired,
+  useOz: PropTypes.bool.isRequired,
 };
 
 export default Food;

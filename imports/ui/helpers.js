@@ -1,4 +1,4 @@
-const totals = (mealFoods) => (
+export const totals = (mealFoods) => (
    mealFoods.reduce(
     (prevTotal, mealFood) => (
       {
@@ -15,4 +15,14 @@ const totals = (mealFoods) => (
    )
  );
 
-export default totals;
+export const convertWeight = (weight, useOz) => {
+  const div = useOz ? 16.0 : 1000.0;
+  let unit = useOz ? 'oz' : 'g';
+  let convertedWeight = useOz ? weight / 28.3495 : weight;
+  if (convertedWeight > div) {
+    convertedWeight /= div;
+    unit = useOz ? 'lb' : 'kg';
+  }
+  convertedWeight = Math.round(convertedWeight * 100) / 100;
+  return `${convertedWeight} ${unit}`;
+};

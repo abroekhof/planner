@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import Day from '../components/Day.jsx';
 import TripDetails from '../components/TripDetails.jsx';
 
-import totals from '../helpers.js';
+import { totals } from '../helpers.js';
 
 export default class TripPage extends Component {
   constructor(props) {
@@ -107,6 +107,7 @@ export default class TripPage extends Component {
           dayTotals={dayTotals}
           weightLeft={currWeight}
           resupplyWeight={resupplyWeight}
+          useOz={this.props.useOz}
           calsPerDay={this.props.trip.calsPerDay}
           proteinPerDay={this.props.trip.proteinPerDay}
           idx={dayIdx}
@@ -158,7 +159,6 @@ export default class TripPage extends Component {
         <TripDetails
           calsPerDay={trip.calsPerDay}
           proteinPerDay={trip.proteinPerDay}
-          useOz={trip.useOz}
           tripId={trip._id}
           numDays={numDays}
           tripName={trip.name}
@@ -196,4 +196,5 @@ TripPage.propTypes = {
   removeTrip: PropTypes.func.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  useOz: PropTypes.bool,
 };

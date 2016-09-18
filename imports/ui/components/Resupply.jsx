@@ -4,6 +4,8 @@ import { ListItem } from 'material-ui/List';
 
 import { Meteor } from 'meteor/meteor';
 
+import { convertWeight } from '../helpers.js';
+
 class Resupply extends Component {
   constructor(props) {
     super(props);
@@ -20,13 +22,13 @@ class Resupply extends Component {
   }
 
   render() {
-    const { day, idx, weight } = this.props;
+    const { day, idx, weight, useOz } = this.props;
 
     if (day.resupply === idx) {
       return (
         <ListItem
           onClick={this.remove}
-          primaryText={`Resupply here, weighing ${weight} oz.`}
+          primaryText={`Resupply here, weighing ${convertWeight(weight, useOz)}`}
           secondaryText="click to remove"
         />
       );
@@ -42,6 +44,7 @@ Resupply.propTypes = {
   day: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
   weight: PropTypes.number,
+  useOz: PropTypes.bool.isRequired,
 };
 
 export default Resupply;

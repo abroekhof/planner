@@ -22,7 +22,6 @@ export default class TripDetails extends Component {
     this.updateCalorieState = this.updateCalorieState.bind(this);
     this.updateProteinState = this.updateProteinState.bind(this);
     this.updateTargets = this.updateTargets.bind(this);
-    this.toggleUseOz = this.toggleUseOz.bind(this);
   }
 
   updateCalorieState(e, value) {
@@ -44,13 +43,6 @@ export default class TripDetails extends Component {
       this.state.proteinPerDay);
   }
 
-  toggleUseOz() {
-    Meteor.call('trips.updateUseOz',
-      this.props.tripId,
-      !this.props.useOz
-    );
-  }
-
   render() {
     const dayNoun = this.props.numDays > 1 ? ' days' : ' day';
     return (
@@ -60,13 +52,6 @@ export default class TripDetails extends Component {
           subtitle={`${this.props.numDays} ${dayNoun}`}
         />
         <CardText>
-          <Toggle
-            label={this.props.useOz ? 'Ounces' : 'Grams'}
-            labelPosition="right"
-            style={styles.toggle}
-            defaultToggled={this.props.useOz}
-            onToggle={this.toggleUseOz}
-          />
           <Slider
             description={`${this.state.calsPerDay} calories per day`}
             defaultValue={3000}
@@ -102,7 +87,6 @@ export default class TripDetails extends Component {
 TripDetails.propTypes = {
   calsPerDay: PropTypes.number.isRequired,
   proteinPerDay: PropTypes.number.isRequired,
-  useOz: PropTypes.bool.isRequired,
   tripId: PropTypes.string.isRequired,
   numDays: PropTypes.number.isRequired,
   tripName: PropTypes.string.isRequired,

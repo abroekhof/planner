@@ -8,6 +8,9 @@ import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import AppBar from 'material-ui/AppBar';
 import Snackbar from 'material-ui/Snackbar';
+import Toggle from 'material-ui/Toggle';
+import { List, ListItem } from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
 
 import Trips from '../../api/trips.js';
 
@@ -31,12 +34,14 @@ export default class App extends React.Component {
       showConnectionIssue: false,
       rightOpen: false,
       leftOpen: false,
+      useOz: true,
     };
     this.removeTrip = this.removeTrip.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleToggleLeft = this.handleToggleLeft.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
+    this.toggleUseOz = this.toggleUseOz.bind(this);
   }
 
   componentWillReceiveProps({ loading, children }) {
@@ -68,6 +73,10 @@ export default class App extends React.Component {
   }
   handleClose() { this.setState({ rightOpen: false }); }
 
+  toggleUseOz() {
+    this.setState({ useOz: !this.state.useOz });
+  }
+
   removeTrip(id) {
     this.context.router.replace('/');
     Meteor.call('trips.remove', id);
@@ -91,6 +100,7 @@ export default class App extends React.Component {
       removeTrip: this.removeTrip,
       handleOpenFoodDrawer: this.handleOpenFoodDrawer,
       location,
+      useOz: this.state.useOz,
     });
 
     return (
@@ -110,6 +120,19 @@ export default class App extends React.Component {
               <UserMenu user={user} />
               <Divider />
               {user ? <TripList trips={trips} /> : ''}
+              <Divider />
+              <List>
+                <Subheader>Settings</Subheader>
+                <ListItem
+                  primaryText="Use US units"
+                  rightToggle={
+                    <Toggle
+                      defaultToggled={this.state.useOz}
+                      onToggle={this.toggleUseOz}
+                    />
+                  }
+                />
+              </List>
             </Drawer>
 
             <div id="content-container">
@@ -138,6 +161,7 @@ export default class App extends React.Component {
                 tripId={this.state.tripId}
                 dayId={this.state.dayId}
                 mealId={this.state.mealId}
+                useOz={this.state.useOz}
               />
             </Drawer>
 

@@ -8,6 +8,7 @@ import { green100, red100 } from 'material-ui/styles/colors';
 
 import Meal from './Meal.jsx';
 import Resupply from './Resupply.jsx';
+import { convertWeight } from '../helpers.js';
 
 const styles = {
   chip: {
@@ -35,7 +36,14 @@ class Day extends Component {
   }
 
   renderMeals() {
-    const { meals, mealFoods, tripId, day, resupplyWeight, handleOpenFoodDrawer } = this.props;
+    const {
+      meals,
+      mealFoods,
+      tripId,
+      day,
+      resupplyWeight,
+      handleOpenFoodDrawer,
+      useOz } = this.props;
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
@@ -43,25 +51,26 @@ class Day extends Component {
       const div = (
         <div key={meal._id}>
           {!(idx === 0 && this.props.idx === 0) ?
-            <Resupply day={day} idx={idx} weight={resupplyWeight} /> : ''}
+            <Resupply day={day} idx={idx} weight={resupplyWeight} useOz={useOz} /> : ''}
           <Meal
             meal={meal}
             mealFoods={mf}
             tripId={tripId}
             dayId={day._id}
             handleOpenFoodDrawer={handleOpenFoodDrawer}
+            useOz={useOz}
           />
         </div>
       );
       idx++;
       return div;
     });
-    out.push(<Resupply key={idx} day={day} idx={idx} weight={resupplyWeight} />);
+    out.push(<Resupply key={idx} day={day} idx={idx} weight={resupplyWeight} useOz={useOz} />);
     return out;
   }
 
   render() {
-    const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay } = this.props;
+    const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay, useOz } = this.props;
     return (
       <Card style={{ margin: '8px' }}>
         <CardTitle style={{ padding: '16px 16px 0 16px' }} title={`Day ${idx + 1}`}>
@@ -78,7 +87,7 @@ class Day extends Component {
             >
               {dayTotals.protein} g protein
             </Chip>
-            <Chip style={styles.chip}>{weightLeft} oz. to carry</Chip>
+            <Chip style={styles.chip}>{convertWeight(weightLeft, useOz)} to carry</Chip>
           </div>
         </CardTitle>
 
@@ -103,6 +112,7 @@ Day.propTypes = {
   mealFoods: PropTypes.array.isRequired,
   weightLeft: PropTypes.number.isRequired,
   resupplyWeight: PropTypes.number,
+  useOz: PropTypes.bool.isRequired,
   dayTotals: PropTypes.object.isRequired,
   calsPerDay: PropTypes.number.isRequired,
   proteinPerDay: PropTypes.number.isRequired,

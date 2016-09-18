@@ -46,7 +46,6 @@ Meteor.methods({
       calories,
       protein,
       weight,
-      createdAt: new Date(),
     });
   },
   'foods.remove': function foodsRemove(foodId) {

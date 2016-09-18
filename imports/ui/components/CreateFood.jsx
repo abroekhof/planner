@@ -22,11 +22,15 @@ export default class FoodDrawer extends Component {
   }
 
   createNewFood() {
+    const { useOz } = this.props;
+    let weight = Number(this.state.weight);
+    weight = useOz ? weight * 28.3495 : weight;
     Meteor.call('foods.insert',
       this.state.foodName,
       Number(this.state.calories),
       Number(this.state.protein),
-      Number(this.state.weight));
+      weight
+    );
     this.props.handleClose();
   }
 
@@ -66,7 +70,7 @@ export default class FoodDrawer extends Component {
         />
         <TextField
           id="weight"
-          floatingLabelText="Weight"
+          floatingLabelText={`Weight (${this.props.useOz ? 'ounces' : 'grams'})`}
           value={this.state.weight}
           onChange={this.handleTextFieldChange}
         />
@@ -78,5 +82,6 @@ export default class FoodDrawer extends Component {
 FoodDrawer.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.func.isRequired,
+  useOz: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
 };

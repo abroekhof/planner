@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 
 import MealFood from './MealFood.jsx';
 
-import totals from '../helpers.js';
+import { totals, convertWeight } from '../helpers.js';
 
 
 class Meal extends Component {
@@ -28,14 +28,14 @@ class Meal extends Component {
   }
 
   render() {
-    const { mealFoods } = this.props;
+    const { mealFoods, useOz } = this.props;
     const mealTotals = totals(mealFoods);
     return (
       <Paper>
         <List>
           <Subheader>
             {this.props.meal.name} (
-            {mealTotals.calories} calories, {mealTotals.protein} g protein, {mealTotals.weight} oz.)
+            {mealTotals.calories} calories, {mealTotals.protein} g protein, {convertWeight(mealTotals.weight, useOz)})
           </Subheader>
           {this.renderMealFoods()}
           <ListItem
@@ -54,6 +54,7 @@ Meal.propTypes = {
   tripId: PropTypes.string.isRequired,
   dayId: PropTypes.string.isRequired,
   mealFoods: PropTypes.array.isRequired,
+  useOz: PropTypes.bool.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,
 };
 

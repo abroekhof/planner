@@ -105,6 +105,7 @@ export default class FoodDrawer extends Component {
           handleClose={this.handleClose}
           handleOpen={this.handleOpen}
           open={this.state.open}
+          useOz={this.props.useOz}
         />
         <div style={{ padding: '12px' }}>
           <RaisedButton
@@ -150,6 +151,7 @@ export default class FoodDrawer extends Component {
             checked={this.state.selectedFoods.indexOf(food._id) !== -1}
             addSelectedFood={this.addSelectedFood}
             removeSelectedFood={this.removeSelectedFood}
+            useOz={this.props.useOz}
           />
         ))}
         </List>
@@ -162,6 +164,7 @@ FoodDrawer.propTypes = {
   foods: PropTypes.array.isRequired,
   foodSort: PropTypes.object.isRequired,
   handleCloseDrawer: PropTypes.func.isRequired,
+  useOz: PropTypes.bool.isRequired,
   mealId: PropTypes.string,
   dayId: PropTypes.string,
   tripId: PropTypes.string,
