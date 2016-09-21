@@ -14,11 +14,6 @@ class TripsCollection extends Mongo.Collection {
     Days.remove({ tripId: selector });
     return super.remove(selector, callback);
   }
-  insert(doc, callback) {
-    const tripId = super.insert(doc, callback);
-    Days.insert({ tripId, userId: doc.userId });
-    return tripId;
-  }
 }
 
 const Trips = new TripsCollection('trips');
@@ -98,6 +93,7 @@ Meteor.methods({
       userId: this.userId,
       sessionId,
     });
+    Meteor.call('days.insert', tripId);
     // return trip id to be used for routing
     return tripId;
   },
