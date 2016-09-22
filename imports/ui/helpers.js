@@ -26,3 +26,6 @@ export const convertWeight = (weight, useOz) => {
   convertedWeight = Math.round(convertedWeight * 100) / 100;
   return `${convertedWeight} ${unit}`;
 };
+
+
+export const isNumeric = n => (!isNaN(parseFloat(n)) && isFinite(n));

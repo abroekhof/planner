@@ -53,7 +53,7 @@ export default class FoodDrawer extends Component {
   }
 
   addFoods() {
-    this.state.selectedFoods.forEach((foodId) =>
+    this.state.selectedFoods.forEach(foodId =>
       Meteor.call('mealFoods.insert',
       foodId,
       this.props.tripId,
@@ -95,7 +95,7 @@ export default class FoodDrawer extends Component {
 
   render() {
     const regex = new RegExp(this.state.foodFilter, 'i');
-    const filteredFoods = this.props.foods.filter((food) =>
+    const filteredFoods = this.props.foods.filter(food =>
        (food.name.search(regex) > -1)
     );
 
@@ -144,16 +144,16 @@ export default class FoodDrawer extends Component {
           />
         </div>
         <List>
-        {filteredFoods.map((food) => (
-          <Food
-            key={food._id}
-            food={food}
-            checked={this.state.selectedFoods.indexOf(food._id) !== -1}
-            addSelectedFood={this.addSelectedFood}
-            removeSelectedFood={this.removeSelectedFood}
-            useOz={this.props.useOz}
-          />
-        ))}
+          {filteredFoods.map(food => (
+            <Food
+              key={food._id}
+              food={food}
+              checked={this.state.selectedFoods.indexOf(food._id) !== -1}
+              addSelectedFood={this.addSelectedFood}
+              removeSelectedFood={this.removeSelectedFood}
+              useOz={this.props.useOz}
+            />
+          ))}
         </List>
       </div>
     );
@@ -161,7 +161,7 @@ export default class FoodDrawer extends Component {
 }
 
 FoodDrawer.propTypes = {
-  foods: PropTypes.array.isRequired,
+  foods: PropTypes.arrayOf(PropTypes.object).isRequired,
   foodSort: PropTypes.object.isRequired,
   handleCloseDrawer: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,

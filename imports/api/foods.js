@@ -6,6 +6,15 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 const Foods = new Mongo.Collection('foods');
 
 Foods.schema = new SimpleSchema({
+  userId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
+  verified: {
+    type: Boolean,
+    defaultValue: true,
+  },
   name: {
     type: String,
     max: 100,
@@ -29,9 +38,41 @@ Foods.attachSchema(Foods.schema);
 export default Foods;
 
 if (Meteor.isServer) {
+  // create a full text search index for Food name
+  Foods._ensureIndex({
+    name: 'text',
+  });
   Meteor.publish('foods', () => (
-    Foods.find()
+    Foods.find({ $or: [{ userId: this.userId }, { verified: true }] })
   ));
+  Meteor.methods({
+    'foods.verify': function foodsInsert(name, calories, protein, weight) {
+      check(name, String);
+      check(calories, Number);
+      check(protein, Number);
+      check(weight, Number);
+      const foundFood = Foods.findOne(
+        {
+          $and: [
+            { $text: { $search: name } },
+            { calories: { $lte: calories * 1.05 } },
+            { calories: { $gte: calories * 0.95 } },
+            { protein: { $lte: protein * 1.05 } },
+            { protein: { $gte: protein * 0.95 } },
+            { weight: { $lte: weight * 1.05 } },
+            { weight: { $gte: weight * 0.95 } },
+          ],
+        },
+        { fields: { score: { $meta: 'textScore' } },
+        sort: { score: { $meta: 'textScore' } },
+        }
+      );
+      if (foundFood) {
+        Foods.update(foundFood._id, { $set: { verified: true } });
+      }
+      return foundFood;
+    },
+  });
 }
 
 Meteor.methods({
@@ -41,7 +82,8 @@ Meteor.methods({
     check(protein, Number);
     check(weight, Number);
 
-    Foods.insert({
+    return Foods.insert({
+      userId: this.userId,
       name,
       calories,
       protein,

@@ -33,13 +33,13 @@ Trips.helpers({
 if (Meteor.isServer) {
   Meteor.publish('trips', function publishTrips() {
     return Trips.find({
-      $or: [
-        { sessionId: this.connection.id },
-        { $and: [
-            { userId: this.userId },
-            { userId: { $ne: null } },
-        ] },
-      ],
+      // $or: [
+      //   { sessionId: this.connection.id },
+      //   { $and: [
+      //       { userId: this.userId },
+      //       { userId: { $ne: null } },
+      //   ] },
+      // ],
     });
   });
 }

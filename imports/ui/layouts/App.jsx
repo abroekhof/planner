@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor';
 
@@ -115,7 +115,7 @@ export default class App extends React.Component {
             <Drawer
               docked={false}
               open={this.state.leftOpen}
-              onRequestChange={(leftOpen) => this.setState({ leftOpen })}
+              onRequestChange={leftOpen => this.setState({ leftOpen })}
             >
               <UserMenu user={user} />
               <Divider />
@@ -151,7 +151,7 @@ export default class App extends React.Component {
               openSecondary
               docked={false}
               open={this.state.rightOpen}
-              onRequestChange={(rightOpen) => this.setState({ rightOpen })}
+              onRequestChange={rightOpen => this.setState({ rightOpen })}
               width={400}
             >
               <FoodDrawer
@@ -178,18 +178,18 @@ export default class App extends React.Component {
 }
 
 App.propTypes = {
-  user: React.PropTypes.object,      // current meteor user
-  connected: React.PropTypes.bool,   // server connection status
-  loading: React.PropTypes.bool,     // subscription status
-  menuOpen: React.PropTypes.bool,    // is side menu open?
-  trips: React.PropTypes.array,      // all lists visible to the current user
-  children: React.PropTypes.element, // matched child route component
-  location: React.PropTypes.object,  // current router location
-  params: React.PropTypes.object,    // parameters of the current route
-  foods: React.PropTypes.array,
-  foodSort: React.PropTypes.object,
+  user: PropTypes.object,      // current meteor user
+  connected: PropTypes.bool,   // server connection status
+  loading: PropTypes.bool,     // subscription status
+  menuOpen: PropTypes.bool,    // is side menu open?
+  trips: PropTypes.arrayOf(PropTypes.object),      // all lists visible to the current user
+  children: PropTypes.element, // matched child route component
+  location: PropTypes.object,  // current router location
+  params: PropTypes.object,    // parameters of the current route
+  foods: PropTypes.arrayOf(PropTypes.object),
+  foodSort: PropTypes.object,
 };
 
 App.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
