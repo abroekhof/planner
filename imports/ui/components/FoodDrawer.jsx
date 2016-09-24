@@ -95,8 +95,16 @@ export default class FoodDrawer extends Component {
 
   render() {
     const regex = new RegExp(this.state.foodFilter, 'i');
-    const filteredFoods = this.props.foods.filter(food =>
-       (food.name.search(regex) > -1)
+    const filteredFoods = [];
+    const selectedFoods = [];
+    this.props.foods.forEach((food) => {
+      const selectedIdx = this.state.selectedFoods.indexOf(food._id);
+      if (food.name.search(regex) > -1 && selectedIdx === -1) {
+        filteredFoods.push(food);
+      } else if (selectedIdx > -1) {
+        selectedFoods.push(food);
+      }
+    }
     );
 
     return (
@@ -144,11 +152,22 @@ export default class FoodDrawer extends Component {
           />
         </div>
         <List>
+          {selectedFoods.map(food => (
+            <Food
+              key={food._id}
+              food={food}
+              checked
+              addSelectedFood={this.addSelectedFood}
+              removeSelectedFood={this.removeSelectedFood}
+              useOz={this.props.useOz}
+            />
+          ))}
+          <Divider />
           {filteredFoods.map(food => (
             <Food
               key={food._id}
               food={food}
-              checked={this.state.selectedFoods.indexOf(food._id) !== -1}
+              checked={false}
               addSelectedFood={this.addSelectedFood}
               removeSelectedFood={this.removeSelectedFood}
               useOz={this.props.useOz}
