@@ -4,13 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
-import Toggle from 'material-ui/Toggle';
-
-const styles = {
-  toggle: {
-    marginBottom: 16,
-  },
-};
+import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 export default class TripDetails extends Component {
   constructor(props) {
@@ -18,10 +13,39 @@ export default class TripDetails extends Component {
     this.state = {
       calsPerDay: props.calsPerDay,
       proteinPerDay: props.proteinPerDay,
+      open: false,
+      tripName: props.tripName,
     };
     this.updateCalorieState = this.updateCalorieState.bind(this);
     this.updateProteinState = this.updateProteinState.bind(this);
     this.updateTargets = this.updateTargets.bind(this);
+    this.updateTripName = this.updateTripName.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+  }
+
+  handleOpen() {
+    this.setState({ open: true });
+  }
+
+  handleClose() {
+    this.setState({ open: false });
+  }
+
+  handleTextFieldChange(e) {
+    this.setState({ tripName: e.target.value });
+  }
+
+  updateTripName() {
+    if (this.state.tripName !== '') {
+      Meteor.call('trips.updateName',
+      this.props.tripId,
+      this.state.tripName);
+    } else {
+      this.setState({ tripName: this.props.tripName });
+    }
+    this.handleClose();
   }
 
   updateCalorieState(e, value) {
@@ -45,8 +69,34 @@ export default class TripDetails extends Component {
 
   render() {
     const dayNoun = this.props.numDays > 1 ? ' days' : ' day';
+    const actions = [
+      <FlatButton
+        label="Ok"
+        primary
+        onTouchTap={this.updateTripName}
+      />,
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.handleClose}
+      />,
+    ];
+
     return (
       <Card style={{ margin: '8px' }}>
+        <Dialog
+          title="Rename trip"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+          <TextField
+            hintText="New name"
+            autoFocus
+            onChange={this.handleTextFieldChange}
+          />
+        </Dialog>
         <CardTitle
           title={this.props.tripName}
           subtitle={`${this.props.numDays} ${dayNoun}`}
@@ -76,7 +126,7 @@ export default class TripDetails extends Component {
           />
         </CardText>
         <CardActions>
-          <FlatButton onTouchTap={this.props.openNameDialog} label="Rename Trip" />
+          <FlatButton onTouchTap={this.handleOpen} label="Rename Trip" />
           <FlatButton onTouchTap={this.props.removeTrip} label="Delete Trip" />
         </CardActions>
       </Card>
@@ -90,6 +140,5 @@ TripDetails.propTypes = {
   tripId: PropTypes.string.isRequired,
   numDays: PropTypes.number.isRequired,
   tripName: PropTypes.string.isRequired,
-  openNameDialog: PropTypes.func.isRequired,
   removeTrip: PropTypes.func.isRequired,
 };
