@@ -116,7 +116,6 @@ export default class FoodDrawer extends Component {
 
 FoodDrawer.propTypes = {
   handleClose: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
 };

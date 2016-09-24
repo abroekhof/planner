@@ -47,7 +47,7 @@ class Day extends Component {
     let idx = 0;
     const out = meals.map((meal) => {
       const mf = mealFoods.filter(
-        (mealFood) => (mealFood.mealId === meal._id));
+        mealFood => (mealFood.mealId === meal._id));
       const div = (
         <div key={meal._id}>
           {!(idx === 0 && this.props.idx === 0) ?
@@ -62,7 +62,7 @@ class Day extends Component {
           />
         </div>
       );
-      idx++;
+      idx += 1;
       return div;
     });
     out.push(<Resupply key={idx} day={day} idx={idx} weight={resupplyWeight} useOz={useOz} />);
@@ -108,8 +108,8 @@ Day.propTypes = {
   tripId: PropTypes.string.isRequired,
   day: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
-  meals: PropTypes.array.isRequired,
-  mealFoods: PropTypes.array.isRequired,
+  meals: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mealFoods: PropTypes.arrayOf(PropTypes.object).isRequired,
   weightLeft: PropTypes.number.isRequired,
   resupplyWeight: PropTypes.number,
   useOz: PropTypes.bool.isRequired,

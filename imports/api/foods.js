@@ -77,6 +77,10 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'foods.insert': function foodsInsert(name, calories, protein, weight) {
+    if (!this.userId) {
+      throw new Meteor.Error('foods.insert.accessDenied',
+        'Cannot create a food when not logged in');
+    }
     check(name, String);
     check(calories, Number);
     check(protein, Number);

@@ -115,6 +115,7 @@ export default class FoodDrawer extends Component {
           open={this.state.open}
           useOz={this.props.useOz}
         />
+        { this.user ?
         <div style={{ padding: '12px' }}>
           <RaisedButton
             fullWidth
@@ -122,7 +123,7 @@ export default class FoodDrawer extends Component {
             onTouchTap={this.handleOpen}
             primary
           />
-        </div>
+        </div> : ''}
         <Divider />
         <div style={{ padding: '0px 12px 0px 12px' }}>
           <TextField
