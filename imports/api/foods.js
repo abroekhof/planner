@@ -13,7 +13,7 @@ Foods.schema = new SimpleSchema({
   },
   verified: {
     type: Boolean,
-    defaultValue: true,
+    defaultValue: false,
   },
   name: {
     type: String,
@@ -42,9 +42,9 @@ if (Meteor.isServer) {
   Foods._ensureIndex({
     name: 'text',
   });
-  Meteor.publish('foods', () => (
-    Foods.find({ $or: [{ userId: this.userId }, { verified: true }] })
-  ));
+  Meteor.publish('foods', function publishFoods() {
+    return Foods.find({ $or: [{ userId: this.userId }, { verified: true }] });
+  });
   Meteor.methods({
     'foods.verify': function foodsInsert(name, calories, protein, weight) {
       check(name, String);
@@ -95,6 +95,15 @@ Meteor.methods({
     });
   },
   'foods.remove': function foodsRemove(foodId) {
+    const food = Foods.findOne(foodId);
+    if (this.userId !== food.userId) {
+      throw new Meteor.Error('foods.remove.accessDenied',
+        'Cannot delete a food that does not belong to you');
+    }
+    if (food.verified) {
+      throw new Meteor.Error('foods.remove.accessDenied',
+        'Cannot delete a food that has been verified');
+    }
     check(foodId, String);
 
     Foods.remove(foodId);

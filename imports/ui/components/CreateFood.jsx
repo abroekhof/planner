@@ -56,8 +56,8 @@ export default class FoodDrawer extends Component {
       weight,
     ];
 
-    Meteor.apply('foods.verify', args, (error, result) => {
-      if (!result) {
+    Meteor.apply('foods.verify', args, (error, verified) => {
+      if (!verified) {
         Meteor.apply('foods.insert', args);
       }
     });

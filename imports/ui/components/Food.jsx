@@ -39,14 +39,14 @@ class Food extends Component {
         <MoreVertIcon color={grey400} />
       </IconButton>
     );
+    const food = this.props.food;
 
-    const rightIconMenu = (
+    const rightIconMenu = (Meteor.userId() === food.userId) ? (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem onClick={this.deleteThisFood}>Delete</MenuItem>
       </IconMenu>
-    );
+    ) : null;
 
-    const food = this.props.food;
     return (
       <ListItem
         leftCheckbox={<Checkbox onCheck={this.onCheck} checked={this.props.checked} />}
