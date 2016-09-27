@@ -22,7 +22,7 @@ class Meal extends Component {
   }
 
   renderMealFoods() {
-    return this.props.mealFoods.map((mealFood) => (
+    return this.props.mealFoods.map(mealFood => (
       <MealFood key={mealFood._id} mealFood={mealFood} />
     ));
   }
@@ -35,7 +35,8 @@ class Meal extends Component {
         <List>
           <Subheader>
             {this.props.meal.name} (
-            {mealTotals.calories} calories, {mealTotals.protein} g protein, {convertWeight(mealTotals.weight, useOz)})
+            {mealTotals.calories} calories
+            , {mealTotals.protein} g protein, {convertWeight(mealTotals.weight, useOz)})
           </Subheader>
           {this.renderMealFoods()}
           <ListItem
