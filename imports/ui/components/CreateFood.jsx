@@ -61,7 +61,8 @@ export default class FoodDrawer extends Component {
         Meteor.apply('foods.insert', args);
       }
     });
-
+    // reset text field values
+    this.setState({ foodName: '', calories: '', protein: '', weight: '' });
     this.props.handleClose();
   }
 

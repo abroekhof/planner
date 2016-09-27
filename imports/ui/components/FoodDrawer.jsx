@@ -36,7 +36,7 @@ export default class FoodDrawer extends Component {
   }
 
   handleClose() {
-    this.setState({ open: false, foodName: '', calories: '', protein: '', weight: '' });
+    this.setState({ open: false });
   }
 
   handleTextFieldChange(event) {
