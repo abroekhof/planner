@@ -5,6 +5,15 @@ import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
 export default class UserMenu extends React.Component {
+  static renderLoggedOut() {
+    return (
+      <List>
+        <ListItem primaryText="Sign in" containerElement={<Link to="/signin" />} />
+        <ListItem primaryText="Join" containerElement={<Link to="/join" />} />
+      </List>
+    );
+  }
+
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
@@ -30,19 +39,10 @@ export default class UserMenu extends React.Component {
     );
   }
 
-  renderLoggedOut() {
-    return (
-      <List>
-        <ListItem primaryText="Sign in" containerElement={<Link to="/signin" />} />
-        <ListItem primaryText="Join" containerElement={<Link to="/join" />} />
-      </List>
-    );
-  }
-
   render() {
     return this.props.user
       ? this.renderLoggedIn()
-      : this.renderLoggedOut();
+      : UserMenu.renderLoggedOut();
   }
 }
 

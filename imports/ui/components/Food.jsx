@@ -17,6 +17,7 @@ class Food extends Component {
     super(props);
     this.deleteThisFood = this.deleteThisFood.bind(this);
     this.onCheck = this.onCheck.bind(this);
+    this.editingFood = this.editingFood.bind(this);
   }
 
   onCheck(event, isInputChecked) {
@@ -29,6 +30,10 @@ class Food extends Component {
 
   deleteThisFood() {
     Meteor.call('foods.remove', this.props.food._id);
+  }
+
+  editingFood() {
+    this.props.editingFood(this.props.food);
   }
 
   render() {
@@ -44,6 +49,7 @@ class Food extends Component {
     const rightIconMenu = (Meteor.userId() === food.userId) ? (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem onClick={this.deleteThisFood}>Delete</MenuItem>
+        <MenuItem onClick={this.editingFood}>Edit</MenuItem>
       </IconMenu>
     ) : null;
 
@@ -66,6 +72,7 @@ Food.propTypes = {
   addSelectedFood: PropTypes.func.isRequired,
   removeSelectedFood: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
+  editingFood: PropTypes.func.isRequired,
 };
 
 export default Food;

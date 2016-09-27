@@ -18,6 +18,7 @@ export default class FoodDrawer extends Component {
       sortValue: 'name',
       foodFilter: '',
       open: false,
+      editingFood: null,
       selectedFoods: [],
     };
 
@@ -25,6 +26,7 @@ export default class FoodDrawer extends Component {
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.editingFood = this.editingFood.bind(this);
     this.addSelectedFood = this.addSelectedFood.bind(this);
     this.removeSelectedFood = this.removeSelectedFood.bind(this);
     this.clearSelectedFoods = this.clearSelectedFoods.bind(this);
@@ -36,7 +38,13 @@ export default class FoodDrawer extends Component {
   }
 
   handleClose() {
-    this.setState({ open: false });
+    // close the dialog and clear the food being edited
+    this.setState({ open: false, editingFood: null });
+  }
+
+  editingFood(f) {
+    this.setState({ editingFood: f });
+    this.handleOpen();
   }
 
   handleTextFieldChange(event) {
@@ -114,6 +122,7 @@ export default class FoodDrawer extends Component {
           handleOpen={this.handleOpen}
           open={this.state.open}
           useOz={this.props.useOz}
+          editingFood={this.state.editingFood}
         />
         {
           Meteor.user() ?
@@ -163,6 +172,7 @@ export default class FoodDrawer extends Component {
               addSelectedFood={this.addSelectedFood}
               removeSelectedFood={this.removeSelectedFood}
               useOz={this.props.useOz}
+              editingFood={this.editingFood}
             />
           ))}
           <Divider />
@@ -174,6 +184,7 @@ export default class FoodDrawer extends Component {
               addSelectedFood={this.addSelectedFood}
               removeSelectedFood={this.removeSelectedFood}
               useOz={this.props.useOz}
+              editingFood={this.editingFood}
             />
           ))}
         </List>

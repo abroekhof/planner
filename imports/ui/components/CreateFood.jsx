@@ -6,18 +6,36 @@ import { Meteor } from 'meteor/meteor';
 
 import { isNumeric } from '../helpers.js';
 
+const gPerOz = 28.3495;
+
 export default class FoodDrawer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       foodName: '',
       calories: '',
       protein: '',
       weight: '',
       errors: {},
     };
+    this.state = this.initialState;
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.createNewFood = this.createNewFood.bind(this);
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editingFood } = nextProps;
+    if (editingFood) {
+      this.setState({
+        foodName: editingFood.name,
+        calories: editingFood.calories,
+        protein: editingFood.protein,
+        // display ounces if needed
+        weight: nextProps.useOz ? editingFood.weight / gPerOz : editingFood.weight,
+      });
+    }
   }
 
   handleTextFieldChange(event) {
@@ -40,6 +58,7 @@ export default class FoodDrawer extends Component {
     });
 
     this.setState({ errors });
+    // if there are any errors, return
     if (Object.keys(errors).length) {
       return;
     }
@@ -47,7 +66,7 @@ export default class FoodDrawer extends Component {
     const { useOz } = this.props;
     let weight = Number(this.state.weight);
     // convert oz to grams
-    weight = useOz ? weight * 28.3495 : weight;
+    weight = useOz ? weight * gPerOz : weight;
 
     const args = [
       this.state.foodName,
@@ -61,8 +80,12 @@ export default class FoodDrawer extends Component {
         Meteor.apply('foods.insert', args);
       }
     });
+    this.handleClose();
+  }
+
+  handleClose() {
     // reset text field values
-    this.setState({ foodName: '', calories: '', protein: '', weight: '' });
+    this.setState(this.initialState);
     this.props.handleClose();
   }
 
@@ -73,6 +96,11 @@ export default class FoodDrawer extends Component {
         primary
         onTouchTap={this.createNewFood}
       />,
+      <FlatButton
+        label="Cancel"
+        primary
+        onTouchTap={this.handleClose}
+      />,
     ];
     return (
       <Dialog
@@ -80,7 +108,7 @@ export default class FoodDrawer extends Component {
         actions={actions}
         modal={false}
         open={this.props.open}
-        onRequestClose={this.props.handleClose}
+        onRequestClose={this.handleClose}
       >
         <TextField
           id="foodName"
