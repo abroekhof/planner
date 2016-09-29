@@ -45,9 +45,16 @@ MealFoods.schema = new SimpleSchema({
     defaultValue: 3000,
     decimal: true,
   },
+  caloriesPerWeight: {
+    type: Number,
+    decimal: true,
+  },
   protein: {
     type: Number,
-    defaultValue: 100,
+    decimal: true,
+  },
+  proteinPerWeight: {
+    type: Number,
     decimal: true,
   },
   weight: {

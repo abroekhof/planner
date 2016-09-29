@@ -25,7 +25,15 @@ Foods.schema = new SimpleSchema({
     type: Number,
     decimal: true,
   },
+  caloriesPerWeight: {
+    type: Number,
+    decimal: true,
+  },
   protein: {
+    type: Number,
+    decimal: true,
+  },
+  proteinPerWeight: {
     type: Number,
     decimal: true,
   },
@@ -98,7 +106,9 @@ if (Meteor.isServer) {
               foodId: foundFood._id,
               name: foundFood.name,
               calories: foundFood.calories,
+              caloriesPerWeight: foundFood.caloriesPerWeight,
               protein: foundFood.protein,
+              proteinPerWeight: foundFood.proteinPerWeight,
               weight: foundFood.weight,
             },
           });
@@ -111,12 +121,26 @@ if (Meteor.isServer) {
         // a food update was requested
         Foods.update(
           foodId,
-          { $set: { name, calories, protein, weight } }
-        );
+          { $set: {
+            name,
+            calories,
+            caloriesPerWeight: calories / weight,
+            protein,
+            proteinPerWeight: protein / weight,
+            weight,
+          },
+        });
         MealFoods.update(
           { foodId },
-          { $set: { name, calories, protein, weight } }
-        );
+          { $set: {
+            name,
+            calories,
+            caloriesPerWeight: calories / weight,
+            protein,
+            proteinPerWeight: protein / weight,
+            weight,
+          },
+        });
         return foodId;
       }
       // no matching food and no update, so just create a new food
@@ -124,7 +148,9 @@ if (Meteor.isServer) {
         userId: this.userId,
         name,
         calories,
+        caloriesPerWeight: calories / weight,
         protein,
+        proteinPerWeight: protein / weight,
         weight,
       });
     },
@@ -146,7 +172,9 @@ Meteor.methods({
       userId: this.userId,
       name,
       calories,
+      caloriesPerWeight: calories / weight,
       protein,
+      proteinPerWeight: protein / weight,
       weight,
     });
   },
@@ -171,12 +199,26 @@ Meteor.methods({
     check(weight, Number);
     Foods.update(
       foodId,
-      { $set: { name, calories, protein, weight } }
-    );
+      { $set: {
+        name,
+        calories,
+        caloriesPerWeight: calories / weight,
+        protein,
+        proteinPerWeight: protein / weight,
+        weight,
+      },
+    });
     MealFoods.update(
       { foodId },
-      { $set: { name, calories, protein, weight } }
-    );
+      { $set: {
+        name,
+        calories,
+        caloriesPerWeight: calories / weight,
+        protein,
+        proteinPerWeight: protein / weight,
+        weight,
+      },
+    });
   },
   'foods.remove': function foodsRemove(foodId) {
     const food = Foods.findOne(foodId);

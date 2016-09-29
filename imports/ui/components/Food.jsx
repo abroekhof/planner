@@ -9,8 +9,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 
-import { convertWeight } from '../helpers.js';
-
+import { convertWeight, convertRatio } from '../helpers.js';
 
 class Food extends Component {
   constructor(props) {
@@ -45,7 +44,7 @@ class Food extends Component {
         <MoreVertIcon color={grey400} />
       </IconButton>
     );
-    const food = this.props.food;
+    const { food, useOz } = this.props;
 
     const rightIconMenu = (Meteor.userId() === food.userId && !food.verified) ? (
       <IconMenu iconButtonElement={iconButtonElement}>
@@ -54,12 +53,13 @@ class Food extends Component {
       </IconMenu>
     ) : null;
 
+
     return (
       <ListItem
         leftCheckbox={<Checkbox onCheck={this.onCheck} checked={this.props.checked} />}
-        primaryText={`${food.name}`}
-        secondaryText={`${food.calories} calories,
-        ${food.protein} g protein, ${convertWeight(food.weight, this.props.useOz)}`}
+        primaryText={`${food.name} (${convertWeight(food.weight, useOz)} per serving)`}
+        secondaryText={`${food.calories} calories (${convertRatio(food.caloriesPerWeight, useOz, 'cals')}),
+        ${food.protein} g protein (${convertRatio(food.proteinPerWeight, useOz, 'g')})`}
         secondaryTextLines={2}
         rightIconButton={rightIconMenu}
       />

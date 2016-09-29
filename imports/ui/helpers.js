@@ -15,10 +15,17 @@ export const totals = mealFoods => (
    )
  );
 
+const gPerOz = 28.3495;
+
+export const convertRatio = (ratio, useOz, unit) => {
+  const r = Math.round((useOz ? ratio * gPerOz : ratio * 100) * 100) / 100;
+  return `${r} ${unit}/${useOz ? 'oz' : '100 g'}`;
+};
+
 export const convertWeight = (weight, useOz) => {
   const div = useOz ? 16.0 : 1000.0;
   let unit = useOz ? 'oz' : 'g';
-  let convertedWeight = useOz ? weight / 28.3495 : weight;
+  let convertedWeight = useOz ? weight / gPerOz : weight;
   if (convertedWeight > div) {
     convertedWeight /= div;
     unit = useOz ? 'lb' : 'kg';
