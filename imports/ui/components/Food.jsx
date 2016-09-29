@@ -29,6 +29,7 @@ class Food extends Component {
   }
 
   deleteThisFood() {
+    this.props.removeSelectedFood(this.props.food._id);
     Meteor.call('foods.remove', this.props.food._id);
   }
 

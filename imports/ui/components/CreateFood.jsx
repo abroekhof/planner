@@ -76,8 +76,10 @@ export default class FoodDrawer extends Component {
       Number(this.state.protein),
       weight,
     ];
-
-    Meteor.apply('foods.verify', args);
+    const { addSelectedFood } = this.props;
+    Meteor.apply('foods.verify', args, (error, foodId) => {
+      addSelectedFood(foodId);
+    });
     this.handleClose();
   }
 
@@ -143,6 +145,7 @@ export default class FoodDrawer extends Component {
 
 FoodDrawer.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  addSelectedFood: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   editingFood: PropTypes.object,

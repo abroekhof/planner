@@ -79,8 +79,9 @@ export default class FoodDrawer extends Component {
   }
 
   removeSelectedFood(foodId) {
-    const index = this.state.selectedFoods.indexOf(foodId);
-    this.setState({ selectedFoods: this.state.selectedFoods.filter((_, i) => i !== index) });
+    this.setState({
+      selectedFoods: this.state.selectedFoods.filter(listFoodId => listFoodId !== foodId),
+    });
   }
 
   clearSelectedFoods() {
@@ -120,6 +121,7 @@ export default class FoodDrawer extends Component {
         <CreateFood
           handleClose={this.handleClose}
           handleOpen={this.handleOpen}
+          addSelectedFood={this.addSelectedFood}
           open={this.state.open}
           useOz={this.props.useOz}
           editingFood={this.state.editingFood}
