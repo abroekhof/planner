@@ -46,7 +46,7 @@ class Food extends Component {
     );
     const food = this.props.food;
 
-    const rightIconMenu = (Meteor.userId() === food.userId) ? (
+    const rightIconMenu = (Meteor.userId() === food.userId && !food.verified) ? (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem onClick={this.deleteThisFood}>Delete</MenuItem>
         <MenuItem onClick={this.editingFood}>Edit</MenuItem>

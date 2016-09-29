@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { check } from 'meteor/check';
+import { Match, check } from 'meteor/check';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
+import MealFoods from './mealFoods.js';
 
 const Foods = new Mongo.Collection('foods');
 
@@ -46,7 +48,23 @@ if (Meteor.isServer) {
     return Foods.find({ $or: [{ userId: this.userId }, { verified: true }] });
   });
   Meteor.methods({
-    'foods.verify': function foodsInsert(name, calories, protein, weight) {
+    'foods.verify': function foodsVerify(foodId, name, calories, protein, weight) {
+      if (!this.userId) {
+        throw new Meteor.Error('foods.verify.accessDenied',
+          'Cannot create a food when not logged in');
+      }
+      check(foodId, Match.Maybe(String));
+      if (foodId) {
+        const food = Foods.findOne(foodId);
+        if (this.userId !== food.userId) {
+          throw new Meteor.Error('foods.remove.accessDenied',
+            'Cannot update a food that does not belong to you');
+        }
+        if (food.verified) {
+          throw new Meteor.Error('foods.remove.accessDenied',
+            'Cannot update a food that has been verified');
+        }
+      }
       check(name, String);
       check(calories, Number);
       check(protein, Number);
@@ -61,6 +79,7 @@ if (Meteor.isServer) {
             { protein: { $gte: protein * 0.95 } },
             { weight: { $lte: weight * 1.05 } },
             { weight: { $gte: weight * 0.95 } },
+            { userId: { $ne: this.userId } },
           ],
         },
         { fields: { score: { $meta: 'textScore' } },
@@ -68,9 +87,46 @@ if (Meteor.isServer) {
         }
       );
       if (foundFood) {
+        // food was found, update it to make sure it's verified
         Foods.update(foundFood._id, { $set: { verified: true } });
+        if (foodId) {
+          // an update was requested which verified a food, so change any previous MealFoods to use
+          // the new food, and delete the old food
+          MealFoods.update(
+            { foodId },
+            { $set: {
+              foodId: foundFood._id,
+              name: foundFood.name,
+              calories: foundFood.calories,
+              protein: foundFood.protein,
+              weight: foundFood.weight,
+            },
+          });
+          Foods.remove(foodId);
+        }
+        return foundFood._id;
       }
-      return foundFood;
+      // no closely matching food was found
+      if (foodId) {
+        // a food update was requested
+        Foods.update(
+          foodId,
+          { $set: { name, calories, protein, weight } }
+        );
+        MealFoods.update(
+          { foodId },
+          { $set: { name, calories, protein, weight } }
+        );
+        return foodId;
+      }
+      // no matching food and no update, so just create a new food
+      return Foods.insert({
+        userId: this.userId,
+        name,
+        calories,
+        protein,
+        weight,
+      });
     },
   });
 }
@@ -94,6 +150,34 @@ Meteor.methods({
       weight,
     });
   },
+  'foods.update': function foodsUpdate(foodId, name, calories, protein, weight) {
+    if (!this.userId) {
+      throw new Meteor.Error('foods.insert.accessDenied',
+        'Cannot create a food when not logged in');
+    }
+    const food = Foods.findOne(foodId);
+    if (this.userId !== food.userId) {
+      throw new Meteor.Error('foods.remove.accessDenied',
+        'Cannot update a food that does not belong to you');
+    }
+    if (food.verified) {
+      throw new Meteor.Error('foods.remove.accessDenied',
+        'Cannot update a food that has been verified');
+    }
+    check(foodId, String);
+    check(name, String);
+    check(calories, Number);
+    check(protein, Number);
+    check(weight, Number);
+    Foods.update(
+      foodId,
+      { $set: { name, calories, protein, weight } }
+    );
+    MealFoods.update(
+      { foodId },
+      { $set: { name, calories, protein, weight } }
+    );
+  },
   'foods.remove': function foodsRemove(foodId) {
     const food = Foods.findOne(foodId);
     if (this.userId !== food.userId) {
@@ -107,5 +191,7 @@ Meteor.methods({
     check(foodId, String);
 
     Foods.remove(foodId);
+    // delete any MealFoods which use this food
+    MealFoods.remove({ foodId });
   },
 });

@@ -22,14 +22,14 @@ MealFoods.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
-  foodId: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id,
-  },
   userId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     optional: true,
+  },
+  foodId: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
   },
   qty: {
     type: Number,

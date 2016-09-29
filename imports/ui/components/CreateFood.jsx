@@ -68,18 +68,16 @@ export default class FoodDrawer extends Component {
     // convert oz to grams
     weight = useOz ? weight * gPerOz : weight;
 
+    const editingFoodId = this.props.editingFood ? this.props.editingFood._id : null;
     const args = [
+      editingFoodId,
       this.state.foodName,
       Number(this.state.calories),
       Number(this.state.protein),
       weight,
     ];
 
-    Meteor.apply('foods.verify', args, (error, verified) => {
-      if (!verified) {
-        Meteor.apply('foods.insert', args);
-      }
-    });
+    Meteor.apply('foods.verify', args);
     this.handleClose();
   }
 
@@ -147,4 +145,5 @@ FoodDrawer.propTypes = {
   handleClose: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
+  editingFood: PropTypes.object,
 };
