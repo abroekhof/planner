@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 // a common layout wrapper for auth pages
 const AuthPage = ({ content, link }) => (
-  <div className="page auth">
-    <div className="content-scrollable">
+  <Card>
+    <CardText>
       {content}
       {link}
-    </div>
-  </div>
+    </CardText>
+  </Card>
 );
 
 AuthPage.propTypes = {
-  content: React.PropTypes.element,
-  link: React.PropTypes.element,
+  content: PropTypes.element,
+  link: PropTypes.element,
 };
 
 export default AuthPage;
