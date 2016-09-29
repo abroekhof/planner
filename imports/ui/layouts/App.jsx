@@ -135,7 +135,7 @@ export default class App extends React.Component {
 
             <div id="content-container">
               <ReactCSSTransitionGroup
-                transitionName="fade"
+                transitionName="example"
                 transitionEnterTimeout={400}
                 transitionLeaveTimeout={400}
               >
