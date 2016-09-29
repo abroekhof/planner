@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-
+import { ServiceConfiguration } from 'meteor/service-configuration';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 SimpleSchema.debug = true;
@@ -12,5 +12,12 @@ import '../imports/api/trips.js';
 import '../imports/api/accounts.js';
 
 Meteor.startup(() => {
-  // code to run on server at startup
+  ServiceConfiguration.configurations.upsert(
+    { service: 'google' },
+    {
+      $set: {
+        loginStyle: 'popup',
+      },
+    }
+);
 });
