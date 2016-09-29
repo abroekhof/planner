@@ -50,10 +50,8 @@ export default class App extends React.Component {
     if (!loading && !children) {
       const trip = Trips.findOne();
       if (trip) {
-        console.log('found trip');
         router.replace(`/trips/${trip._id}`);
       } else {
-        console.log('creating trip');
         Meteor.call('trips.insert', (err, result) => {
           if (err) {
             router.push('/');
@@ -117,9 +115,9 @@ export default class App extends React.Component {
               open={this.state.leftOpen}
               onRequestChange={leftOpen => this.setState({ leftOpen })}
             >
-              <UserMenu user={user} />
+              <UserMenu user={user} handleClose={this.handleToggleLeft} />
               <Divider />
-              {user ? <TripList trips={trips} /> : ''}
+              {user ? <TripList trips={trips} handleClose={this.handleToggleLeft} /> : ''}
               <Divider />
               <List>
                 <Subheader>Settings</Subheader>

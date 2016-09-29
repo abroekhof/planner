@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
 export default class UserMenu extends React.Component {
-  static renderLoggedOut() {
-    return (
-      <List>
-        <ListItem primaryText="Sign in" containerElement={<Link to="/signin" />} />
-        <ListItem primaryText="Join" containerElement={<Link to="/join" />} />
-      </List>
-    );
-  }
-
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
+    this.renderLoggedOut = this.renderLoggedOut.bind(this);
   }
 
   handleLogout() {
+    this.props.handleClose();
     const { router } = this.context;
     Meteor.logout(() => {
       router.push('/');
     });
+  }
+
+  renderLoggedOut() {
+    return (
+      <List>
+        <ListItem
+          primaryText="Sign in"
+          onTouchTap={this.props.handleClose}
+          containerElement={<Link to="/signin" />}
+        />
+        <ListItem
+          primaryText="Join"
+          onTouchTap={this.props.handleClose}
+          containerElement={<Link to="/join" />}
+        />
+      </List>
+    );
   }
 
   renderLoggedIn() {
@@ -42,14 +52,15 @@ export default class UserMenu extends React.Component {
   render() {
     return this.props.user
       ? this.renderLoggedIn()
-      : UserMenu.renderLoggedOut();
+      : this.renderLoggedOut();
   }
 }
 
 UserMenu.propTypes = {
-  user: React.PropTypes.object,
+  user: PropTypes.object,
+  handleClose: PropTypes.func.isRequired,
 };
 
 UserMenu.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
