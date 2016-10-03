@@ -86,7 +86,9 @@ Meteor.methods({
         qty,
         name: food.name,
         calories: food.calories,
+        caloriesPerWeight: food.caloriesPerWeight,
         protein: food.protein,
+        proteinPerWeight: food.proteinPerWeight,
         weight: food.weight,
       }
     );

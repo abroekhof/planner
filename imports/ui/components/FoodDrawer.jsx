@@ -10,6 +10,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 
+import classNames from 'classnames';
+
 import Food from './Food.jsx';
 import CreateFood from './CreateFood.jsx';
 
@@ -157,25 +159,32 @@ export default class FoodDrawer extends Component {
             onChange={this.handleTextFieldChange}
             fullWidth
           />
-          <SelectField
-            value={this.state.sortValue}
-            onChange={this.handleSortChange}
-            floatingLabelText="Sort by"
-            fullWidth
-          >
-            <MenuItem value={'name'} primaryText="Name" />
-            <MenuItem value={'calories'} primaryText="Calories" />
-            <MenuItem value={'caloriesPerWeight'} primaryText={`Calories per ${this.props.useOz ? 'oz' : '100 g'}`} />
-            <MenuItem value={'protein'} primaryText="Protein" />
-            <MenuItem value={'proteinPerWeight'} primaryText={`Protein per ${this.props.useOz ? 'oz' : '100 g'}`} />
-            <MenuItem value={'weight'} primaryText="Weight" />
-          </SelectField>
-          <Checkbox
-            checkedIcon={<ContentSort />}
-            uncheckedIcon={<ContentSort />}
-            defaultChecked={this.props.foodSort.order === -1}
-            onCheck={this.toggleSortOrder}
-          />
+          <div className={classNames('row', 'middle-xs')}>
+            <div className={classNames('col-xs-10')}>
+              <SelectField
+                value={this.state.sortValue}
+                onChange={this.handleSortChange}
+                floatingLabelText="Sort by"
+                fullWidth
+              >
+                <MenuItem value={'name'} primaryText="Name" />
+                <MenuItem value={'calories'} primaryText="Calories" />
+                <MenuItem value={'caloriesPerWeight'} primaryText={`Calories per ${this.props.useOz ? 'oz' : '100 g'}`} />
+                <MenuItem value={'protein'} primaryText="Protein" />
+                <MenuItem value={'proteinPerWeight'} primaryText={`Protein per ${this.props.useOz ? 'oz' : '100 g'}`} />
+                <MenuItem value={'weight'} primaryText="Weight" />
+              </SelectField>
+            </div>
+            <div className={classNames('col-xs-2')}>
+              <Checkbox
+                checkedIcon={<ContentSort />}
+                uncheckedIcon={<ContentSort />}
+                defaultChecked={this.props.foodSort.order === -1}
+                onCheck={this.toggleSortOrder}
+                style={{ justifyContent: 'center' }}
+              />
+            </div>
+          </div>
           {this.renderAddFoodButtom()}
           <RaisedButton
             label="Clear selection"

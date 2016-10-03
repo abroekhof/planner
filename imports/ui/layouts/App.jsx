@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Meteor } from 'meteor/meteor';
 
+import classNames from 'classnames';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
@@ -17,15 +19,6 @@ import Trips from '../../api/trips.js';
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodDrawer from '../components/FoodDrawer.jsx';
-
-const styles = {
-  container: {
-    width: '100%',
-    maxWidth: '500px',
-    margin: '0px auto',
-
-  },
-};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -109,7 +102,7 @@ export default class App extends React.Component {
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             onLeftIconButtonTouchTap={this.handleToggleLeft}
           />
-          <div id="container" style={styles.container}>
+          <div>
             <Drawer
               docked={false}
               open={this.state.leftOpen}
@@ -133,16 +126,18 @@ export default class App extends React.Component {
               </List>
             </Drawer>
 
-            <div id="content-container">
-              <ReactCSSTransitionGroup
-                transitionName="example"
-                transitionEnterTimeout={400}
-                transitionLeaveTimeout={400}
-              >
-                {loading
-                  ? <CircularProgress size={2} />
-                  : clonedChildren}
-              </ReactCSSTransitionGroup>
+            <div className={classNames('row')}>
+              <div className={classNames('col-md-offset-3', 'col-md-6', 'col-sm-12', 'col-xs-12')}>
+                <ReactCSSTransitionGroup
+                  transitionName="example"
+                  transitionEnterTimeout={400}
+                  transitionLeaveTimeout={400}
+                >
+                  {loading
+                    ? <CircularProgress size={2} />
+                    : clonedChildren}
+                </ReactCSSTransitionGroup>
+              </div>
             </div>
 
             <Drawer
@@ -150,7 +145,7 @@ export default class App extends React.Component {
               docked={false}
               open={this.state.rightOpen}
               onRequestChange={rightOpen => this.setState({ rightOpen })}
-              width={400}
+              width={300}
             >
               <FoodDrawer
                 foods={foods}

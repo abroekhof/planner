@@ -94,7 +94,7 @@ export default class TripPage extends Component {
       );
     }
     return (
-      <div className="container">
+      <div>
 
         <TripDetails
           calsPerDay={trip.calsPerDay}
@@ -107,17 +107,7 @@ export default class TripPage extends Component {
 
         {this.renderDays()}
 
-        <FloatingActionButton
-          onClick={this.handleAddDay}
-          style={{
-            margin: 0,
-            top: 'auto',
-            right: 20,
-            bottom: 20,
-            left: 'auto',
-            position: 'fixed',
-          }}
-        >
+        <FloatingActionButton onClick={this.handleAddDay} style={{ margin: '0 auto' }}>
           <ContentAdd />
         </FloatingActionButton>
       </div>
