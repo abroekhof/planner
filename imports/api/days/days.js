@@ -4,8 +4,8 @@ import { check } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import Meals from './meals.js';
-import MealFoods from './mealFoods.js';
+import Meals from '../meals/meals.js';
+import MealFoods from '../mealFoods/mealFoods.js';
 
 class DaysCollection extends Mongo.Collection {
   remove(selector, callback) {

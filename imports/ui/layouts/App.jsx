@@ -16,7 +16,7 @@ import Toggle from 'material-ui/Toggle';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
-import Trips from '../../api/trips.js';
+import Trips from '../../api/trips/trips.js';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';

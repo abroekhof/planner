@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import { Match, check } from 'meteor/check';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import MealFoods from './mealFoods.js';
+import MealFoods from '../mealFoods/mealFoods.js';
 
 const Foods = new Mongo.Collection('foods');
 

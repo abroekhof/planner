@@ -3,8 +3,8 @@ import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import Foods from './foods.js';
-import Meals from './meals.js';
+import Foods from '../foods/foods.js';
+import Meals from '../meals/meals.js';
 
 const MealFoods = new Mongo.Collection('mealFoods');
 
