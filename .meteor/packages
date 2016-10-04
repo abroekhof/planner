@@ -28,3 +28,5 @@ aldeed:simple-schema
 service-configuration
 accounts-google
 practicalmeteor:mocha
+xolvio:cleaner
+dburles:factory
