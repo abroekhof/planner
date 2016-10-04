@@ -5,6 +5,8 @@ import { Meteor } from 'meteor/meteor';
 import classNames from 'classnames';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -19,6 +21,8 @@ import Trips from '../../api/trips.js';
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodDrawer from '../components/FoodDrawer.jsx';
+
+const muiTheme = getMuiTheme();
 
 export default class App extends React.Component {
   constructor(props) {
@@ -95,7 +99,7 @@ export default class App extends React.Component {
     });
 
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <AppBar
             title="bear can"
