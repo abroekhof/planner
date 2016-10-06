@@ -102,8 +102,8 @@ export default class TripDetails extends Component {
           subtitle={`${this.props.numDays} ${dayNoun}`}
         />
         <CardText>
+          <span>{`${this.state.calsPerDay} calories per day`}</span>
           <Slider
-            description={`${this.state.calsPerDay} calories per day`}
             defaultValue={3000}
             min={0}
             max={5000}
@@ -113,8 +113,8 @@ export default class TripDetails extends Component {
             onDragStop={this.updateTargets}
             sliderStyle={{ marginTop: 12, marginBottom: 24 }}
           />
+          <span>{`${this.state.proteinPerDay} g protein per day`}</span>
           <Slider
-            description={`${this.state.proteinPerDay} g protein per day`}
             defaultValue={100}
             min={0}
             max={200}

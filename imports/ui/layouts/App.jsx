@@ -9,14 +9,14 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import CircularProgress from 'material-ui/CircularProgress';
+import LinearProgress from 'material-ui/CircularProgress';
 import AppBar from 'material-ui/AppBar';
 import Snackbar from 'material-ui/Snackbar';
 import Toggle from 'material-ui/Toggle';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
-import Trips from '../../api/trips/trips.js';
+import Trips from '../../api/trips/trips';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
@@ -138,7 +138,7 @@ export default class App extends React.Component {
                     transitionLeaveTimeout={400}
                   >
                     {loading
-                      ? <CircularProgress size={2} />
+                      ? <LinearProgress mode="indeterminate" />
                       : clonedChildren}
                   </ReactCSSTransitionGroup>
                 </div>
@@ -166,7 +166,7 @@ export default class App extends React.Component {
           </div>
           <Snackbar
             open={this.props.user === null}
-            message={"You must be logged in to save trips "}
+            message={'You must be logged in to save trips'}
           />
         </div>
 
