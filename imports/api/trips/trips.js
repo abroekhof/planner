@@ -8,6 +8,8 @@ import Days from '../days/days.js';
 import Meals from '../meals/meals.js';
 import MealFoods from '../mealFoods/mealFoods.js';
 
+const newTripName = 'New Trip';
+
 class TripsCollection extends Mongo.Collection {
   remove(selector, callback) {
     // also remove all child days
@@ -22,11 +24,29 @@ Trips.helpers({
   days() {
     return Days.find({ tripId: this._id });
   },
+  meals() {
+    return Meals.find({ tripId: this._id });
+  },
+  mealFoods() {
+    return MealFoods.find({ tripId: this._id });
+  },
   editableBy(userId) {
     if (!this.userId) {
       return true;
     }
     return this.userId === userId;
+  },
+  edited() {
+    if (this.name !== newTripName) {
+      return true;
+    }
+    if (this.days().count() > 1) {
+      return true;
+    }
+    if (this.mealFoods().count() > 0) {
+      return true;
+    }
+    return false;
   },
 });
 
@@ -48,6 +68,7 @@ Trips.schema = new SimpleSchema({
   name: {
     type: String,
     max: 100,
+    defaultValue: newTripName,
   },
   createdAt: {
     type: Date,
@@ -86,7 +107,7 @@ Meteor.methods({
     let sessionId = Random.id();
     if (!this.isSimulation) { sessionId = this.connection.id; }
     const tripId = Trips.insert({
-      name: 'New Trip',
+      name: newTripName,
       calsPerDay: 3000,
       proteinPerDay: 100,
       createdAt: new Date(),
@@ -129,9 +150,14 @@ Meteor.methods({
   'trips.updateUserId': function tripsUpdateName() {
     let sessionId = Random.id();
     if (!this.isSimulation) { sessionId = this.connection.id; }
-    console.log(sessionId);
+
     const trip = Trips.findOne({ sessionId });
     if (!trip) { return; }
+    // if the trip was not edited and the user has other trips, delete it.
+    if (!trip.edited() && !!Trips.findOne({ userId: this.userId })) {
+      Trips.remove(trip._id);
+      return;
+    }
     Trips.update(
       trip._id,
       { $set: { userId: this.userId } }
