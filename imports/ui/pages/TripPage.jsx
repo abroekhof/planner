@@ -6,6 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import Day from '../components/Day.jsx';
 import TripDetails from '../components/TripDetails.jsx';
+import NotFoundPage from './NotFoundPage.jsx';
 
 import { totals } from '../helpers.js';
 
@@ -86,8 +87,11 @@ export default class TripPage extends Component {
   }
 
   render() {
-    const { trip, days, loading } = this.props;
+    const { trip, days, loading, tripExists } = this.props;
     const numDays = days.length;
+    if (!tripExists) {
+      return <NotFoundPage />;
+    }
     if (loading) {
       return (
         <div>loading</div>
@@ -117,13 +121,13 @@ export default class TripPage extends Component {
 
 TripPage.propTypes = {
   trip: PropTypes.object,
-  foods: PropTypes.array.isRequired,
-  days: PropTypes.array.isRequired,
-  meals: PropTypes.array.isRequired,
-  mealFoods: PropTypes.array.isRequired,
+  days: PropTypes.arrayOf(PropTypes.object).isRequired,
+  meals: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mealFoods: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentUser: PropTypes.object,
   removeTrip: PropTypes.func.isRequired,
   handleOpenFoodDrawer: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  tripExists: PropTypes.bool.isRequired,
   useOz: PropTypes.bool,
 };
