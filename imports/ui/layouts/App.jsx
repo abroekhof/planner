@@ -129,18 +129,19 @@ export default class App extends React.Component {
                 />
               </List>
             </Drawer>
-
-            <div className={classNames('row')}>
-              <div className={classNames('col-md-offset-3', 'col-md-6', 'col-sm-12', 'col-xs-12')}>
-                <ReactCSSTransitionGroup
-                  transitionName="example"
-                  transitionEnterTimeout={400}
-                  transitionLeaveTimeout={400}
-                >
-                  {loading
-                    ? <CircularProgress size={2} />
-                    : clonedChildren}
-                </ReactCSSTransitionGroup>
+            <div className="container-fluid">
+              <div className={classNames('row')}>
+                <div className={classNames('col-md-offset-3', 'col-md-6', 'col-sm-12', 'col-xs-12')}>
+                  <ReactCSSTransitionGroup
+                    transitionName="example"
+                    transitionEnterTimeout={400}
+                    transitionLeaveTimeout={400}
+                  >
+                    {loading
+                      ? <CircularProgress size={2} />
+                      : clonedChildren}
+                  </ReactCSSTransitionGroup>
+                </div>
               </div>
             </div>
 
@@ -149,7 +150,7 @@ export default class App extends React.Component {
               docked={false}
               open={this.state.rightOpen}
               onRequestChange={rightOpen => this.setState({ rightOpen })}
-              width={300}
+              width={400}
             >
               <FoodDrawer
                 foods={foods}
