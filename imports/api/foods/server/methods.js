@@ -2,10 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Match, check } from 'meteor/check';
 import { _ } from 'meteor/underscore';
 
-import Foods from '../foods.js';
-import MealFoods from '../../mealFoods/mealFoods.js';
+import Foods from '../foods';
+import MealFoods from '../../mealFoods/mealFoods';
 
 const verifyFood = (userId, foodId, name, calories, protein, weight) => {
+  let foodIdCopy = foodId;
   if (foodId) {
     const food = Foods.findOne(foodId);
     if (!food) {
@@ -20,6 +21,28 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
       throw new Meteor.Error('foods.verify.accessDenied',
         'Cannot update a food that has been verified');
     }
+    // a food update was requested
+    Foods.update(
+      foodId,
+      { $set: {
+        name,
+        calories,
+        caloriesPerWeight: calories / weight,
+        protein,
+        proteinPerWeight: protein / weight,
+        weight,
+      },
+    });
+  } else {
+    foodIdCopy = Foods.insert({
+      userId,
+      name,
+      calories,
+      caloriesPerWeight: calories / weight,
+      protein,
+      proteinPerWeight: protein / weight,
+      weight,
+    });
   }
   const percent = 0.02;
   const upper = (1 + percent);
@@ -43,14 +66,14 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
   );
   let foodsMatch = false;
   if (foundFood) {
+    // match was found, make sure that it's a close match
     const foundToks = foundFood.name.toLowerCase().split(/\b\s+/);
     const searchToks = name.toLowerCase().split(/\b\s+/);
     const minLength = Math.min(foundToks.length, searchToks.length);
     foodsMatch = (minLength === _.intersection(foundToks, searchToks).length);
-    console.log(foodsMatch);
+    console.log(searchToks, foundToks, foodsMatch);
   }
   if (foodsMatch) {
-    console.log(foundFood.score);
     // food was found, update it to make sure it's verified
     Foods.update(foundFood._id, { $set: { verified: true } });
     if (foodId) {
@@ -68,24 +91,13 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
           weight: foundFood.weight,
         },
       });
-      Foods.remove(foodId);
     }
+    // set the old food or the newly created food to be a duplicate
+    Foods.update(foodIdCopy, { $set: { duplicateOf: foundFood._id } });
     return foundFood._id;
   }
   // no closely matching food was found
   if (foodId) {
-    // a food update was requested
-    Foods.update(
-      foodId,
-      { $set: {
-        name,
-        calories,
-        caloriesPerWeight: calories / weight,
-        protein,
-        proteinPerWeight: protein / weight,
-        weight,
-      },
-    });
     MealFoods.update(
       { foodId },
       { $set: {
@@ -97,18 +109,8 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
         weight,
       },
     });
-    return foodId;
   }
-  // no matching food and no update, so just create a new food
-  return Foods.insert({
-    userId,
-    name,
-    calories,
-    caloriesPerWeight: calories / weight,
-    protein,
-    proteinPerWeight: protein / weight,
-    weight,
-  });
+  return foodIdCopy;
 };
 
 Meteor.methods({

@@ -13,6 +13,11 @@ Foods.schema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
+  duplicateOf: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Id,
+    optional: true,
+  },
   name: {
     type: String,
     max: 100,

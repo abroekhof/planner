@@ -51,7 +51,7 @@ if (Meteor.isServer) {
 
         it('should verify similar foods', function similarFoods() {
           const f = {
-            name: 'test',
+            name: 'ONE TEST',
             calories: 100,
             caloriesPerWeight: 33,
             protein: 10,
@@ -59,7 +59,7 @@ if (Meteor.isServer) {
             weight: 3,
           };
           const food = Factory.create('foods', f);
-          const newFoodId = verifyFood(Random.id(), null, `${f.name}  one`, f.calories * 1.05, f.protein * 1.05, f.weight * 1.05);
+          const newFoodId = verifyFood(Random.id(), null, 'test one', f.calories * 1.01, f.protein * 1.01, f.weight * 1.01);
           assert.strictEqual(food._id, newFoodId);
         });
 
