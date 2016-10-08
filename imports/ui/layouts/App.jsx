@@ -15,6 +15,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Toggle from 'material-ui/Toggle';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import { blueGrey500 } from 'material-ui/styles/colors';
 
 import Trips from '../../api/trips/trips';
 
@@ -22,7 +23,11 @@ import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
 import FoodDrawer from '../components/FoodDrawer.jsx';
 
-const muiTheme = getMuiTheme();
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: blueGrey500,
+  },
+});
 
 export default class App extends React.Component {
   constructor(props) {
