@@ -69,6 +69,8 @@ export default class SignInPage extends React.Component {
       <div>
         <h1>Sign in</h1>
         <p>Signing in allows you to save your trips</p>
+        <Link to="/join">Need an account? Join Now.</Link>
+        <br />
         {this.state.errors.none}
         <TextField
           onChange={this.handleChange}
@@ -78,6 +80,7 @@ export default class SignInPage extends React.Component {
           hintText="Your Email"
           errorText={this.state.errors.email}
         />
+        <br />
         <TextField
           onChange={this.handleChange}
           type="password"
@@ -91,9 +94,7 @@ export default class SignInPage extends React.Component {
       </div>
     );
 
-    const link = <Link to="/join">Need an account? Join Now.</Link>;
-
-    return <AuthPage content={content} link={link} />;
+    return <AuthPage content={content} />;
   }
 }
 

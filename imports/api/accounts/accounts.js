@@ -3,53 +3,6 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 const Schema = {};
 
-Schema.UserCountry = new SimpleSchema({
-  name: {
-    type: String,
-  },
-  code: {
-    type: String,
-    regEx: /^[A-Z]{2}$/,
-  },
-});
-
-Schema.UserProfile = new SimpleSchema({
-  firstName: {
-    type: String,
-    optional: true,
-  },
-  lastName: {
-    type: String,
-    optional: true,
-  },
-  birthday: {
-    type: Date,
-    optional: true,
-  },
-  gender: {
-    type: String,
-    allowedValues: ['Male', 'Female'],
-    optional: true,
-  },
-  organization: {
-    type: String,
-    optional: true,
-  },
-  website: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Url,
-    optional: true,
-  },
-  bio: {
-    type: String,
-    optional: true,
-  },
-  country: {
-    type: Schema.UserCountry,
-    optional: true,
-  },
-});
-
 Schema.User = new SimpleSchema({
   username: {
     type: String,
@@ -87,8 +40,9 @@ Schema.User = new SimpleSchema({
     type: Date,
   },
   profile: {
-    type: Schema.UserProfile,
+    type: Object,
     optional: true,
+    blackbox: true,
   },
   // Make sure this services field is in your schema if you're using any of the accounts packages
   services: {

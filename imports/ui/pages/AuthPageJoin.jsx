@@ -47,7 +47,6 @@ export default class JoinPage extends React.Component {
       password: this.state.password,
     }, (err) => {
       if (err) {
-        console.log(err);
         let key;
         if (err.reason === 'Email already exists.') {
           key = 'email';
@@ -74,6 +73,8 @@ export default class JoinPage extends React.Component {
       <div>
         <h1>Join</h1>
         <p>Joining allows you to save your trips</p>
+        <Link to="/signin">Have an account? Sign in</Link>
+        <br />
         <TextField
           onChange={this.handleChange}
           type="email"
@@ -82,6 +83,7 @@ export default class JoinPage extends React.Component {
           hintText="Your Email"
           errorText={this.state.errors.email}
         />
+        <br />
         <TextField
           onChange={this.handleChange}
           type="password"
@@ -90,6 +92,7 @@ export default class JoinPage extends React.Component {
           hintText="Password"
           errorText={this.state.errors.password}
         />
+        <br />
         <TextField
           onChange={this.handleChange}
           type="password"
@@ -104,9 +107,7 @@ export default class JoinPage extends React.Component {
       </div>
     );
 
-    const link = <Link to="/signin">Have an account? Sign in</Link>;
-
-    return <AuthPage content={content} link={link} />;
+    return <AuthPage content={content} />;
   }
 }
 

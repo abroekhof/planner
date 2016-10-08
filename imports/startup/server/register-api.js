@@ -13,3 +13,4 @@ import '../../api/mealFoods/mealFoods.js';
 import '../../api/trips/trips.js';
 
 import '../../api/accounts/accounts.js';
+import '../../api/accounts/server/accounts.js';

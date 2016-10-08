@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import Avatar from 'material-ui/Avatar';
 
 export default class UserMenu extends React.Component {
   constructor(props) {
@@ -40,10 +41,26 @@ export default class UserMenu extends React.Component {
     const { user } = this.props;
     const email = user.emails[0].address;
     const emailLocalPart = email.substring(0, email.indexOf('@'));
-
+    let userItem;
+    if (user.profile.picture) {
+      userItem = (
+        <ListItem
+          disabled
+          primaryText={emailLocalPart}
+          leftAvatar={<Avatar src={user.profile.picture} />}
+        />
+      );
+    } else {
+      userItem = (
+        <ListItem
+          disabled
+          primaryText={emailLocalPart}
+        />
+      );
+    }
     return (
       <List>
-        <Subheader>{emailLocalPart}</Subheader>
+        {userItem}
         <ListItem primaryText="Log out" onClick={this.handleLogout} />
       </List>
     );
