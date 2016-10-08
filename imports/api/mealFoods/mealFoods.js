@@ -33,6 +33,7 @@ MealFoods.schema = new SimpleSchema({
     type: Number,
     defaultValue: 1,
     decimal: true,
+    optional: true,
   },
   name: {
     type: String,
@@ -81,21 +82,21 @@ Meteor.methods({
     check(dayId, String);
     check(qty, Number);
     const food = Foods.findOne(foodId);
-    MealFoods.insert(
+    MealFoods.upsert(
       {
         tripId,
         foodId,
         mealId,
         dayId,
         userId: this.userId,
-        qty,
         name: food.name,
         calories: food.calories,
         caloriesPerWeight: food.caloriesPerWeight,
         protein: food.protein,
         proteinPerWeight: food.proteinPerWeight,
         weight: food.weight,
-      }
+      },
+      { $inc: { qty } },
     );
   },
   'mealFoods.remove': function mealFoodsRemove(mealFoodId) {

@@ -40,7 +40,6 @@ export default class TripPage extends Component {
     // go backwards through the days
     for (let dayIdx = this.props.days.length - 1; dayIdx >= 0; dayIdx -= 1) {
       const day = this.props.days[dayIdx];
-      console.log(day, this.props.mealFoods);
       const mealFoods = this.props.mealFoods.filter(mealFood => (mealFood.dayId === day._id));
       const dayTotals = totals(mealFoods);
 

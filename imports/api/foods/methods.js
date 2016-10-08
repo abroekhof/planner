@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 
-import Foods from './foods.js';
-import MealFoods from '../mealFoods/mealFoods.js';
+import Foods from './foods';
+import MealFoods from '../mealFoods/mealFoods';
 
 Meteor.methods({
   'foods.insert': function foodsInsert(name, calories, protein, weight) {

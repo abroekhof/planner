@@ -71,7 +71,6 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
     const searchToks = name.toLowerCase().split(/\b\s+/);
     const minLength = Math.min(foundToks.length, searchToks.length);
     foodsMatch = (minLength === _.intersection(foundToks, searchToks).length);
-    console.log(searchToks, foundToks, foodsMatch);
   }
   if (foodsMatch) {
     // food was found, update it to make sure it's verified

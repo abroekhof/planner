@@ -47,7 +47,6 @@ class Day extends Component {
     let idx = 0;
     const out = meals.map((meal, mealIdx) => {
       const mf = mealFoods.filter(mealFood => (mealFood.mealId === mealIdx));
-      console.log(mealFoods, mf);
       const div = (
         <div key={mealIdx}>
           {!(idx === 0 && this.props.idx === 0) ?

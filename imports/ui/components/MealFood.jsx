@@ -19,6 +19,10 @@ class MealFood extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({ qty: props.mealFood.qty });
+  }
+
   delete() {
     Meteor.call('mealFoods.remove', this.props.mealFood._id);
   }

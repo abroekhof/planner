@@ -90,19 +90,12 @@ Meteor.methods({
     newDay.createdAt = new Date();
     const newDayId = Days.insert(newDay);
 
-    Meals.find({ dayId }).forEach((meal) => {
-      const newMeal = JSON.parse(JSON.stringify(meal));
-      newMeal._id = Random.id();
-      newMeal.dayId = newDayId;
-      const newMealId = Meals.insert(newMeal);
-
-      MealFoods.find({ dayId, mealId: meal._id }).forEach((mealFood) => {
-        const newMealFood = JSON.parse(JSON.stringify(mealFood));
-        newMealFood._id = Random.id();
-        newMealFood.dayId = newDayId;
-        newMealFood.mealId = newMealId;
-        MealFoods.insert(newMealFood);
-      });
+    MealFoods.find({ dayId }).forEach((mealFood) => {
+      const newMealFood = JSON.parse(JSON.stringify(mealFood));
+      newMealFood._id = Random.id();
+      newMealFood.dayId = newDayId;
+      newMealFood.mealId = mealFood.mealId;
+      MealFoods.insert(newMealFood);
     });
   },
 });

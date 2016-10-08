@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import '../imports/startup/accounts-config.js';
-import { renderRoutes } from '../imports/startup/client/routes.js';
+import '../imports/startup/accounts-config';
+import { renderRoutes } from '../imports/startup/client/routes';
 
 Meteor.startup(() => {
 // Needed for onTouchTap

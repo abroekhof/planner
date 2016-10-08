@@ -8,13 +8,13 @@ import { Factory } from 'meteor/dburles:factory';
 import { assert } from 'meteor/practicalmeteor:chai';
 
 
-import Foods from './foods.js';
-import verifyFood from './server/methods.js';
+import Foods from './foods';
+import verifyFood from './server/methods';
 
 Factory.define('foods', Foods, {});
 
 if (Meteor.isServer) {
-  require('./server/schema.js');
+  require('./server/schema');
 
   describe('foods', function foods() {
     it('builds correctly from factory', function factoryBuild() {

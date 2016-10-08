@@ -1,16 +1,16 @@
-import '../../api/foods/methods.js';
-import '../../api/foods/server/publications.js';
-import '../../api/foods/server/methods.js';
+import '../../api/foods/methods';
+import '../../api/foods/server/publications';
+import '../../api/foods/server/methods';
 // schema ensures the index is built on food names for verification
-import '../../api/foods/server/schema.js';
+import '../../api/foods/server/schema';
 
-import '../../api/days/days.js';
+import '../../api/days/days';
 
-import '../../api/meals/meals.js';
+import '../../api/meals/meals';
 
-import '../../api/mealFoods/mealFoods.js';
+import '../../api/mealFoods/mealFoods';
 
-import '../../api/trips/trips.js';
+import '../../api/trips/trips';
 
-import '../../api/accounts/accounts.js';
-import '../../api/accounts/server/accounts.js';
+import '../../api/accounts/accounts';
+import '../../api/accounts/server/accounts';
