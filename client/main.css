@@ -6,6 +6,10 @@ body {
   font-size: 15px;
   line-height: 24px;
   margin: 0;
+  background-image: url("images/whitney.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .example-enter {
