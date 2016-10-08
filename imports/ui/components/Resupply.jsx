@@ -4,7 +4,7 @@ import { ListItem } from 'material-ui/List';
 
 import { Meteor } from 'meteor/meteor';
 
-import { convertWeight } from '../helpers.js';
+import { convertWeight } from '../helpers';
 
 class Resupply extends Component {
   constructor(props) {

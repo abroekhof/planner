@@ -8,7 +8,8 @@ import Day from '../components/Day.jsx';
 import TripDetails from '../components/TripDetails.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 
-import { totals } from '../helpers.js';
+import { totals } from '../helpers';
+import { meals } from '../../api/meals/meals';
 
 export default class TripPage extends Component {
   constructor(props) {
@@ -39,20 +40,19 @@ export default class TripPage extends Component {
     // go backwards through the days
     for (let dayIdx = this.props.days.length - 1; dayIdx >= 0; dayIdx -= 1) {
       const day = this.props.days[dayIdx];
-      const dayMeals = this.props.meals.filter(meal => (meal.dayId === day._id));
+      console.log(day, this.props.mealFoods);
       const mealFoods = this.props.mealFoods.filter(mealFood => (mealFood.dayId === day._id));
       const dayTotals = totals(mealFoods);
 
       // catch the resupply at the end of the day
-      if (dayMeals.length === day.resupply) {
+      if (meals.length === day.resupply) {
         resupplyWeight = currWeight;
         currWeight = 0;
       }
       // go backwards through the meals
-      for (let mealIdx = dayMeals.length - 1; mealIdx >= 0; mealIdx -= 1) {
-        const meal = dayMeals[mealIdx];
+      for (let mealIdx = meals.length - 1; mealIdx >= 0; mealIdx -= 1) {
         const dayMealFoods = mealFoods.filter(
-          mealFood => (mealFood.mealId === meal._id));
+          mealFood => (mealFood.mealId === mealIdx));
 
         for (let dmfIdx = dayMealFoods.length - 1; dmfIdx >= 0; dmfIdx -= 1) {
           const dayMealFood = dayMealFoods[dmfIdx];
@@ -69,7 +69,6 @@ export default class TripPage extends Component {
           key={day._id}
           tripId={this.props.trip._id}
           day={day}
-          meals={dayMeals}
           mealFoods={mealFoods}
           dayTotals={dayTotals}
           weightLeft={currWeight}
@@ -122,7 +121,6 @@ export default class TripPage extends Component {
 TripPage.propTypes = {
   trip: PropTypes.object,
   days: PropTypes.arrayOf(PropTypes.object).isRequired,
-  meals: PropTypes.arrayOf(PropTypes.object).isRequired,
   mealFoods: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentUser: PropTypes.object,
   removeTrip: PropTypes.func.isRequired,

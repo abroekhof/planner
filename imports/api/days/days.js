@@ -4,13 +4,12 @@ import { check } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import Meals from '../meals/meals.js';
-import MealFoods from '../mealFoods/mealFoods.js';
+import MealFoods from '../mealFoods/mealFoods';
 
 class DaysCollection extends Mongo.Collection {
   remove(selector, callback) {
-    // also remove all child meals
-    Meals.remove({ dayId: selector });
+    // also remove all child mealFoods
+    MealFoods.remove({ dayId: selector });
     return super.remove(selector, callback);
   }
 }
@@ -48,49 +47,19 @@ Days.helpers({
 export default Days;
 
 if (Meteor.isServer) {
-  Meteor.publishComposite('days', {
-    find() { return Days.find(); },
-    children: [
-      {
-        find(day) { return day.meals(); },
-        children: [
-          {
-            find(meal) { return meal.mealFoods(); },
-          },
-        ],
-      },
-    ],
+  Meteor.publish('days.inTrip', (tripId) => {
+    check(tripId, String);
+    return Days.find({ tripId });
   });
-
-  Meteor.publishComposite('days.inTrip', tripId => (
-    { find() { return Days.find({ tripId }); },
-      children: [
-        {
-          find(day) { return day.meals(); },
-          children: [{ find(meal) { return meal.mealFoods(); } }],
-        },
-      ],
-    })
-  );
 }
 
 Meteor.methods({
   'days.insert': function daysInsert(tripId) {
     check(tripId, String);
-    const dayId = Days.insert({
+    return Days.insert({
       tripId,
       userId: this.userId,
     });
-    // insert the meals
-    ['Breakfast', 'Lunch', 'Dinner'].forEach((name) => {
-      Meals.insert({
-        dayId,
-        name,
-        tripId,
-        userId: this.userId,
-      });
-    });
-    return dayId;
   },
   'days.remove': function daysRemove(dayId) {
     check(dayId, String);

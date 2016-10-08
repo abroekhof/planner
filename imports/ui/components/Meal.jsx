@@ -7,8 +7,7 @@ import Paper from 'material-ui/Paper';
 
 import MealFood from './MealFood.jsx';
 
-import { totals, convertWeight } from '../helpers.js';
-
+import { totals, convertWeight } from '../helpers';
 
 class Meal extends Component {
 
@@ -18,7 +17,7 @@ class Meal extends Component {
   }
 
   handleOpenFoodDrawer() {
-    this.props.handleOpenFoodDrawer(this.props.tripId, this.props.dayId, this.props.meal._id);
+    this.props.handleOpenFoodDrawer(this.props.tripId, this.props.dayId, this.props.meal.id);
   }
 
   renderMealFoods() {
@@ -28,19 +27,19 @@ class Meal extends Component {
   }
 
   render() {
-    const { mealFoods, useOz } = this.props;
+    const { mealFoods, useOz, meal } = this.props;
     const mealTotals = totals(mealFoods);
     return (
       <Paper>
         <List>
           <Subheader>
-            {this.props.meal.name} (
+            {meal.name} (
             {mealTotals.calories} calories
             , {mealTotals.protein} g protein, {convertWeight(mealTotals.weight, useOz)})
           </Subheader>
           {this.renderMealFoods()}
           <ListItem
-            primaryText={`Add food to ${this.props.meal.name}`}
+            primaryText={`Add food to ${meal.name}`}
             leftIcon={<AddCircle />}
             onTouchTap={this.handleOpenFoodDrawer}
           />

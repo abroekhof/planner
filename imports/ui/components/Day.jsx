@@ -8,7 +8,8 @@ import { green100, red100 } from 'material-ui/styles/colors';
 
 import Meal from './Meal.jsx';
 import Resupply from './Resupply.jsx';
-import { convertWeight } from '../helpers.js';
+import { convertWeight } from '../helpers';
+import { meals } from '../../api/meals/meals';
 
 const styles = {
   chip: {
@@ -37,7 +38,6 @@ class Day extends Component {
 
   renderMeals() {
     const {
-      meals,
       mealFoods,
       tripId,
       day,
@@ -45,11 +45,11 @@ class Day extends Component {
       handleOpenFoodDrawer,
       useOz } = this.props;
     let idx = 0;
-    const out = meals.map((meal) => {
-      const mf = mealFoods.filter(
-        mealFood => (mealFood.mealId === meal._id));
+    const out = meals.map((meal, mealIdx) => {
+      const mf = mealFoods.filter(mealFood => (mealFood.mealId === mealIdx));
+      console.log(mealFoods, mf);
       const div = (
-        <div key={meal._id}>
+        <div key={mealIdx}>
           {!(idx === 0 && this.props.idx === 0) ?
             <Resupply day={day} idx={idx} weight={resupplyWeight} useOz={useOz} /> : ''}
           <Meal
@@ -108,7 +108,6 @@ Day.propTypes = {
   tripId: PropTypes.string.isRequired,
   day: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
-  meals: PropTypes.arrayOf(PropTypes.object).isRequired,
   mealFoods: PropTypes.arrayOf(PropTypes.object).isRequired,
   weightLeft: PropTypes.number.isRequired,
   resupplyWeight: PropTypes.number,

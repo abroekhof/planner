@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import Avatar from 'material-ui/Avatar';
 
 export default class UserMenu extends React.Component {

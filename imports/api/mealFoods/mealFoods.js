@@ -3,8 +3,7 @@ import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import Foods from '../foods/foods.js';
-import Meals from '../meals/meals.js';
+import Foods from '../foods/foods';
 
 const MealFoods = new Mongo.Collection('mealFoods');
 
@@ -19,8 +18,7 @@ MealFoods.schema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Id,
   },
   mealId: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id,
+    type: Number,
   },
   userId: {
     type: String,
@@ -68,11 +66,18 @@ MealFoods.attachSchema(MealFoods.schema);
 
 export default MealFoods;
 
+if (Meteor.isServer) {
+  Meteor.publish('mealFoods.inTrip', (tripId) => {
+    check(tripId, String);
+    return MealFoods.find({ tripId });
+  });
+}
+
 Meteor.methods({
   'mealFoods.insert': function mealFoodsInsert(foodId, tripId, mealId, dayId, qty) {
     check(tripId, String);
     check(foodId, String);
-    check(mealId, String);
+    check(mealId, Number);
     check(dayId, String);
     check(qty, Number);
     const food = Foods.findOne(foodId);
@@ -110,8 +115,5 @@ Meteor.methods({
 MealFoods.helpers({
   food() {
     return Foods.findOne(this.foodId);
-  },
-  meal() {
-    return Meals.findOne(this.mealId);
   },
 });

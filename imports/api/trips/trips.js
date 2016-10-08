@@ -4,9 +4,8 @@ import { check } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import Days from '../days/days.js';
-import Meals from '../meals/meals.js';
-import MealFoods from '../mealFoods/mealFoods.js';
+import Days from '../days/days';
+import MealFoods from '../mealFoods/mealFoods';
 
 const newTripName = 'New Trip';
 
@@ -23,9 +22,6 @@ const Trips = new TripsCollection('trips');
 Trips.helpers({
   days() {
     return Days.find({ tripId: this._id });
-  },
-  meals() {
-    return Meals.find({ tripId: this._id });
   },
   mealFoods() {
     return MealFoods.find({ tripId: this._id });
@@ -163,11 +159,6 @@ Meteor.methods({
       { $set: { userId: this.userId } }
     );
     Days.update(
-      { tripId: trip._id },
-      { $set: { userId: this.userId } },
-      { multi: true }
-    );
-    Meals.update(
       { tripId: trip._id },
       { $set: { userId: this.userId } },
       { multi: true }

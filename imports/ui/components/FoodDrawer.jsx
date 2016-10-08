@@ -102,7 +102,7 @@ export default class FoodDrawer extends Component {
   }
 
   renderAddFoodButtom() {
-    if (this.props.dayId && this.props.mealId) {
+    if (!!this.props.dayId && {}.hasOwnProperty.call(this.props, 'mealId')) {
       return (
         <RaisedButton
           label="Add selected foods"
@@ -228,7 +228,7 @@ FoodDrawer.propTypes = {
   foodSort: PropTypes.object.isRequired,
   handleCloseDrawer: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
-  mealId: PropTypes.string,
+  mealId: PropTypes.number,
   dayId: PropTypes.string,
   tripId: PropTypes.string,
 };

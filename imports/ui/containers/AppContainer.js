@@ -3,8 +3,8 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { createContainer } from 'meteor/react-meteor-data';
 
 // XXX: Session
-import Trips from '../../api/trips/trips.js';
-import Foods from '../../api/foods/foods.js';
+import Trips from '../../api/trips/trips';
+import Foods from '../../api/foods/foods';
 
 import App from '../layouts/App.jsx';
 

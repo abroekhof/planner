@@ -9,7 +9,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
 
-import { convertWeight, convertRatio } from '../helpers.js';
+import { convertWeight, convertRatio } from '../helpers';
 
 class Food extends Component {
   constructor(props) {
