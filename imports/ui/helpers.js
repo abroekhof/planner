@@ -15,7 +15,7 @@ export const totals = mealFoods => (
    )
  );
 
-const gPerOz = 28.3495;
+export const gPerOz = 28.3495;
 
 export const convertRatio = (ratio, useOz, unit) => {
   const r = Math.round((useOz ? ratio * gPerOz : ratio * 100) * 100) / 100;
