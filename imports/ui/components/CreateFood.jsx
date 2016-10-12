@@ -4,9 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import { Meteor } from 'meteor/meteor';
 
-import { isNumeric } from '../helpers';
-
-const gPerOz = 28.3495;
+import { isNumeric, gPerOz } from '../helpers';
 
 export default class FoodDrawer extends Component {
   constructor(props) {
