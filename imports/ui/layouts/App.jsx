@@ -21,7 +21,7 @@ import Trips from '../../api/trips/trips';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
-import FoodDrawer from '../components/FoodDrawer.jsx';
+import FoodDrawerContainer from '../containers/FoodDrawerContainer.js';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -157,14 +157,14 @@ export default class App extends React.Component {
               onRequestChange={rightOpen => this.setState({ rightOpen })}
               width={400}
             >
-              <FoodDrawer
-                foods={foods}
-                foodSort={foodSort}
-                handleCloseDrawer={this.handleClose}
-                tripId={this.state.tripId}
-                dayId={this.state.dayId}
-                mealId={this.state.mealId}
-                useOz={this.state.useOz}
+              <FoodDrawerContainer
+                params={{
+                  handleCloseDrawer: this.handleClose,
+                  tripId: this.state.tripId,
+                  dayId: this.state.dayId,
+                  mealId: this.state.mealId,
+                  useOz: this.state.useOz,
+                }}
               />
             </Drawer>
 

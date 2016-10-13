@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { List } from 'material-ui/List';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
@@ -14,6 +13,7 @@ import classNames from 'classnames';
 
 import Food from './Food.jsx';
 import CreateFood from './CreateFood.jsx';
+import FoodSearch from './FoodSearch.jsx';
 
 export default class FoodDrawer extends Component {
   constructor(props) {
@@ -21,13 +21,11 @@ export default class FoodDrawer extends Component {
     this.state = {
       sortValue: 'name',
       sortOrder: -1,
-      foodFilter: '',
       open: false,
       editingFood: null,
       selectedFoods: [],
     };
 
-    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.toggleSortOrder = this.toggleSortOrder.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
@@ -53,23 +51,18 @@ export default class FoodDrawer extends Component {
     this.handleOpen();
   }
 
-  handleTextFieldChange(event) {
-    const copy = Object.assign({}, this.state);
-    copy[event.target.id] = event.target.value;
-    this.setState(copy);
-  }
-
   toggleSortOrder() {
-    const copy = Object.assign({}, this.props.foodSort.get());
-    copy.order *= -1;
-    this.props.foodSort.set(copy);
-    this.setState({ sortOrder: copy.order });
+    const copy = Object.assign({}, this.props.foodOpts.get());
+    copy.sort[this.state.sortValue] *= -1;
+    this.props.foodOpts.set(copy);
+    this.setState({ sortOrder: copy.sort[this.state.sortValue] });
   }
 
   handleSortChange(event, index, sortValue) {
-    const copy = Object.assign({}, this.props.foodSort.get());
-    copy.value = sortValue;
-    this.props.foodSort.set(copy);
+    const copy = Object.assign({}, this.props.foodOpts.get());
+    copy.sort = {};
+    copy.sort[sortValue] = this.state.sortOrder;
+    this.props.foodOpts.set(copy);
     this.setState({ sortValue });
   }
 
@@ -116,14 +109,10 @@ export default class FoodDrawer extends Component {
   }
 
   render() {
-    const regex = new RegExp(this.state.foodFilter, 'i');
-    const filteredFoods = [];
     const selectedFoods = [];
     this.props.foods.forEach((food) => {
       const selectedIdx = this.state.selectedFoods.indexOf(food._id);
-      if (food.name.search(regex) > -1 && selectedIdx === -1) {
-        filteredFoods.push(food);
-      } else if (selectedIdx > -1) {
+      if (selectedIdx > -1) {
         selectedFoods.push(food);
       }
     }
@@ -152,13 +141,7 @@ export default class FoodDrawer extends Component {
         }
         <Divider />
         <div style={{ padding: '0px 12px 0px 12px' }}>
-          <TextField
-            id="foodFilter"
-            floatingLabelText="Filter foods"
-            value={this.state.foodFilter}
-            onChange={this.handleTextFieldChange}
-            fullWidth
-          />
+          <FoodSearch searchString={this.props.searchString} />
           <div className={classNames('row', 'middle-xs')}>
             <div className={classNames('col-xs-10')}>
               <SelectField
@@ -179,7 +162,7 @@ export default class FoodDrawer extends Component {
               <Checkbox
                 checkedIcon={<ContentSort />}
                 uncheckedIcon={<ContentSort />}
-                defaultChecked={this.props.foodSort.order === -1}
+                defaultChecked={this.state.sortOrder === -1}
                 onCheck={this.toggleSortOrder}
                 style={{ justifyContent: 'center' }}
               />
@@ -206,7 +189,7 @@ export default class FoodDrawer extends Component {
             />
           ))}
           <Divider />
-          {filteredFoods.map(food => (
+          {this.props.foods.map(food => (
             <Food
               key={food._id}
               food={food}
@@ -225,7 +208,8 @@ export default class FoodDrawer extends Component {
 
 FoodDrawer.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.object).isRequired,
-  foodSort: PropTypes.object.isRequired,
+  foodOpts: PropTypes.object.isRequired,
+  searchString: PropTypes.object.isRequired,
   handleCloseDrawer: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
   mealId: PropTypes.number,
