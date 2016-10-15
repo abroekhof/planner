@@ -83,7 +83,7 @@ export default class TripDetails extends Component {
     ];
 
     return (
-      <Card style={{ margin: '8px' }}>
+      <Card style={{ 'margin-top': '8px', 'margin-bottom': '8px' }}>
         <Dialog
           title="Rename trip"
           actions={actions}

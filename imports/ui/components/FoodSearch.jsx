@@ -7,6 +7,10 @@ import ContentClear from 'material-ui/svg-icons/content/clear';
 
 import classNames from 'classnames';
 
+/**
+ * A form to search for foods
+ * @extends Component
+ */
 export default class FoodSearch extends Component {
   constructor(props) {
     super(props);

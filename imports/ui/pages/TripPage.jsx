@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -108,10 +109,17 @@ export default class TripPage extends Component {
         />
 
         {this.renderDays()}
-
-        <FloatingActionButton onClick={this.handleAddDay} style={{ margin: '0 auto' }}>
-          <ContentAdd />
-        </FloatingActionButton>
+        <div className={classNames('row', 'end-xs')}>
+          <div className="col-xs-2">
+            <FloatingActionButton
+              onClick={this.handleAddDay}
+              secondary
+              style={{ 'margin-bottom': '16px' }}
+            >
+              <ContentAdd />
+            </FloatingActionButton>
+          </div>
+        </div>
       </div>
     );
   }
