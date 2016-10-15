@@ -21,14 +21,14 @@ class Food extends Component {
 
   onCheck(event, isInputChecked) {
     if (isInputChecked) {
-      this.props.addSelectedFood(this.props.food._id);
+      this.props.selectFood(this.props.food);
     } else {
-      this.props.removeSelectedFood(this.props.food._id);
+      this.props.unselectFood(this.props.food._id);
     }
   }
 
   deleteThisFood() {
-    this.props.removeSelectedFood(this.props.food._id);
+    this.props.unselectFood(this.props.food._id);
     Meteor.call('foods.remove', this.props.food._id);
   }
 
@@ -70,8 +70,8 @@ class Food extends Component {
 Food.propTypes = {
   food: PropTypes.object.isRequired,
   checked: PropTypes.bool.isRequired,
-  addSelectedFood: PropTypes.func.isRequired,
-  removeSelectedFood: PropTypes.func.isRequired,
+  selectFood: PropTypes.func.isRequired,
+  unselectFood: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,
   editingFood: PropTypes.func.isRequired,
 };

@@ -31,8 +31,8 @@ export default class FoodDrawer extends Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.editingFood = this.editingFood.bind(this);
-    this.addSelectedFood = this.addSelectedFood.bind(this);
-    this.removeSelectedFood = this.removeSelectedFood.bind(this);
+    this.selectFood = this.selectFood.bind(this);
+    this.unselectFood = this.unselectFood.bind(this);
     this.clearSelectedFoods = this.clearSelectedFoods.bind(this);
     this.addFoods = this.addFoods.bind(this);
   }
@@ -67,9 +67,9 @@ export default class FoodDrawer extends Component {
   }
 
   addFoods() {
-    this.state.selectedFoods.forEach(foodId =>
+    this.state.selectedFoods.forEach(food =>
       Meteor.call('mealFoods.insert',
-      foodId,
+      food._id,
       this.props.tripId,
       this.props.mealId,
       this.props.dayId,
@@ -80,13 +80,13 @@ export default class FoodDrawer extends Component {
     this.clearSelectedFoods();
   }
 
-  addSelectedFood(foodId) {
-    this.setState({ selectedFoods: this.state.selectedFoods.concat([foodId]) });
+  selectFood(food) {
+    this.setState({ selectedFoods: this.state.selectedFoods.concat([food]) });
   }
 
-  removeSelectedFood(foodId) {
+  unselectFood(foodId) {
     this.setState({
-      selectedFoods: this.state.selectedFoods.filter(listFoodId => listFoodId !== foodId),
+      selectedFoods: this.state.selectedFoods.filter(listFood => listFood._id !== foodId),
     });
   }
 
@@ -109,21 +109,15 @@ export default class FoodDrawer extends Component {
   }
 
   render() {
-    const selectedFoods = [];
-    this.props.foods.forEach((food) => {
-      const selectedIdx = this.state.selectedFoods.indexOf(food._id);
-      if (selectedIdx > -1) {
-        selectedFoods.push(food);
-      }
-    }
+    const unselectedFoods = this.props.foods.filter(
+      food => !this.state.selectedFoods.includes(food)
     );
-
     return (
       <div>
         <CreateFood
           handleClose={this.handleClose}
           handleOpen={this.handleOpen}
-          addSelectedFood={this.addSelectedFood}
+          selectFood={this.selectFood}
           open={this.state.open}
           useOz={this.props.useOz}
           editingFood={this.state.editingFood}
@@ -177,25 +171,25 @@ export default class FoodDrawer extends Component {
           />
         </div>
         <List>
-          {selectedFoods.map(food => (
+          {this.state.selectedFoods.map(food => (
             <Food
               key={food._id}
               food={food}
               checked
-              addSelectedFood={this.addSelectedFood}
-              removeSelectedFood={this.removeSelectedFood}
+              selectFood={this.selectFood}
+              unselectFood={this.unselectFood}
               useOz={this.props.useOz}
               editingFood={this.editingFood}
             />
           ))}
           <Divider />
-          {this.props.foods.map(food => (
+          {unselectedFoods.map(food => (
             <Food
               key={food._id}
               food={food}
               checked={false}
-              addSelectedFood={this.addSelectedFood}
-              removeSelectedFood={this.removeSelectedFood}
+              selectFood={this.selectFood}
+              unselectFood={this.unselectFood}
               useOz={this.props.useOz}
               editingFood={this.editingFood}
             />

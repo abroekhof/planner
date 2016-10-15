@@ -57,7 +57,6 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
         { protein: { $gte: protein * lower } },
         { weight: { $lte: weight * upper } },
         { weight: { $gte: weight * lower } },
-        { userId: { $ne: userId } },
       ],
     },
     { fields: { score: { $meta: 'textScore' } },
@@ -73,8 +72,10 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
     foodsMatch = (minLength === _.intersection(foundToks, searchToks).length);
   }
   if (foodsMatch) {
-    // food was found, update it to make sure it's verified
-    Foods.update(foundFood._id, { $set: { verified: true } });
+    // food was found, and it doesn't belong to the user, update it to make sure it's verified
+    if (foundFood.userId !== userId) {
+      Foods.update(foundFood._id, { $set: { verified: true } });
+    }
     if (foodId) {
       // an update was requested which verified a food, so change any previous MealFoods to use
       // the new food, and delete the old food
@@ -93,7 +94,7 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
     }
     // set the old food or the newly created food to be a duplicate
     Foods.update(foodIdCopy, { $set: { duplicateOf: foundFood._id } });
-    return foundFood._id;
+    return foundFood;
   }
   // no closely matching food was found
   if (foodId) {
@@ -109,7 +110,7 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
       },
     });
   }
-  return foodIdCopy;
+  return Foods.findOne(foodIdCopy);
 };
 
 Meteor.methods({
