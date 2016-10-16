@@ -1,6 +1,8 @@
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
+import { logger } from '../../logging/logging';
+
 import MealFoods from './mealFoods';
 import Foods from '../foods/foods';
 
@@ -11,6 +13,7 @@ Meteor.methods({
     check(mealId, Number);
     check(dayId, String);
     check(qty, Number);
+    logger.info(tripId, foodId, mealId, dayId, qty);
     const food = Foods.findOne(foodId);
     MealFoods.upsert(
       {

@@ -114,7 +114,7 @@ export default class TripPage extends Component {
             <FloatingActionButton
               onClick={this.handleAddDay}
               secondary
-              style={{ 'margin-bottom': '16px' }}
+              style={{ marginBottom: '16px' }}
             >
               <ContentAdd />
             </FloatingActionButton>

@@ -71,7 +71,7 @@ class Day extends Component {
   render() {
     const { dayTotals, weightLeft, idx, calsPerDay, proteinPerDay, useOz } = this.props;
     return (
-      <Card style={{ 'margin-bottom': '8px' }}>
+      <Card style={{ marginBottom: '8px' }}>
         <CardTitle style={{ padding: '16px 16px 0 16px' }} title={`Day ${idx + 1}`}>
           <div style={styles.wrapper}>
             <Chip

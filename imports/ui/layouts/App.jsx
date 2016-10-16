@@ -15,6 +15,8 @@ import Snackbar from 'material-ui/Snackbar';
 import Toggle from 'material-ui/Toggle';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import RaisedButton from 'material-ui/RaisedButton';
+import CommunicationEmail from 'material-ui/svg-icons/communication/email';
 import { blueGrey500 } from 'material-ui/styles/colors';
 
 import Trips from '../../api/trips/trips';
@@ -89,8 +91,6 @@ export default class App extends React.Component {
       trips,
       children,
       location,
-      foods,
-      foodSort,
     } = this.props;
 
     // clone route components with keys so that they can
@@ -124,15 +124,24 @@ export default class App extends React.Component {
               <List>
                 <Subheader>Settings</Subheader>
                 <ListItem
-                  primaryText="Use US units"
+                  primaryText="Use US units for weight"
                   rightToggle={
                     <Toggle
                       defaultToggled={this.state.useOz}
                       onToggle={this.toggleUseOz}
                     />
                   }
+                  secondaryText={this.state.useOz ? 'Using ounces' : 'Using grams'}
                 />
               </List>
+              <RaisedButton
+                label="Feedback"
+                labelPosition="before"
+                primary
+                icon={<CommunicationEmail />}
+                fullWidth
+                href="mailto:feedback@bearcan.io"
+              />
             </Drawer>
             <div className="container-fluid">
               <div className={classNames('row')}>
@@ -143,7 +152,7 @@ export default class App extends React.Component {
                     transitionLeaveTimeout={400}
                   >
                     {loading
-                      ? <LinearProgress mode="indeterminate" />
+                      ? <div className={classNames('row', 'center-xs')}><LinearProgress mode="indeterminate" /></div>
                       : clonedChildren}
                   </ReactCSSTransitionGroup>
                 </div>

@@ -33,7 +33,8 @@
     "react-addons-pure-render-mixin": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-tap-event-plugin": "^1.0.0",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^3.7.1",
