@@ -8,6 +8,7 @@ export default class UserMenu extends React.Component {
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
+    this.loginWithGoogle = this.loginWithGoogle.bind(this);
     this.renderLoggedOut = this.renderLoggedOut.bind(this);
   }
 
@@ -19,18 +20,32 @@ export default class UserMenu extends React.Component {
     });
   }
 
+  loginWithGoogle() {
+    const { router } = this.context;
+    const self = this;
+
+    Meteor.loginWithGoogle({
+      requestPermissions: ['email'],
+    }, (err) => {
+      if (err) {
+        self.setState({
+          errors: { email: err.reason },
+        });
+        return;
+      }
+      Meteor.call('trips.updateUserId', () => {
+        router.push('/');
+      });
+    });
+  }
+
   renderLoggedOut() {
     return (
       <List>
         <ListItem
-          primaryText="Sign in"
-          onTouchTap={this.props.handleClose}
-          containerElement={<Link to="/signin" />}
-        />
-        <ListItem
-          primaryText="Join"
-          onTouchTap={this.props.handleClose}
-          containerElement={<Link to="/join" />}
+          primaryText="Sign in with Google"
+          onTouchTap={this.loginWithGoogle}
+          leftAvatar={<Avatar src="images/google-large.png" />}
         />
       </List>
     );
