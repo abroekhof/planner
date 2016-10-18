@@ -4,12 +4,14 @@ export const totals = mealFoods => (
       {
         calories: prevTotal.calories + (mealFood.calories * mealFood.qty),
         protein: prevTotal.protein + (mealFood.protein * mealFood.qty),
+        sodium: prevTotal.sodium + (mealFood.sodium * mealFood.qty),
         weight: prevTotal.weight + (mealFood.weight * mealFood.qty),
       }
     ),
      {
        calories: 0,
        protein: 0,
+       sodium: 0,
        weight: 0,
      }
    )

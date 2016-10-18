@@ -86,6 +86,11 @@ class Day extends Component {
             >
               {dayTotals.protein} g protein
             </Chip>
+            <Chip
+              style={styles.chip}
+            >
+              {dayTotals.sodium} mg sodium
+            </Chip>
             <Chip style={styles.chip}>{convertWeight(weightLeft, useOz)} to carry</Chip>
           </div>
         </CardTitle>

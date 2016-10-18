@@ -14,6 +14,7 @@ class Meal extends Component {
   constructor(props) {
     super(props);
     this.handleOpenFoodDrawer = this.handleOpenFoodDrawer.bind(this);
+    this.renderMealFoods = this.renderMealFoods.bind(this);
   }
 
   handleOpenFoodDrawer() {
@@ -21,8 +22,9 @@ class Meal extends Component {
   }
 
   renderMealFoods() {
+    const { useOz } = this.props;
     return this.props.mealFoods.map(mealFood => (
-      <MealFood key={mealFood._id} mealFood={mealFood} />
+      <MealFood key={mealFood._id} useOz={useOz} mealFood={mealFood} />
     ));
   }
 

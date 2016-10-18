@@ -7,6 +7,8 @@ import TextField from 'material-ui/TextField';
 
 import { Meteor } from 'meteor/meteor';
 
+import { convertWeight } from '../helpers';
+
 class MealFood extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,7 @@ class MealFood extends Component {
   }
 
   render() {
+    const { mealFood, useOz } = this.props;
     return (
       <ListItem
         disabled
@@ -63,7 +66,7 @@ class MealFood extends Component {
       >
         <span>
           <TextField
-            id={this.props.mealFood._id}
+            id={mealFood._id}
             value={this.state.qty}
             onBlur={this.handleBlur}
             onKeyDown={this.handleKeyDown}
@@ -71,7 +74,7 @@ class MealFood extends Component {
             style={{ width: '36px', height: '36px' }}
             inputStyle={{ textAlign: 'center' }}
           />
-          {this.state.qty > 1 ? 'servings' : 'serving'} {this.props.mealFood.name}
+          {this.state.qty > 1 ? 'servings' : 'serving'} ({convertWeight(this.state.qty * mealFood.weight, useOz)}) {mealFood.name}
         </span>
 
       </ListItem>
@@ -81,6 +84,7 @@ class MealFood extends Component {
 
 MealFood.propTypes = {
   mealFood: PropTypes.object.isRequired,
+  useOz: PropTypes.bool.isRequired,
 };
 
 export default MealFood;
