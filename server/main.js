@@ -3,8 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+
 import Foods from '../imports/api/foods/foods';
-import { gPerOz } from '../imports/ui/helpers.js';
+import { gPerOz } from '../imports/ui/helpers';
 
 SimpleSchema.debug = true;
 
@@ -31,7 +32,17 @@ Meteor.startup(() => {
         { $set: {
           verified: true,
           name: food.Name,
+          servingsPerContainer: food['Servings per container'],
           calories: food.Calories,
+          caloriesFromFat: food['Calories from fat'],
+          totalFat: food['Total fat'],
+          saturatedFat: food['Saturated fat'],
+          cholesterol: food.Cholesterol,
+          sodium: food.Sodium,
+          potassium: food.K,
+          totalCarbohydrate: food.Carbs,
+          dietaryFiber: food.Fiber,
+          sugars: food.Sugar,
           caloriesPerWeight: food.Calories / weight,
           protein: food.Protein,
           proteinPerWeight: food.Protein / weight,

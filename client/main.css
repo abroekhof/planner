@@ -12,6 +12,10 @@ body {
     background-attachment: fixed;
 }
 
+.create-food {
+  font-family: 'Helvetica', sans-serif;
+}
+
 .example-enter {
   opacity: 0.01;
 }

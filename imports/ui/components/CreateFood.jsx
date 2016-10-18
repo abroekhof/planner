@@ -1,8 +1,11 @@
 import React, { PropTypes, Component } from 'react';
+import { Meteor } from 'meteor/meteor';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import { Meteor } from 'meteor/meteor';
+
+import classNames from 'classnames';
 
 import { isNumeric, gPerOz } from '../helpers';
 
@@ -11,9 +14,19 @@ export default class FoodDrawer extends Component {
     super(props);
     this.initialState = {
       foodName: '',
-      calories: '',
-      protein: '',
+      servingsPerContainer: '',
       weight: '',
+      calories: '',
+      caloriesFromFat: '',
+      totalFat: '',
+      saturatedFat: '',
+      cholesterol: '',
+      sodium: '',
+      potassium: '',
+      totalCarbohydrate: '',
+      dietaryFiber: '',
+      sugars: '',
+      protein: '',
       errors: {},
     };
     this.state = this.initialState;
@@ -28,10 +41,20 @@ export default class FoodDrawer extends Component {
     if (editingFood) {
       this.setState({
         foodName: editingFood.name,
+        servingsPerContainer: editingFood.servingsPerContainer,
         calories: editingFood.calories,
         protein: editingFood.protein,
         // display ounces if needed
         weight: nextProps.useOz ? editingFood.weight / gPerOz : editingFood.weight,
+        caloriesFromFat: editingFood.caloriesFromFat,
+        totalFat: editingFood.totalFat,
+        saturatedFat: editingFood.saturatedFat,
+        cholesterol: editingFood.cholesterol,
+        sodium: editingFood.sodium,
+        potassium: editingFood.potassium,
+        totalCarbohydrate: editingFood.totalCarbohydrate,
+        dietaryFiber: editingFood.dietaryFiber,
+        sugars: editingFood.sugars,
       });
     }
   }
@@ -46,12 +69,26 @@ export default class FoodDrawer extends Component {
     if (!state.foodName) {
       errors.foodName = 'Name required';
     }
-    const values = ['calories', 'protein', 'weight'];
+    const values = [
+      'servingsPerContainer',
+      'weight',
+      'calories',
+      'caloriesFromFat',
+      'totalFat',
+      'saturatedFat',
+      'cholesterol',
+      'sodium',
+      'potassium',
+      'totalCarbohydrate',
+      'dietaryFiber',
+      'sugars',
+      'protein',
+    ];
     values.forEach((value) => {
       if (!state[value]) {
-        errors[value] = `${value} required`;
+        errors[value] = `required`;
       } else if (!isNumeric(state[value])) {
-        errors[value] = `${value} must be a number`;
+        errors[value] = `must be a number`;
       }
     });
 
@@ -63,15 +100,26 @@ export default class FoodDrawer extends Component {
 
     const { useOz } = this.props;
     let weight = Number(this.state.weight);
-    // convert oz to grams
-    weight = useOz ? weight * gPerOz : weight;
+    // Convert oz to grams
+    // Change the weight to per serving, because that's what's used throughout the app
+    weight = (useOz ? weight * gPerOz : weight) / state.servingsPerContainer;
 
     const editingFoodId = this.props.editingFood ? this.props.editingFood._id : null;
     const args = [
       editingFoodId,
-      this.state.foodName,
-      Number(this.state.calories),
-      Number(this.state.protein),
+      state.foodName,
+      Number(state.servingsPerContainer),
+      Number(state.calories),
+      Number(state.caloriesFromFat),
+      Number(state.totalFat),
+      Number(state.saturatedFat),
+      Number(state.cholesterol),
+      Number(state.sodium),
+      Number(state.potassium),
+      Number(state.totalCarbohydrate),
+      Number(state.dietaryFiber),
+      Number(state.sugars),
+      Number(state.protein),
       weight,
     ];
     const { selectFood } = this.props;
@@ -107,35 +155,160 @@ export default class FoodDrawer extends Component {
         modal={false}
         open={this.props.open}
         onRequestClose={this.handleClose}
+        autoScrollBodyContent
       >
-        <TextField
-          id="foodName"
-          floatingLabelText="Food name"
-          value={this.state.foodName}
-          onChange={this.handleTextFieldChange}
-          errorText={this.state.errors.foodName}
-        />
-        <TextField
-          id="calories"
-          floatingLabelText="Calories"
-          value={this.state.calories}
-          onChange={this.handleTextFieldChange}
-          errorText={this.state.errors.calories}
-        />
-        <TextField
-          id="protein"
-          floatingLabelText="Protein"
-          value={this.state.protein}
-          onChange={this.handleTextFieldChange}
-          errorText={this.state.errors.protein}
-        />
-        <TextField
-          id="weight"
-          floatingLabelText={`Weight (${this.props.useOz ? 'ounces' : 'grams'})`}
-          value={this.state.weight}
-          onChange={this.handleTextFieldChange}
-          errorText={this.state.errors.weight}
-        />
+        <div className={classNames('container-fluid', 'create-food')}>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="foodName"
+                floatingLabelText="Food name"
+                value={this.state.foodName}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.foodName}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField
+                id="servingsPerContainer"
+                floatingLabelText="Servings Per Container"
+                value={this.state.servingsPerContainer}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.servingsPerContainer}
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                id="weight"
+                floatingLabelText={`Container weight (${this.props.useOz ? 'ounces' : 'grams'})`}
+                value={this.state.weight}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.weight}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField
+                id="calories"
+                floatingLabelText="Calories"
+                value={this.state.calories}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.calories}
+              />
+            </div>
+            <div className="col-md-6">
+              <TextField
+                id="caloriesFromFat"
+                floatingLabelText="Calories from fat"
+                value={this.state.caloriesFromFat}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.caloriesFromFat}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="totalFat"
+                floatingLabelText="Total fat"
+                value={this.state.totalFat}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.totalFat}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-offset-1 col-md-11">
+              <TextField
+                id="saturatedFat"
+                floatingLabelText="Saturated fat"
+                value={this.state.saturatedFat}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.saturatedFat}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="cholesterol"
+                floatingLabelText="Cholesterol"
+                value={this.state.cholesterol}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.cholesterol}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="sodium"
+                floatingLabelText="Sodium"
+                value={this.state.sodium}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.sodium}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="potassium"
+                floatingLabelText="Potassium"
+                value={this.state.potassium}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.potassium}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="totalCarbohydrate"
+                floatingLabelText="Total Carbohydrate"
+                value={this.state.totalCarbohydrate}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.totalCarbohydrate}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-offset-1 col-md-11">
+              <TextField
+                id="dietaryFiber"
+                floatingLabelText="Dietary Fiber"
+                value={this.state.dietaryFiber}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.dietaryFiber}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-offset-1 col-md-11">
+              <TextField
+                id="sugars"
+                floatingLabelText="Sugars"
+                value={this.state.sugars}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.sugars}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <TextField
+                id="protein"
+                floatingLabelText="Protein"
+                value={this.state.protein}
+                onChange={this.handleTextFieldChange}
+                errorText={this.state.errors.protein}
+              />
+            </div>
+          </div>
+        </div>
       </Dialog>
     );
   }

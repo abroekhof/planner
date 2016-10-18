@@ -5,7 +5,42 @@ import { _ } from 'meteor/underscore';
 import Foods from '../foods';
 import MealFoods from '../../mealFoods/mealFoods';
 
-const verifyFood = (userId, foodId, name, calories, protein, weight) => {
+const verifyFood = (
+  userId,
+  foodId,
+  name,
+  servingsPerContainer,
+  calories,
+  caloriesFromFat,
+  totalFat,
+  saturatedFat,
+  cholesterol,
+  sodium,
+  potassium,
+  totalCarbohydrate,
+  dietaryFiber,
+  sugars,
+  protein,
+  weight
+) => {
+  const foodObj = {
+    name,
+    servingsPerContainer,
+    calories,
+    caloriesPerWeight: calories / weight,
+    caloriesFromFat,
+    totalFat,
+    saturatedFat,
+    cholesterol,
+    sodium,
+    potassium,
+    totalCarbohydrate,
+    dietaryFiber,
+    sugars,
+    protein,
+    proteinPerWeight: protein / weight,
+    weight,
+  };
   let foodIdCopy = foodId;
   if (foodId) {
     const food = Foods.findOne(foodId);
@@ -21,28 +56,11 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
       throw new Meteor.Error('foods.verify.accessDenied',
         'Cannot update a food that has been verified');
     }
-    // a food update was requested
-    Foods.update(
-      foodId,
-      { $set: {
-        name,
-        calories,
-        caloriesPerWeight: calories / weight,
-        protein,
-        proteinPerWeight: protein / weight,
-        weight,
-      },
-    });
+    // A food update was requested
+    Foods.update(foodId, { $set: foodObj });
   } else {
-    foodIdCopy = Foods.insert({
-      userId,
-      name,
-      calories,
-      caloriesPerWeight: calories / weight,
-      protein,
-      proteinPerWeight: protein / weight,
-      weight,
-    });
+    // No update, so insert a new food and assign to the user
+    foodIdCopy = Foods.insert(_.extend(foodObj, { userId }));
   }
   const percent = 0.02;
   const upper = (1 + percent);
@@ -51,8 +69,27 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
     {
       $and: [
         { $text: { $search: name } },
+        { servingsPerContainer: { $eq: servingsPerContainer } },
         { calories: { $lte: calories * upper } },
         { calories: { $gte: calories * lower } },
+        { caloriesFromFat: { $lte: caloriesFromFat * upper } },
+        { caloriesFromFat: { $gte: caloriesFromFat * lower } },
+        { totalFat: { $lte: totalFat * upper } },
+        { totalFat: { $gte: totalFat * lower } },
+        { saturatedFat: { $lte: saturatedFat * upper } },
+        { saturatedFat: { $gte: saturatedFat * lower } },
+        { cholesterol: { $lte: cholesterol * upper } },
+        { cholesterol: { $gte: cholesterol * lower } },
+        { sodium: { $lte: sodium * upper } },
+        { sodium: { $gte: sodium * lower } },
+        { potassium: { $lte: potassium * upper } },
+        { potassium: { $gte: potassium * lower } },
+        { totalCarbohydrate: { $lte: totalCarbohydrate * upper } },
+        { totalCarbohydrate: { $gte: totalCarbohydrate * lower } },
+        { dietaryFiber: { $lte: dietaryFiber * upper } },
+        { dietaryFiber: { $gte: dietaryFiber * lower } },
+        { sugars: { $lte: sugars * upper } },
+        { sugars: { $gte: sugars * lower } },
         { protein: { $lte: protein * upper } },
         { protein: { $gte: protein * lower } },
         { weight: { $lte: weight * upper } },
@@ -84,8 +121,18 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
         { $set: {
           foodId: foundFood._id,
           name: foundFood.name,
+          servingsPerContainer: foundFood.servingsPerContainer,
           calories: foundFood.calories,
           caloriesPerWeight: foundFood.caloriesPerWeight,
+          caloriesFromFat: foundFood.caloriesFromFat,
+          totalFat: foundFood.totalFat,
+          saturatedFat: foundFood.saturatedFat,
+          cholesterol: foundFood.cholesterol,
+          sodium: foundFood.sodium,
+          potassium: foundFood.potassium,
+          totalCarbohydrate: foundFood.totalCarbohydrate,
+          dietaryFiber: foundFood.dietaryFiber,
+          sugars: foundFood.sugars,
           protein: foundFood.protein,
           proteinPerWeight: foundFood.proteinPerWeight,
           weight: foundFood.weight,
@@ -98,23 +145,33 @@ const verifyFood = (userId, foodId, name, calories, protein, weight) => {
   }
   // no closely matching food was found
   if (foodId) {
+    // Update was requested, so update all mealFoods
     MealFoods.update(
       { foodId },
-      { $set: {
-        name,
-        calories,
-        caloriesPerWeight: calories / weight,
-        protein,
-        proteinPerWeight: protein / weight,
-        weight,
-      },
+      { $set: foodObj,
     });
   }
   return Foods.findOne(foodIdCopy);
 };
 
 Meteor.methods({
-  'foods.verify': function foodsVerify(foodId, name, calories, protein, weight) {
+  'foods.verify': function foodsVerify(
+    foodId,
+    name,
+    servingsPerContainer,
+    calories,
+    caloriesFromFat,
+    totalFat,
+    saturatedFat,
+    cholesterol,
+    sodium,
+    potassium,
+    totalCarbohydrate,
+    dietaryFiber,
+    sugars,
+    protein,
+    weight
+  ) {
     const userId = this.userId;
     if (!userId) {
       throw new Meteor.Error('foods.verify.accessDenied',
@@ -125,7 +182,24 @@ Meteor.methods({
     check(calories, Number);
     check(protein, Number);
     check(weight, Number);
-    return verifyFood(userId, foodId, name, calories, protein, weight);
+    return verifyFood(
+      userId,
+      foodId,
+      name,
+      servingsPerContainer,
+      calories,
+      caloriesFromFat,
+      totalFat,
+      saturatedFat,
+      cholesterol,
+      sodium,
+      potassium,
+      totalCarbohydrate,
+      dietaryFiber,
+      sugars,
+      protein,
+      weight
+    );
   },
 });
 
