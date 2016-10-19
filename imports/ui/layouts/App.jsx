@@ -180,7 +180,7 @@ export default class App extends React.Component {
           </div>
           <Snackbar
             open={this.props.user === null}
-            message={'To save this trip, sign in using top left menu!'}
+            message={'Sign in to save this trip, create foods, and more! See top-left menu'}
           />
         </div>
 
