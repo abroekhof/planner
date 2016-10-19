@@ -100,8 +100,8 @@ class Day extends Component {
         </CardText>
 
         <CardActions>
-          <FlatButton label="Remove day" onClick={this.handleRemoveDay} />
           <FlatButton label="Duplicate day" onClick={this.handleDuplicateDay} />
+          {idx === 0 ? '' : <FlatButton label="Remove day" onClick={this.handleRemoveDay} />}
         </CardActions>
       </Card>
     );

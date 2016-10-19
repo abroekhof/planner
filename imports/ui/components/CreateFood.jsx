@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
 
 import classNames from 'classnames';
 
@@ -157,6 +158,32 @@ export default class FoodDrawer extends Component {
         onRequestClose={this.handleClose}
         autoScrollBodyContent
       >
+        <Card style={{ marginTop: '8px' }}>
+          <CardHeader
+            title="Instructions"
+            actAsExpander
+            showExpandableButton
+          />
+          <CardText expandable>
+            <p>
+              All fields are required. If a value is not on the Nutrition Label, just use 0. If
+              you do not have a Nutrition Label, try Googling the food!
+            </p>
+            <p>
+              The foods you create are visible only to you, until someone else creates the same
+              food, at which point it is &lsquo;verified&rsquo; and publicly useable. Create
+              accurate foods to help the community!
+            </p>
+            <p>
+              You can update or delete a food you create until it is verified. Updating a food may
+              also cause it to be verified!
+            </p>
+            <p>
+              If you find an error with a verified food, get in touch
+              at <a href="mailto:feedback@bearcan.io">feedback@bearcan.io</a>
+            </p>
+          </CardText>
+        </Card>
         <div className={classNames('container-fluid', 'create-food')}>
           <div className="row">
             <div className="col-md-12">
@@ -213,7 +240,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="totalFat"
-                floatingLabelText="Total fat"
+                floatingLabelText="Total fat (g)"
                 value={this.state.totalFat}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.totalFat}
@@ -224,7 +251,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-offset-1 col-md-11">
               <TextField
                 id="saturatedFat"
-                floatingLabelText="Saturated fat"
+                floatingLabelText="Saturated fat (g)"
                 value={this.state.saturatedFat}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.saturatedFat}
@@ -235,7 +262,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="cholesterol"
-                floatingLabelText="Cholesterol"
+                floatingLabelText="Cholesterol (mg)"
                 value={this.state.cholesterol}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.cholesterol}
@@ -246,7 +273,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="sodium"
-                floatingLabelText="Sodium"
+                floatingLabelText="Sodium (mg)"
                 value={this.state.sodium}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.sodium}
@@ -257,7 +284,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="potassium"
-                floatingLabelText="Potassium"
+                floatingLabelText="Potassium (mg)"
                 value={this.state.potassium}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.potassium}
@@ -268,7 +295,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="totalCarbohydrate"
-                floatingLabelText="Total Carbohydrate"
+                floatingLabelText="Total Carbohydrate (g)"
                 value={this.state.totalCarbohydrate}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.totalCarbohydrate}
@@ -279,7 +306,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-offset-1 col-md-11">
               <TextField
                 id="dietaryFiber"
-                floatingLabelText="Dietary Fiber"
+                floatingLabelText="Dietary Fiber (g)"
                 value={this.state.dietaryFiber}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.dietaryFiber}
@@ -290,7 +317,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-offset-1 col-md-11">
               <TextField
                 id="sugars"
-                floatingLabelText="Sugars"
+                floatingLabelText="Sugars (g)"
                 value={this.state.sugars}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.sugars}
@@ -301,7 +328,7 @@ export default class FoodDrawer extends Component {
             <div className="col-md-12">
               <TextField
                 id="protein"
-                floatingLabelText="Protein"
+                floatingLabelText="Protein (g)"
                 value={this.state.protein}
                 onChange={this.handleTextFieldChange}
                 errorText={this.state.errors.protein}
