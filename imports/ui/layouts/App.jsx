@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import classNames from 'classnames';
 
@@ -23,7 +25,7 @@ import Trips from '../../api/trips/trips';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
-import FoodDrawerContainer from '../containers/FoodDrawerContainer.js';
+import FoodDrawerContainer from '../containers/FoodDrawerContainer';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -77,11 +79,15 @@ export default class App extends React.Component {
 
   toggleUseOz() {
     this.setState({ useOz: !this.state.useOz });
+    analytics.track('Toggled using oz', { useOz: this.state.useOz });
   }
 
   removeTrip(id) {
-    this.context.router.replace('/');
-    Meteor.call('trips.remove', id);
+    const { router } = this.context;
+    Meteor.call('trips.remove', id, () => {
+      analytics.track('Removed trip', { id });
+      router.push('/');
+    });
   }
 
   render() {

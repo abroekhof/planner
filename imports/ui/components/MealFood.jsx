@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 
+import { analytics } from 'meteor/okgrow:analytics';
+
 import { ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
@@ -26,6 +28,7 @@ class MealFood extends Component {
   }
 
   delete() {
+    analytics.track('Deleted MealFood', { mealFoodId: this.props.mealFood._id });
     Meteor.call('mealFoods.remove', this.props.mealFood._id);
   }
 
@@ -36,6 +39,7 @@ class MealFood extends Component {
   handleBlur() {
     const qty = this.state.qty;
     if (!isNaN(parseFloat(qty)) && isFinite(qty) && Number(qty) > 0) {
+      analytics.track('Changed MealFood qty', { mealFoodId: this.props.mealFood._id, qty });
       Meteor.call('mealFoods.updateQty', this.props.mealFood._id, Number(qty));
       this.setState({ qty: Number(qty) });
     } else {

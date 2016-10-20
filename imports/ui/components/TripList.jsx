@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import { List, ListItem } from 'material-ui/List';
 import ContentAddBox from 'material-ui/svg-icons/content/add-box';
@@ -9,7 +11,6 @@ import Subheader from 'material-ui/Subheader';
 export default class TripList extends React.Component {
   constructor(props) {
     super(props);
-
     this.createNewTrip = this.createNewTrip.bind(this);
   }
 
@@ -20,6 +21,7 @@ export default class TripList extends React.Component {
       if (err) {
         router.push('/');
       } else {
+        analytics.track('Created new trip', { tripId: result });
         router.push(`/trips/${result}`);
       }
     });

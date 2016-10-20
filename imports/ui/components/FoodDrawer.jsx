@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import { List } from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -67,15 +69,25 @@ export default class FoodDrawer extends Component {
   }
 
   addFoods() {
-    this.state.selectedFoods.forEach(food =>
-      Meteor.call('mealFoods.insert',
-      food._id,
-      this.props.tripId,
-      this.props.mealId,
-      this.props.dayId,
-      1
-    )
-    );
+    this.state.selectedFoods.forEach((food) => {
+      Meteor.call(
+        'mealFoods.insert',
+        food._id,
+        this.props.tripId,
+        this.props.mealId,
+        this.props.dayId,
+        1
+      );
+      analytics.track('Added MealFood', {
+        userId: this.userId,
+        foodName: food.name,
+        tripId: this.props.tripId,
+        mealId: this.props.mealId,
+        dayId: this.props.dayId,
+      });
+    });
+
+
     this.props.handleCloseDrawer();
     this.clearSelectedFoods();
   }

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import Chip from 'material-ui/Chip';
 import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
@@ -29,10 +30,12 @@ class Day extends Component {
   }
 
   handleRemoveDay() {
+    analytics.track('Remove day', { dayId: this.props.day._id });
     Meteor.call('days.remove', this.props.day._id);
   }
 
   handleDuplicateDay() {
+    analytics.track('Duplicate day', { dayId: this.props.day._id });
     Meteor.call('days.duplicate', this.props.day._id);
   }
 

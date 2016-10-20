@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import { ListItem } from 'material-ui/List';
 
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import { convertWeight } from '../helpers';
 
@@ -14,11 +15,15 @@ class Resupply extends Component {
   }
 
   insert() {
-    Meteor.call('days.updateResupply', this.props.day._id, this.props.idx);
+    const { day, idx } = this.props;
+    analytics.track('Inserted resupply', { dayId: day._id, idx });
+    Meteor.call('days.updateResupply', day._id, idx);
   }
 
   remove() {
-    Meteor.call('days.removeResupply', this.props.day._id, this.props.idx);
+    const { day, idx } = this.props;
+    analytics.track('Removed resupply', { dayId: day._id, idx });
+    Meteor.call('days.removeResupply', day._id, idx);
   }
 
   render() {

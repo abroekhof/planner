@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
+import { analytics } from 'meteor/okgrow:analytics';
+
 import { ListItem } from 'material-ui/List';
 import { grey400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
@@ -28,6 +30,7 @@ class Food extends Component {
   }
 
   deleteThisFood() {
+    analytics.track('Delete food', { foodId: this.props.food._id });
     this.props.unselectFood(this.props.food._id);
     Meteor.call('foods.remove', this.props.food._id);
   }

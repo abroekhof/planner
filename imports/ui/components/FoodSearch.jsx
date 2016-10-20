@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 
+import { analytics } from 'meteor/okgrow:analytics';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
@@ -29,6 +31,7 @@ export default class FoodSearch extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    analytics.track('Searched foods', { searchString: this.state.searchString });
     this.setState({ searched: true });
     this.props.searchString.set(this.state.searchString);
   }

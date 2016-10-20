@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -87,9 +89,9 @@ export default class FoodDrawer extends Component {
     ];
     values.forEach((value) => {
       if (!state[value]) {
-        errors[value] = `required`;
+        errors[value] = 'required';
       } else if (!isNumeric(state[value])) {
-        errors[value] = `must be a number`;
+        errors[value] = 'must be a number';
       }
     });
 
@@ -125,8 +127,15 @@ export default class FoodDrawer extends Component {
     ];
     const { selectFood } = this.props;
     Meteor.apply('foods.verify', args, (error, food) => {
+      if (editingFoodId) {
+        analytics.track('Edited food', { args });
+      } else {
+        analytics.track('Created food', { args });
+      }
       selectFood(food);
     });
+
+
     this.handleClose();
   }
 

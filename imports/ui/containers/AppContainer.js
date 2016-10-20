@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { createContainer } from 'meteor/react-meteor-data';
 
 // XXX: Session

@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+
 import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
 
 import { Card, CardText, CardTitle, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -39,6 +41,10 @@ export default class TripDetails extends Component {
 
   updateTripName() {
     if (this.state.tripName !== '') {
+      analytics.track('Updated trip name', {
+        tripId: this.props.tripId,
+        tripName: this.state.tripName,
+      });
       Meteor.call('trips.updateName',
       this.props.tripId,
       this.state.tripName);
@@ -57,6 +63,11 @@ export default class TripDetails extends Component {
   }
 
   updateTargets() {
+    analytics.track('Updated trip targets', {
+      tripId: this.props.tripId,
+      calsPerDay: this.state.calsPerDay,
+      proteinPerDay: this.state.proteinPerDay,
+    });
     Meteor.call('trips.updateTarget',
       this.props.tripId,
       'calsPerDay',

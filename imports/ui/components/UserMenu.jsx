@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
+
 import { Meteor } from 'meteor/meteor';
-import { Link } from 'react-router';
+import { analytics } from 'meteor/okgrow:analytics';
+
 import { List, ListItem } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
@@ -13,6 +15,7 @@ export default class UserMenu extends React.Component {
   }
 
   handleLogout() {
+    analytics.track('Logged out', { user: this.props.user });
     this.props.handleClose();
     const { router } = this.context;
     Meteor.logout(() => {
@@ -27,12 +30,8 @@ export default class UserMenu extends React.Component {
     Meteor.loginWithGoogle({
       requestPermissions: ['email'],
     }, (err) => {
-      if (err) {
-        self.setState({
-          errors: { email: err.reason },
-        });
-        return;
-      }
+      if (err) { return; }
+      analytics.track('Logged in with Google');
       Meteor.call('trips.updateUserId', () => {
         router.push('/');
       });

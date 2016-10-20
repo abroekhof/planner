@@ -1,5 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
+
+import { Meteor } from 'meteor/meteor';
+import { analytics } from 'meteor/okgrow:analytics';
+
 import classNames from 'classnames';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -29,6 +32,7 @@ export default class TripPage extends Component {
   }
 
   handleAddDay() {
+    analytics.track('Added day', { tripId: this.props.trip._id });
     Meteor.call('days.insert', this.props.trip._id);
   }
 

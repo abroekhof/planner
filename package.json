@@ -1,5 +1,5 @@
 {
-  "name": "planner",
+  "name": "Bear Can",
   "private": true,
   "scripts": {
     "start": "meteor run",
