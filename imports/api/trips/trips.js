@@ -6,13 +6,7 @@ import MealFoods from '../mealFoods/mealFoods';
 
 export const newTripName = 'New Trip';
 
-class TripsCollection extends Mongo.Collection {
-  remove(selector, callback) {
-    // also remove all child days
-    Days.remove({ tripId: selector });
-    return super.remove(selector, callback);
-  }
-}
+class TripsCollection extends Mongo.Collection {}
 
 const Trips = new TripsCollection('trips');
 

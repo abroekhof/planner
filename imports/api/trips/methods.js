@@ -25,6 +25,8 @@ Meteor.methods({
   'trips.remove': function tripsRemove(tripId) {
     check(tripId, String);
     Trips.remove(tripId);
+    Days.remove({ tripId });
+    MealFoods.remove({ tripId });
   },
   'trips.updateTarget': function tripsUpdateTarget(tripId, target, value) {
     check(tripId, String);

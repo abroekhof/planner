@@ -4,13 +4,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import MealFoods from '../mealFoods/mealFoods';
 import Meals from '../meals/meals';
 
-class DaysCollection extends Mongo.Collection {
-  remove(selector, callback) {
-    // also remove all child mealFoods
-    MealFoods.remove({ dayId: selector });
-    return super.remove(selector, callback);
-  }
-}
+class DaysCollection extends Mongo.Collection {}
 
 const Days = new DaysCollection('days');
 
