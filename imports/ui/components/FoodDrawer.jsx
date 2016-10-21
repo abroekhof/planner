@@ -135,15 +135,23 @@ export default class FoodDrawer extends Component {
           editingFood={this.state.editingFood}
         />
         {
-          Meteor.user() ?
-            <div style={{ padding: '12px' }}>
-              <RaisedButton
-                fullWidth
-                label="Create food"
-                onTouchTap={this.handleOpen}
-                primary
-              />
-            </div> : ''
+
+          <div style={{ padding: '12px' }}>
+            {
+              Meteor.user() ?
+                <RaisedButton
+                  fullWidth
+                  label="Create food"
+                  onTouchTap={this.handleOpen}
+                  primary
+                /> : <RaisedButton
+                  fullWidth
+                  label="Log in to create foods!"
+                  disabled
+                  primary
+                />
+              }
+          </div>
         }
         <Divider />
         <div style={{ padding: '0px 12px 0px 12px' }}>
