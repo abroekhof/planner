@@ -11,7 +11,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import LinearProgress from 'material-ui/CircularProgress';
+import CircularProgress from 'material-ui/CircularProgress';
 import AppBar from 'material-ui/AppBar';
 import Snackbar from 'material-ui/Snackbar';
 import Toggle from 'material-ui/Toggle';
@@ -25,7 +25,7 @@ import Trips from '../../api/trips/trips';
 
 import UserMenu from '../components/UserMenu.jsx';
 import TripList from '../components/TripList.jsx';
-import FoodDrawerContainer from '../containers/FoodDrawerContainer';
+import FoodDrawer from '../components/FoodDrawer.jsx';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -157,8 +157,10 @@ export default class App extends React.Component {
                     transitionEnterTimeout={400}
                     transitionLeaveTimeout={400}
                   >
-                    {loading
-                      ? <div className={classNames('row', 'center-xs')}><LinearProgress mode="indeterminate" /></div>
+                    {loading ?
+                      <div className={classNames('row', 'center-xs')}>
+                        <CircularProgress size={80} thickness={5} />
+                      </div>
                       : clonedChildren}
                   </ReactCSSTransitionGroup>
                 </div>
@@ -171,15 +173,14 @@ export default class App extends React.Component {
               open={this.state.rightOpen}
               onRequestChange={rightOpen => this.setState({ rightOpen })}
               width={400}
+              containerClassName="foodDrawer"
             >
-              <FoodDrawerContainer
-                params={{
-                  handleCloseDrawer: this.handleClose,
-                  tripId: this.state.tripId,
-                  dayId: this.state.dayId,
-                  mealId: this.state.mealId,
-                  useOz: this.state.useOz,
-                }}
+              <FoodDrawer
+                handleCloseDrawer={this.handleClose}
+                tripId={this.state.tripId}
+                dayId={this.state.dayId}
+                mealId={this.state.mealId}
+                useOz={this.state.useOz}
               />
             </Drawer>
 

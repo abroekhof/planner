@@ -47,7 +47,7 @@ class Food extends Component {
         <MoreVertIcon color={grey400} />
       </IconButton>
     );
-    const { food, useOz } = this.props;
+    const { food, useOz, defaultChecked } = this.props;
 
     const rightIconMenu = (Meteor.userId() === food.userId && !food.verified) ? (
       <IconMenu iconButtonElement={iconButtonElement}>
@@ -59,7 +59,7 @@ class Food extends Component {
 
     return (
       <ListItem
-        leftCheckbox={<Checkbox onCheck={this.onCheck} checked={this.props.checked} />}
+        leftCheckbox={<Checkbox onCheck={this.onCheck} defaultChecked={defaultChecked} />}
         primaryText={`${food.name} (${convertWeight(food.weight, useOz)} per serving)`}
         secondaryText={`${food.calories} calories (${convertRatio(food.caloriesPerWeight, useOz, 'cals')}),
         ${food.protein} g protein (${convertRatio(food.proteinPerWeight, useOz, 'g')})`}
@@ -72,7 +72,7 @@ class Food extends Component {
 
 Food.propTypes = {
   food: PropTypes.object.isRequired,
-  checked: PropTypes.bool.isRequired,
+  defaultChecked: PropTypes.bool.isRequired,
   selectFood: PropTypes.func.isRequired,
   unselectFood: PropTypes.func.isRequired,
   useOz: PropTypes.bool.isRequired,

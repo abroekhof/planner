@@ -32,13 +32,15 @@ export default class FoodSearch extends Component {
   handleSubmit(e) {
     e.preventDefault();
     analytics.track('Searched foods', { searchString: this.state.searchString });
-    this.setState({ searched: true });
-    this.props.searchString.set(this.state.searchString);
+    if (this.state.searchString !== '') {
+      this.setState({ searched: true });
+    }
+    this.props.handleSearch(this.state.searchString);
   }
 
   handleClear() {
     this.setState({ searchString: '', searched: false });
-    this.props.searchString.set('');
+    this.props.handleSearch('');
   }
 
   render() {
@@ -58,8 +60,8 @@ export default class FoodSearch extends Component {
         <div className={classNames('col-xs-4')}>
           {
             this.state.searched ?
-              <FlatButton primary icon={<ContentClear />} onTouchTap={this.handleClear} /> :
-              <FlatButton primary icon={<ActionSearch />} type="submit" />
+              <FlatButton style={{ justifyContent: 'center' }} primary icon={<ContentClear />} onTouchTap={this.handleClear} /> :
+              <FlatButton style={{ justifyContent: 'center' }} primary icon={<ActionSearch />} type="submit" />
           }
         </div>
       </form>
@@ -68,5 +70,5 @@ export default class FoodSearch extends Component {
 }
 
 FoodSearch.propTypes = {
-  searchString: PropTypes.object.isRequired,
+  handleSearch: PropTypes.func.isRequired,
 };
