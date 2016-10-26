@@ -68,6 +68,8 @@ const verifyFood = (
   const foundFood = Foods.findOne(
     {
       $and: [
+        // New food has been inserted, so don't verify it!
+        { _id: { $ne: foodIdCopy } },
         { $text: { $search: name } },
         { servingsPerContainer: { $eq: servingsPerContainer } },
         { calories: { $lte: calories * upper } },
