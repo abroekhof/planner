@@ -20,11 +20,13 @@ import CreateFood from './CreateFood.jsx';
 import FoodSearch from './FoodSearch.jsx';
 import FoodListContainer from '../containers/FoodListContainer';
 
+const limitDefault = 50;
+
 export default class FoodDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      foodOpts: { sort: { name: 1 }, limit: 50 },
+      foodOpts: { sort: { name: 1 }, limit: limitDefault },
       searchString: '',
       open: false,
       editingFood: null,
@@ -52,8 +54,7 @@ export default class FoodDrawer extends Component {
   toggleSortOrder() {
     const foodOpts = Object.assign({}, this.state.foodOpts);
     _.each(_.keys(foodOpts.sort), key => (foodOpts.sort[key] *= -1));
-    foodOpts.limit = 50;
-    console.log(foodOpts);
+    foodOpts.limit = limitDefault;
     this.setState({ foodOpts });
   }
 
@@ -61,17 +62,19 @@ export default class FoodDrawer extends Component {
     const foodOpts = Object.assign({}, this.state.foodOpts);
     foodOpts.sort = {};
     foodOpts.sort[sortValue] = _.values(this.state.foodOpts.sort)[0];
-    foodOpts.limit = 50;
+    foodOpts.limit = limitDefault;
     this.setState({ foodOpts });
   }
 
   handleSearch(searchString) {
-    this.setState({ searchString });
+    const foodOpts = Object.assign({}, this.state.foodOpts);
+    foodOpts.limit = limitDefault;
+    this.setState({ searchString, foodOpts });
   }
 
   increaseLimit() {
     const foodOpts = Object.assign({}, this.state.foodOpts);
-    foodOpts.limit += 50;
+    foodOpts.limit += limitDefault;
     this.setState({ foodOpts });
   }
 
