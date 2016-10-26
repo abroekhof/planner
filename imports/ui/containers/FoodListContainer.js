@@ -12,6 +12,7 @@ export default createContainer(({ params }) => {
     selectFood,
     unselectFood,
     editingFood,
+    selectedFoods,
   } = params;
   const foodsHandle = Meteor.subscribe('foods', searchString, foodOpts);
   const foods = Foods.find({}, foodOpts).fetch();
@@ -26,5 +27,6 @@ export default createContainer(({ params }) => {
     selectFood,
     unselectFood,
     editingFood,
+    selectedFoods,
   };
 }, FoodList);

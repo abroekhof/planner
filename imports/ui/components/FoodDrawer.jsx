@@ -232,6 +232,7 @@ export default class FoodDrawer extends Component {
             unselectFood: this.unselectFood,
             useOz: this.props.useOz,
             editingFood: this.editingFood,
+            selectedFoods: this.state.selectedFoods,
           }}
         />
         <ListItem onTouchTap={this.increaseLimit} primaryText="Load more foods" />
